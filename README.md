@@ -1,85 +1,121 @@
-# Offensive Security Command Reference
+Offensive Security Command Reference
+Version: 1.0 | Last Updated: November 2025 | Commands: 1,775+ | Maintainer: Individual Security Researcher
 
-## Overview
+📖 Overview
+A comprehensive, curated collection of offensive security commands designed for practical application in authorized security testing scenarios. This repository serves as a centralized reference for security professionals conducting penetration testing, red team operations, and security research.
 
-A curated collection of offensive security commands organized for practical use in authorized security testing. This repository serves as a centralized reference for penetration testers, red team operators, and security researchers.
+🗂️ Repository Structure
+text
+offensive-security-commands/
+├── 01-reconnaissance-osint.md          # 128 commands
+├── 02-vulnerability-scanning.md        # 89 commands
+├── 03-web-application-attacks.md       # 156 commands
+├── 04-network-exploitation.md          # 115 commands
+├── 05-active-directory-attacks.md      # 148 commands
+├── 06-post-exploitation.md             # 137 commands
+├── 07-lateral-movement.md              # 126 commands
+├── 08-privilege-escalation.md          # 146 commands
+├── 09-persistence-mechanisms.md        # 132 commands
+├── 10-command-control.md               # 141 commands
+├── 11-cloud-security.md                # 121 commands
+├── 12-container-security.md            # 23 commands
+├── 13-mobile-wireless.md               # 98 commands
+├── 14-api-security.md                  # 18 commands
+├── 15-devsecops-tools.md               # 16 commands
+├── 16-ics-scada-security.md            # 8 commands
+├── 17-zero-trust-security.md           # 11 commands
+├── 18-ai-ml-security.md                # 12 commands
+├── 19-anti-forensics.md                # 84 commands
+└── 20-password-attacks.md              # 106 commands
+✨ Key Features
+Comprehensive Coverage: 1,775+ commands spanning 20 security domains
 
-## Structure
+Practical Implementation: Each command includes real-world usage context and application scenarios
 
-```
-├── 01-reconnaissance-osint.md (128 commands)
-├── 02-vulnerability-scanning.md (89 commands)
-├── 03-web-application-attacks.md (156 commands)
-├── 04-network-exploitation.md (115 commands)
-├── 05-active-directory-attacks.md (148 commands)
-├── 06-post-exploitation.md (137 commands)
-├── 07-lateral-movement.md (126 commands)
-├── 08-privilege-escalation.md (146 commands)
-├── 09-persistence-mechanisms.md (132 commands)
-├── 10-command-control.md (141 commands)
-├── 11-cloud-security.md (121 commands)
-├── 12-container-security.md (23 commands)
-├── 13-mobile-wireless.md (98 commands)
-├── 14-api-security.md (18 commands)
-├── 15-devsecops-tools.md (16 commands)
-├── 16-ics-scada-security.md (8 commands)
-├── 17-zero-trust-security.md (11 commands)
-├── 18-ai-ml-security.md (12 commands)
-├── 19-anti-forensics.md (84 commands)
-└── 20-password-attacks.md (106 commands)
-```
+Multi-Platform Support: Commands for Windows, Linux, cloud, and network environments
 
-## Key Features
+Tool Diversity: Coverage of various security tools and frameworks
 
-- **Comprehensive Coverage:** 1,775 commands across 20 security domains
-- **Practical Focus:** Each command includes usage context and application scenarios
-- **Multi-Platform:** Windows, Linux, cloud, and network environments
-- **Tool-Agnostic:** Commands from various security tools and frameworks
+Regular Updates: Continuously maintained with latest techniques and methodologies
 
-## Usage
+🚀 Quick Start
+Prerequisites
+Basic knowledge of security testing concepts
 
-Each command file contains:
-- Actual command syntax
-- Brief usage explanation
-- Practical application context
-- Required parameters and options
+Access to authorized testing environments
 
-## Maintenance
+Required security tools installed (varies by category)
 
-This repository is personally maintained and regularly updated with:
-- New techniques and methodologies
-- Updated tool syntax
-- Additional practical examples
-- Corrections and improvements
+Usage Example
+bash
+# Navigate to desired category
+cat 01-reconnaissance-osint.md | grep -A 2 "subdomain"
 
-## Legal Notice
+# Each command includes:
+# - Actual command syntax
+# - Usage explanation
+# - Practical application context
+# - Required parameters and options
+🛠️ Maintenance
+This repository is actively maintained with:
 
-This repository is intended for:
-- Authorized security testing
-- Educational purposes
-- Security research
-- Defensive security preparation
+Regular updates for new vulnerabilities and techniques
 
-Always ensure proper authorization before using any techniques in production environments. The maintainer assumes no liability for misuse.
+Updated tool syntax and parameters
 
-## Contributing
+Additional practical examples and use cases
 
-While this is an individual project, feedback and suggestions are welcome through issues and discussions.
+Validation of commands in controlled environments
 
----
+Corrections and improvements based on community feedback
 
-*This repository represents ongoing research in offensive security techniques. 
-Commands are validated in controlled environments before inclusion. 
-Always practice responsible disclosure and ethical security testing.*
+⚖️ Legal & Ethical Usage
+Intended Purposes
+✅ Authorized penetration testing
 
-**Connect**  
-For professional inquiries or technical discussions regarding the content of this repository.
+✅ Red team exercises with proper scope
 
-**Status**  
- Actively Maintained |  Educational Resource | Ethical Use Required
+✅ Security research and education
 
- 🌟 Star History
-https://api.star-history.com/svg?repos=yourusername/offensive-security-commands&type=Date
+✅ Defensive security preparation
+
+✅ Security tool development and testing
+
+Strictly Prohibited
+❌ Unauthorized testing
+
+❌ Malicious activities
+
+❌ Testing without proper consent
+
+❌ Violation of laws or regulations
+
+Requirements
+Always obtain explicit written authorization
+
+Maintain comprehensive activity logging
+
+Adhere to defined scope and rules of engagement
+
+Follow responsible disclosure protocols
+
+🤝 Contributing
+While this is an individual project, constructive feedback is welcome:
+
+Issues: Report errors, suggest improvements, or request new categories
+
+Discussions: Share insights or propose new command additions
+
+Validation: Help verify commands across different environments
+
+📊 Repository Stats
+https://img.shields.io/github/stars/eligof/offensive-security-commands?style=for-the-badge
+https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge
+https://img.shields.io/badge/Updated-November_2025-green.svg?style=for-the-badge
+https://img.shields.io/badge/Commands-1,775+-orange.svg?style=for-the-badge
+
+🌟 Star History
+https://api.star-history.com/svg?repos=eligof/offensive-security-commands&type=Date
 
 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -91,29 +127,24 @@ Open source security tool developers
 
 The infosec community for continuous knowledge sharing
 
-Disclaimer: The maintainers are not responsible for any misuse of this information. Always conduct security testing ethically and legally.
+Contributors who provide valuable feedback and validation
+
+🔐 Important Notice
+Disclaimer: The maintainer is not responsible for any misuse of this information. Always conduct security testing ethically, legally, and with proper authorization. Security professionals have a responsibility to protect infrastructure and respect privacy.
+
+Status: 🟢 Actively Maintained | 📚 Educational Resource | ⚖️ Ethical Use Required
+
+Connect: For professional inquiries or technical discussions regarding this repository.
 
 <div align="center">
 Made with ❤️ for the security community
 
-https://img.shields.io/github/stars/eligof/offensive-security-commands?style=social
-https://img.shields.io/badge/License-MIT-blue.svg
+© 2025 Offensive Security Command Reference | Version 1.0
 
-</div> ```
-This README provides:
+</div>
+📈 Recent Updates
+November 2025: Repository maintenance and validation
 
-Clear overview and purpose
+Comprehensive coverage across 20 security domains
 
-Easy navigation to different sections
-
-Legal and ethical warnings
-
-Professional presentation for GitHub
-
-Contribution guidelines
-
-Social proof elements (stars, license)
-
-Professional branding
-
-© 2025 Offensive Security Command Reference 
+Regular maintenance and validation schedule established
