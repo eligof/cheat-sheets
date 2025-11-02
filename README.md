@@ -1,3 +1,6 @@
+
+<div align="center">
+
 Offensive Security Command Reference
 Version: 1.0 | Last Updated: November 2025 | Commands: 1,775+ | Maintainer: Individual Security Researcher
 
@@ -139,7 +142,6 @@ Status: 🟢 Actively Maintained | 📚 Educational Resource | ⚖️ Ethical Us
 
 Connect: For professional inquiries or technical discussions regarding this repository.
 
-<div align="center">
 Made with ❤️ for the security community
 
 © 2025 Offensive Security Command Reference | Version 1.0
