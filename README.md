@@ -2,7 +2,7 @@
 <div align="center">
 
 Offensive Security Command Reference
-Version: 1.0 | Last Updated: November 2025 | Commands: 1,775+ | Maintainer: Individual Security Researcher
+Last Updated: November 2025 | Commands: 1,775+
 
 📖 Overview
 A comprehensive, curated collection of offensive security commands designed for practical application in authorized security testing scenarios. This repository serves as a centralized reference for security professionals conducting penetration testing, red team operations, and security research.
@@ -57,11 +57,12 @@ Usage Example
 cat 01-reconnaissance-osint.md | grep -A 2 "subdomain"
 ```
 
-# Each command includes:
-# - Actual command syntax
-# - Usage explanation
-# - Practical application context
-# - Required parameters and options
+Each command includes:
+- Actual command syntax
+- Usage explanation
+- Practical application context
+- Required parameters and options
+  
 🛠️ Maintenance
 This repository is actively maintained with:
 
@@ -114,14 +115,6 @@ Discussions: Share insights or propose new command additions
 
 Validation: Help verify commands across different environments
 
-📊 Repository Stats
-https://img.shields.io/github/stars/eligof/offensive-security-commands?style=for-the-badge
-https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge
-https://img.shields.io/badge/Updated-November_2025-green.svg?style=for-the-badge
-https://img.shields.io/badge/Commands-1,775+-orange.svg?style=for-the-badge
-
-🌟 Star History
-https://api.star-history.com/svg?repos=eligof/offensive-security-commands&type=Date
 
 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
