@@ -1,7 +1,7 @@
-אתה צודק! אשלים את כל הפקודות עם הסברים מפורטים. אכתוב את כל 1,650+ הפקודות עם הסברים קצרים על אופן השימוש.
 
 # Ultimate Offensive Security Command Reference
 
+```bash
 ## Table of Contents
 1. [Reconnaissance & OSINT](#1-reconnaissance--osint)
 2. [Vulnerability Scanning](#2-vulnerability-scanning)
@@ -23,7 +23,7 @@
 18. [AI/ML Security](#18-aiml-security)
 19. [Anti-Forensics](#19-anti-forensics)
 20. [Password Attacks](#20-password-attacks)
-
+```
 ---
 
 ## 1. Reconnaissance & OSINT
