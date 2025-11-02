@@ -1,5 +1,4 @@
 
-<div align="center">
 
 Offensive Security Command Reference
 Last Updated: November 2025 | Commands: 1,775+
@@ -139,7 +138,7 @@ Made with ❤️ for the security community
 
 © 2025 Offensive Security Command Reference | Version 1.0
 
-</div>
+
 📈 Recent Updates
 November 2025: Repository maintenance and validation
 
