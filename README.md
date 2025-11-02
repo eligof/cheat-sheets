@@ -5,7 +5,7 @@ Version: 1.0 | Last Updated: November 2025 | Commands: 1,775+ | Maintainer: Indi
 A comprehensive, curated collection of offensive security commands designed for practical application in authorized security testing scenarios. This repository serves as a centralized reference for security professionals conducting penetration testing, red team operations, and security research.
 
 🗂️ Repository Structure
-text
+```bash
 offensive-security-commands/
 ├── 01-reconnaissance-osint.md          # 128 commands
 ├── 02-vulnerability-scanning.md        # 89 commands
@@ -27,6 +27,8 @@ offensive-security-commands/
 ├── 18-ai-ml-security.md                # 12 commands
 ├── 19-anti-forensics.md                # 84 commands
 └── 20-password-attacks.md              # 106 commands
+```
+
 ✨ Key Features
 Comprehensive Coverage: 1,775+ commands spanning 20 security domains
 
