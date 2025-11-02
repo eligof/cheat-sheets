@@ -49,9 +49,10 @@ Access to authorized testing environments
 Required security tools installed (varies by category)
 
 Usage Example
-bash
+```bash
 # Navigate to desired category
 cat 01-reconnaissance-osint.md | grep -A 2 "subdomain"
+```
 
 # Each command includes:
 # - Actual command syntax
