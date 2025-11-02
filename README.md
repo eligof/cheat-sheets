@@ -1,89 +1,119 @@
-# Ultimate Offensive Security Command Reference
+# Offensive Security Command Reference
 
 ## Overview
-A comprehensive collection of offensive security commands and techniques for penetration testers, red teamers, and security researchers. This repository contains 1500+ commands across 14 security domains.
 
-## Quick Start
-```bash
-# Clone this repository
-git clone https://github.com/yourusername/offensive-security-commands.git
-cd offensive-security-commands
+A curated collection of offensive security commands organized for practical use in authorized security testing. This repository serves as a centralized reference for penetration testers, red team operators, and security researchers.
 
-# View the main command reference
-cat ULTIMATE_OFFENSIVE_SECURITY.md
+## Structure
 
-# Or open in your preferred markdown viewer
+```
+├── 01-reconnaissance-osint.md (128 commands)
+├── 02-vulnerability-scanning.md (89 commands)
+├── 03-web-application-attacks.md (156 commands)
+├── 04-network-exploitation.md (115 commands)
+├── 05-active-directory-attacks.md (148 commands)
+├── 06-post-exploitation.md (137 commands)
+├── 07-lateral-movement.md (126 commands)
+├── 08-privilege-escalation.md (146 commands)
+├── 09-persistence-mechanisms.md (132 commands)
+├── 10-command-control.md (141 commands)
+├── 11-cloud-security.md (121 commands)
+├── 12-container-security.md (23 commands)
+├── 13-mobile-wireless.md (98 commands)
+├── 14-api-security.md (18 commands)
+├── 15-devsecops-tools.md (16 commands)
+├── 16-ics-scada-security.md (8 commands)
+├── 17-zero-trust-security.md (11 commands)
+├── 18-ai-ml-security.md (12 commands)
+├── 19-anti-forensics.md (84 commands)
+└── 20-password-attacks.md (106 commands)
 ```
 
-## What's Inside
-- **1500+ curated commands** from real-world offensive security operations
-- **14 comprehensive categories** covering the entire attack lifecycle
-- **Practical examples** with detailed explanations
-- **Cutting-edge techniques** and modern tooling
-- **Cross-platform coverage** (Windows, Linux, Cloud, Mobile)
+## Key Features
 
-## Categories Covered
-1. **Reconnaissance & OSINT** - Subdomain enumeration, DNS reconnaissance, port scanning
-2. **Vulnerability Scanning** - Automated scanners, web app testing, API security
-3. **Web Application Attacks** - SQLi, XSS, file inclusion, SSRF
-4. **Network Exploitation** - SMB attacks, SNMP, remote services
-5. **Active Directory Attacks** - Kerberos, DCSync, BloodHound
-6. **Post-Exploitation** - Initial access, LOLBins, credential dumping
-7. **Lateral Movement** - Pass-the-Hash, WMI, RDP, DCOM
-8. **Privilege Escalation** - Windows/Linux escalation, kernel exploits
-9. **Persistence Mechanisms** - Registry, services, scheduled tasks
-10. **Command & Control** - Cobalt Strike, Metasploit, custom C2
-11. **Cloud Security** - AWS, Azure, Kubernetes exploitation
-12. **Mobile & Wireless** - Wireless attacks, mobile app testing
-13. **Anti-Forensics** - Log cleaning, timestamp manipulation
-14. **Password Attacks** - Hash cracking, spraying, brute force
+- **Comprehensive Coverage:** 1,775 commands across 20 security domains
+- **Practical Focus:** Each command includes usage context and application scenarios
+- **Multi-Platform:** Windows, Linux, cloud, and network environments
+- **Tool-Agnostic:** Commands from various security tools and frameworks
 
-## Popular Sections
-- Cobalt Strike Beacon Configurations
-- Active Directory Kerberos Attacks
-- Cloud Metadata API Exploitation
-- Privilege Escalation Techniques
-- Anti-Forensics & Log Cleaning
+## Usage
 
-## How to Use
-1. **For Learning**: Study each section to understand attack methodologies
-2. **For Reference**: Use as a quick command lookup during engagements
-3. **For Training**: Incorporate into security training and CTF exercises
-4. **For Tool Development**: Understand command syntax for automation
+Each command file contains:
+- Actual command syntax
+- Brief usage explanation
+- Practical application context
+- Required parameters and options
 
-## Legal & Ethical Notice
-**Important**: This repository is for educational and authorized security testing purposes only. Always ensure you have explicit permission before using these techniques against any systems.
+## Maintenance
 
-- Only use on systems you own or have explicit written permission to test
-- Maintain detailed logs and documentation for all testing activities
-- Follow responsible disclosure practices for any vulnerabilities found
-- Understand and comply with local laws and regulations
+This repository is personally maintained and regularly updated with:
+- New techniques and methodologies
+- Updated tool syntax
+- Additional practical examples
+- Corrections and improvements
+
+## Legal Notice
+
+This repository is intended for:
+- Authorized security testing
+- Educational purposes
+- Security research
+- Defensive security preparation
+
+Always ensure proper authorization before using any techniques in production environments. The maintainer assumes no liability for misuse.
 
 ## Contributing
-We welcome contributions! Please see our Contributing Guidelines for details on how to:
-- Add new commands and techniques
-- Improve existing content
-- Report issues or suggestions
-- Suggest new categories
 
-## Statistics
-- **Total Commands**: 1500+
-- **Categories**: 14
-- **Tools Covered**: 200+
-- **Last Updated**: [Current Date]
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-- Security researchers and red teamers worldwide
-- Open source security tool developers
-- The infosec community for continuous knowledge sharing
+While this is an individual project, feedback and suggestions are welcome through issues and discussions.
 
 ---
 
-**Disclaimer**: The maintainers are not responsible for any misuse of this information. Always conduct security testing ethically and legally.
+*This repository represents ongoing research in offensive security techniques. 
+Commands are validated in controlled environments before inclusion. 
+Always practice responsible disclosure and ethical security testing.*
 
-Made for the security community
+**Connect**  
+For professional inquiries or technical discussions regarding the content of this repository.
 
-[GitHub](https://github.com/eligof/offensive-security-commands) | [License: MIT](https://opensource.org/licenses/MIT)
+**Status**  
+ Actively Maintained |  Educational Resource | Ethical Use Required
+
+ 🌟 Star History
+https://api.star-history.com/svg?repos=yourusername/offensive-security-commands&type=Date
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+🙏 Acknowledgments
+Security researchers and red teamers worldwide
+
+Open source security tool developers
+
+The infosec community for continuous knowledge sharing
+
+Disclaimer: The maintainers are not responsible for any misuse of this information. Always conduct security testing ethically and legally.
+
+<div align="center">
+Made with ❤️ for the security community
+
+https://img.shields.io/github/stars/eligof/offensive-security-commands?style=social
+https://img.shields.io/badge/License-MIT-blue.svg
+
+</div> ```
+This README provides:
+
+Clear overview and purpose
+
+Easy navigation to different sections
+
+Legal and ethical warnings
+
+Professional presentation for GitHub
+
+Contribution guidelines
+
+Social proof elements (stars, license)
+
+Professional branding
+
+© 2025 Offensive Security Command Reference 
